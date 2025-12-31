@@ -1,5 +1,6 @@
-import AdminSidebar from '@/components/layout/AdminSidebar';
-import AdminTopbar from '@/components/layout/AdminTopbar';
+
+import UserSidebar from '@/components/UserLayout/UserSidebar';
+import UserTopbar from '@/components/UserLayout/UserTopbar';
 
 export default function AdminLayout({
   children,
@@ -8,9 +9,9 @@ export default function AdminLayout({
 }) {
   return (
     <div className="min-h-screen bg-gray-50 font-['Inter']">
-      <AdminSidebar />
+      <UserSidebar />
       <div className="lg:ml-[235px] min-h-screen flex flex-col">
-        <AdminTopbar />
+        <UserTopbar />
         <main className="flex-1 p-4 lg:p-8">
           {children}
         </main>
