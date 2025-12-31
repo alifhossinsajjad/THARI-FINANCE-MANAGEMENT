@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -154,12 +155,12 @@ export default function LoginPage() {
             {/* Sign Up Link */}
             <p className="text-center text-sm text-gray-600">
               Don&#39;t have an account?{" "}
-              <a
-                href="#"
+              <Link
+                href="/auth/register"
                 className="text-blue-900 font-semibold hover:underline"
               >
                 Sign up
-              </a>
+              </Link>
             </p>
           </div>
         </div>

@@ -9,7 +9,7 @@ import {
 
 export default function UserDashboard() {
   return (
-    <div className="max-w-7xl mx-auto space-y-10">
+    <div className="mx-auto space-y-10">
       {/* Header Section */}
       <section>
         <h1 className="text-3xl font-bold text-zinc-800 mb-2">Welcome back!</h1>

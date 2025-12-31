@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function SignupPage() {
   const [fullName, setFullName] = useState("");
@@ -220,14 +221,14 @@ export default function SignupPage() {
             </Button>
 
             {/* Login Link */}
-            <p className="text-center text-sm text-gray-600 pt-2">
+            <p className=" text-sm text-gray-600">
               Already have an account?{" "}
-              <a
-                href="#"
+              <Link
+                href="/auth/login"
                 className="text-blue-900 font-semibold hover:underline"
               >
                 Login
-              </a>
+              </Link>
             </p>
           </div>
         </div>
