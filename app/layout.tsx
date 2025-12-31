@@ -5,15 +5,18 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "THARI Admin Dashboard",
-  description: "Admin dashboard for THARI platform",
+  title: "THARI",
+  description:
+    "Sharia-compliant stock, crypto, and commodity insights to help you grow your wealth with confidence.",
 };
 
 interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-export default function RootLayout({ children }: Readonly<RootLayoutProps>): React.JSX.Element {
+export default function RootLayout({
+  children,
+}: Readonly<RootLayoutProps>): React.JSX.Element {
   return (
     <html lang="en">
       <body className={inter.className}>{children}</body>
