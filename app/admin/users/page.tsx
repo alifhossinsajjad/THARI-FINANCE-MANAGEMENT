@@ -1,120 +1,122 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Eye, Edit2, Ban, Crown } from 'lucide-react';
-import SearchInput from '@/components/admin/SearchInput';
-import FilterSelect from '@/components/admin/FilterSelect';
-import UserDetailModal from '@/components/admin/modals/UserDetailModal';
-import type { User } from '@/types';
+import { useState } from "react";
+import { Eye, Edit2, Ban, Crown } from "lucide-react";
+import SearchInput from "@/components/admin/SearchInput";
+import FilterSelect from "@/components/admin/FilterSelect";
+import UserDetailModal from "@/components/admin/modals/UserDetailModal";
+import type { User } from "@/types";
 
 export default function UsersPage(): React.JSX.Element {
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [roleFilter, setRoleFilter] = useState<string>('All');
-  const [statusFilter, setStatusFilter] = useState<string>('All');
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [roleFilter, setRoleFilter] = useState<string>("All");
+  const [statusFilter, setStatusFilter] = useState<string>("All");
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const users: User[] = [
     {
       id: 1,
-      name: 'Ahmed Hassan',
-      email: 'ahmed@example.com',
-      role: 'Elite',
-      subscription: 'Active',
+      name: "Ahmed Hassan",
+      email: "ahmed@example.com",
+      role: "Elite",
+      subscription: "Active",
       trackedStocks: 15,
-      status: 'Active',
+      status: "Active",
     },
     {
       id: 2,
-      name: 'Ahmed Hassan',
-      email: 'ahmed@example.com',
-      role: 'Free',
-      subscription: 'Active',
+      name: "Ahmed Hassan",
+      email: "ahmed@example.com",
+      role: "Free",
+      subscription: "Active",
       trackedStocks: 15,
-      status: 'Active',
+      status: "Active",
     },
     {
       id: 3,
-      name: 'Ahmed Hassan',
-      email: 'ahmed@example.com',
-      role: 'Elite',
-      subscription: 'Inactive',
+      name: "Ahmed Hassan",
+      email: "ahmed@example.com",
+      role: "Elite",
+      subscription: "Inactive",
       trackedStocks: 15,
-      status: 'Active',
+      status: "Active",
     },
     {
       id: 4,
-      name: 'Ahmed Hassan',
-      email: 'ahmed@example.com',
-      role: 'Free',
-      subscription: 'Active',
+      name: "Ahmed Hassan",
+      email: "ahmed@example.com",
+      role: "Free",
+      subscription: "Active",
       trackedStocks: 15,
-      status: 'Active',
+      status: "Active",
     },
     {
       id: 5,
-      name: 'Ahmed Hassan',
-      email: 'ahmed@example.com',
-      role: 'Elite',
-      subscription: 'Active',
+      name: "Ahmed Hassan",
+      email: "ahmed@example.com",
+      role: "Elite",
+      subscription: "Active",
       trackedStocks: 15,
-      status: 'Active',
+      status: "Active",
     },
     {
       id: 6,
-      name: 'Ahmed Hassan',
-      email: 'ahmed@example.com',
-      role: 'Free',
-      subscription: 'Active',
+      name: "Ahmed Hassan",
+      email: "ahmed@example.com",
+      role: "Free",
+      subscription: "Active",
       trackedStocks: 15,
-      status: 'Suspended',
+      status: "Suspended",
     },
     {
       id: 7,
-      name: 'Ahmed Hassan',
-      email: 'ahmed@example.com',
-      role: 'Elite',
-      subscription: 'Pending',
+      name: "Ahmed Hassan",
+      email: "ahmed@example.com",
+      role: "Elite",
+      subscription: "Pending",
       trackedStocks: 15,
-      status: 'Active',
+      status: "Active",
     },
   ];
 
   const filteredUsers = users.filter((user: User) => {
-    const matchesSearch = user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         user.email.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesRole = roleFilter === 'All' || user.role === roleFilter;
-    const matchesStatus = statusFilter === 'All' || user.status === statusFilter;
+    const matchesSearch =
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesRole = roleFilter === "All" || user.role === roleFilter;
+    const matchesStatus =
+      statusFilter === "All" || user.status === statusFilter;
     return matchesSearch && matchesRole && matchesStatus;
   });
 
   const getRoleColor = (role: string): string => {
-    return role === 'Elite' ? '#9333EA' : '#6B7280';
+    return role === "Elite" ? "#9333EA" : "#6B7280";
   };
 
   const getStatusColor = (status: string): string => {
     switch (status) {
-      case 'Active':
-        return '#10B981';
-      case 'Suspended':
-        return '#EF4444';
-      case 'Pending':
-        return '#F59E0B';
+      case "Active":
+        return "#10B981";
+      case "Suspended":
+        return "#EF4444";
+      case "Pending":
+        return "#F59E0B";
       default:
-        return '#6B7280';
+        return "#6B7280";
     }
   };
 
   const getSubscriptionColor = (subscription: string): string => {
     switch (subscription) {
-      case 'Active':
-        return '#10B981';
-      case 'Inactive':
-        return '#6B7280';
-      case 'Pending':
-        return '#F59E0B';
+      case "Active":
+        return "#10B981";
+      case "Inactive":
+        return "#6B7280";
+      case "Pending":
+        return "#F59E0B";
       default:
-        return '#6B7280';
+        return "#6B7280";
     }
   };
 
@@ -133,8 +135,12 @@ export default function UsersPage(): React.JSX.Element {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Users</h1>
-          <p className="text-sm text-gray-500 mt-1">Manage and view all registered users.</p>
+          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+            Users
+          </h1>
+          <p className="text-sm text-gray-500 mt-1">
+            Manage and view all registered users.
+          </p>
         </div>
 
         {/* Search and Filters */}
@@ -151,7 +157,7 @@ export default function UsersPage(): React.JSX.Element {
               <FilterSelect
                 value={roleFilter}
                 onChange={setRoleFilter}
-                options={['All', 'Elite', 'Free']}
+                options={["All", "Elite", "Free"]}
                 placeholder="All"
               />
             </div>
@@ -159,7 +165,7 @@ export default function UsersPage(): React.JSX.Element {
               <FilterSelect
                 value={statusFilter}
                 onChange={setStatusFilter}
-                options={['All', 'Active', 'Suspended', 'Pending']}
+                options={["All", "Active", "Suspended", "Pending"]}
                 placeholder="All"
               />
             </div>
@@ -198,12 +204,14 @@ export default function UsersPage(): React.JSX.Element {
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {filteredUsers.map((user: User) => (
-                  <tr 
+                  <tr
                     key={`user-${user.id}`}
                     className="hover:bg-gray-50 transition-colors"
                   >
                     <td className="px-6 py-4">
-                      <p className="text-sm font-medium text-gray-900">{user.name}</p>
+                      <p className="text-sm font-medium text-gray-900">
+                        {user.name}
+                      </p>
                     </td>
                     <td className="px-6 py-4">
                       <p className="text-sm text-gray-600">{user.email}</p>
@@ -216,7 +224,7 @@ export default function UsersPage(): React.JSX.Element {
                           color: getRoleColor(user.role),
                         }}
                       >
-                        {user.role === 'Elite' && <Crown size={12} />}
+                        {user.role === "Elite" && <Crown size={12} />}
                         {user.role}
                       </span>
                     </td>
@@ -224,7 +232,9 @@ export default function UsersPage(): React.JSX.Element {
                       <span
                         className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold"
                         style={{
-                          backgroundColor: `${getSubscriptionColor(user.subscription)}20`,
+                          backgroundColor: `${getSubscriptionColor(
+                            user.subscription
+                          )}20`,
                           color: getSubscriptionColor(user.subscription),
                         }}
                       >
@@ -232,7 +242,9 @@ export default function UsersPage(): React.JSX.Element {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <p className="text-sm font-medium text-gray-900">{user.trackedStocks}</p>
+                      <p className="text-sm font-medium text-gray-900">
+                        {user.trackedStocks}
+                      </p>
                     </td>
                     <td className="px-6 py-4">
                       <span
@@ -283,7 +295,9 @@ export default function UsersPage(): React.JSX.Element {
               <div key={`user-mobile-${user.id}`} className="p-4 space-y-3">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <h3 className="text-base font-semibold text-gray-900">{user.name}</h3>
+                    <h3 className="text-base font-semibold text-gray-900">
+                      {user.name}
+                    </h3>
                     <p className="text-sm text-gray-600 mt-1">{user.email}</p>
                   </div>
                   <button
@@ -304,13 +318,15 @@ export default function UsersPage(): React.JSX.Element {
                       color: getRoleColor(user.role),
                     }}
                   >
-                    {user.role === 'Elite' && <Crown size={12} />}
+                    {user.role === "Elite" && <Crown size={12} />}
                     {user.role}
                   </span>
                   <span
                     className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold"
                     style={{
-                      backgroundColor: `${getSubscriptionColor(user.subscription)}20`,
+                      backgroundColor: `${getSubscriptionColor(
+                        user.subscription
+                      )}20`,
                       color: getSubscriptionColor(user.subscription),
                     }}
                   >
@@ -329,7 +345,9 @@ export default function UsersPage(): React.JSX.Element {
 
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-gray-600">Tracked Stocks:</span>
-                  <span className="font-medium text-gray-900">{user.trackedStocks}</span>
+                  <span className="font-medium text-gray-900">
+                    {user.trackedStocks}
+                  </span>
                 </div>
 
                 <div className="flex gap-2 pt-2">

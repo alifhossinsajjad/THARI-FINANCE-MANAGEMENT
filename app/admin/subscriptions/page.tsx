@@ -1,7 +1,14 @@
-'use client';
+"use client";
 
 import { useState } from "react";
-import { Search, MoreVertical, CheckCircle, XCircle, Clock as ClockIcon, AlertCircle, Users, Clock8 } from "lucide-react";
+import {
+  Search,
+  CheckCircle,
+  XCircle,
+  Clock as ClockIcon,
+  Users,
+  Clock8,
+} from "lucide-react";
 import { FiArrowUpCircle } from "react-icons/fi";
 
 type Subscription = {
@@ -19,13 +26,97 @@ type Subscription = {
 };
 
 const initialSubscriptions: Subscription[] = [
-  { id: 1, user: "Ahmed Hassan", email: "ahmed@example.com", role: "Elite", subscriptionStatus: "Active", trackedStocks: 15, accountStatus: "Active", plan: "12 Months", startDate: "2024-01-15", expiryDate: "2025-01-15", status: "Active" },
-  { id: 2, user: "Ahmed Hassan", email: "ahmed@example.com", role: "Elite", subscriptionStatus: "Active", trackedStocks: 15, accountStatus: "Active", plan: "06 Months", startDate: "2024-01-15", expiryDate: "2025-01-15", status: "Active" },
-  { id: 3, user: "Ahmed Hassan", email: "ahmed@example.com", role: "Elite", subscriptionStatus: "Active", trackedStocks: 15, accountStatus: "Active", plan: "12 Months", startDate: "2024-01-15", expiryDate: "2025-01-15", status: "Active" },
-  { id: 4, user: "Ahmed Hassan", email: "ahmed@example.com", role: "Elite", subscriptionStatus: "Active", trackedStocks: 15, accountStatus: "Active", plan: "06 Months", startDate: "2024-01-15", expiryDate: "2025-01-15", status: "Pending" },
-  { id: 5, user: "Ahmed Hassan", email: "ahmed@example.com", role: "Elite", subscriptionStatus: "Active", trackedStocks: 15, accountStatus: "Active", plan: "12 Months", startDate: "2024-01-15", expiryDate: "2025-01-15", status: "Active" },
-  { id: 6, user: "Ahmed Hassan", email: "ahmed@example.com", role: "Elite", subscriptionStatus: "Active", trackedStocks: 15, accountStatus: "Active", plan: "06 Months", startDate: "2024-01-15", expiryDate: "2025-01-15", status: "Expired" },
-  { id: 7, user: "Ahmed Hassan", email: "ahmed@example.com", role: "Elite", subscriptionStatus: "Active", trackedStocks: 15, accountStatus: "Active", plan: "12 Months", startDate: "2024-01-15", expiryDate: "2025-01-15", status: "Active" },
+  {
+    id: 1,
+    user: "Ahmed Hassan",
+    email: "ahmed@example.com",
+    role: "Elite",
+    subscriptionStatus: "Active",
+    trackedStocks: 15,
+    accountStatus: "Active",
+    plan: "12 Months",
+    startDate: "2024-01-15",
+    expiryDate: "2025-01-15",
+    status: "Active",
+  },
+  {
+    id: 2,
+    user: "Ahmed Hassan",
+    email: "ahmed@example.com",
+    role: "Elite",
+    subscriptionStatus: "Active",
+    trackedStocks: 15,
+    accountStatus: "Active",
+    plan: "06 Months",
+    startDate: "2024-01-15",
+    expiryDate: "2025-01-15",
+    status: "Active",
+  },
+  {
+    id: 3,
+    user: "Ahmed Hassan",
+    email: "ahmed@example.com",
+    role: "Elite",
+    subscriptionStatus: "Active",
+    trackedStocks: 15,
+    accountStatus: "Active",
+    plan: "12 Months",
+    startDate: "2024-01-15",
+    expiryDate: "2025-01-15",
+    status: "Active",
+  },
+  {
+    id: 4,
+    user: "Ahmed Hassan",
+    email: "ahmed@example.com",
+    role: "Elite",
+    subscriptionStatus: "Active",
+    trackedStocks: 15,
+    accountStatus: "Active",
+    plan: "06 Months",
+    startDate: "2024-01-15",
+    expiryDate: "2025-01-15",
+    status: "Pending",
+  },
+  {
+    id: 5,
+    user: "Ahmed Hassan",
+    email: "ahmed@example.com",
+    role: "Elite",
+    subscriptionStatus: "Active",
+    trackedStocks: 15,
+    accountStatus: "Active",
+    plan: "12 Months",
+    startDate: "2024-01-15",
+    expiryDate: "2025-01-15",
+    status: "Active",
+  },
+  {
+    id: 6,
+    user: "Ahmed Hassan",
+    email: "ahmed@example.com",
+    role: "Elite",
+    subscriptionStatus: "Active",
+    trackedStocks: 15,
+    accountStatus: "Active",
+    plan: "06 Months",
+    startDate: "2024-01-15",
+    expiryDate: "2025-01-15",
+    status: "Expired",
+  },
+  {
+    id: 7,
+    user: "Ahmed Hassan",
+    email: "ahmed@example.com",
+    role: "Elite",
+    subscriptionStatus: "Active",
+    trackedStocks: 15,
+    accountStatus: "Active",
+    plan: "12 Months",
+    startDate: "2024-01-15",
+    expiryDate: "2025-01-15",
+    status: "Active",
+  },
 ];
 
 export default function SubscriptionsPage() {
@@ -42,8 +133,12 @@ export default function SubscriptionsPage() {
   const [accountStatus, setAccountStatus] = useState("Active");
 
   const activeCount = subscriptions.filter((s) => s.status === "Active").length;
-  const pendingCount = subscriptions.filter((s) => s.status === "Pending").length;
-  const expiredCount = subscriptions.filter((s) => s.status === "Expired").length;
+  const pendingCount = subscriptions.filter(
+    (s) => s.status === "Pending"
+  ).length;
+  const expiredCount = subscriptions.filter(
+    (s) => s.status === "Expired"
+  ).length;
 
   const openEditModal = (sub: Subscription) => {
     setSelectedUser(sub);
@@ -58,18 +153,37 @@ export default function SubscriptionsPage() {
 
   const handleSave = () => {
     // Here you would update the data (API call or state update)
-    console.log("Saved:", { name, email, role, subscriptionStatus, trackedStocks, accountStatus });
+    console.log("Saved:", {
+      name,
+      email,
+      role,
+      subscriptionStatus,
+      trackedStocks,
+      accountStatus,
+    });
     setIsEditModalOpen(false);
   };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Active":
-        return <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-green-100 text-green-700">Active</span>;
+        return (
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
+            Active
+          </span>
+        );
       case "Pending":
-        return <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">Pending</span>;
+        return (
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">
+            Pending
+          </span>
+        );
       case "Expired":
-        return <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-red-100 text-red-700">Expired</span>;
+        return (
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-red-100 text-red-700">
+            Expired
+          </span>
+        );
       default:
         return null;
     }
@@ -82,7 +196,9 @@ export default function SubscriptionsPage() {
           {/* Header */}
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Subscriptions</h1>
-            <p className="text-sm text-gray-500 mt-1">Manage all your active subscription plans.</p>
+            <p className="text-sm text-gray-500 mt-1">
+              Manage all your active subscription plans.
+            </p>
           </div>
 
           {/* Search and Filter */}
@@ -111,7 +227,9 @@ export default function SubscriptionsPage() {
               </div>
               <div>
                 <p className="text-sm text-gray-600">Active Subscriptions</p>
-                <p className="text-2xl font-bold text-gray-900">{String(activeCount).padStart(2, "0")}</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {String(activeCount).padStart(2, "0")}
+                </p>
               </div>
             </div>
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex items-center gap-4">
@@ -120,7 +238,9 @@ export default function SubscriptionsPage() {
               </div>
               <div>
                 <p className="text-sm text-gray-600">Pending Approvals</p>
-                <p className="text-2xl font-bold text-gray-900">{String(pendingCount).padStart(2, "0")}</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {String(pendingCount).padStart(2, "0")}
+                </p>
               </div>
             </div>
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex items-center gap-4">
@@ -129,7 +249,9 @@ export default function SubscriptionsPage() {
               </div>
               <div>
                 <p className="text-sm text-gray-600">Expired Subscriptions</p>
-                <p className="text-2xl font-bold text-gray-900">{String(expiredCount).padStart(2, "0")}</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {String(expiredCount).padStart(2, "0")}
+                </p>
               </div>
             </div>
           </div>
@@ -140,28 +262,51 @@ export default function SubscriptionsPage() {
               <table className="w-full text-left">
                 <thead>
                   <tr className="border-b border-gray-100 bg-gray-50">
-                    <th className="px-6 py-4 text-sm font-semibold text-gray-700">User</th>
-                    <th className="px-6 py-4 text-sm font-semibold text-gray-700">Plan</th>
-                    <th className="px-6 py-4 text-sm font-semibold text-gray-700">Start Date</th>
-                    <th className="px-6 py-4 text-sm font-semibold text-gray-700">Expiry Date</th>
-                    <th className="px-6 py-4 text-sm font-semibold text-gray-700">Status</th>
-                    <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-right">Actions</th>
+                    <th className="px-6 py-4 text-sm font-semibold text-gray-700">
+                      User
+                    </th>
+                    <th className="px-6 py-4 text-sm font-semibold text-gray-700">
+                      Plan
+                    </th>
+                    <th className="px-6 py-4 text-sm font-semibold text-gray-700">
+                      Start Date
+                    </th>
+                    <th className="px-6 py-4 text-sm font-semibold text-gray-700">
+                      Expiry Date
+                    </th>
+                    <th className="px-6 py-4 text-sm font-semibold text-gray-700">
+                      Status
+                    </th>
+                    <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-right">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {subscriptions.map((sub) => (
-                    <tr key={sub.id} className="hover:bg-gray-50 transition-colors">
+                    <tr
+                      key={sub.id}
+                      className="hover:bg-gray-50 transition-colors"
+                    >
                       <td className="px-6 py-4">
-                        <div className="text-sm font-medium text-gray-900">{sub.user}</div>
+                        <div className="text-sm font-medium text-gray-900">
+                          {sub.user}
+                        </div>
                       </td>
                       <td className="px-6 py-4">
                         <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">
                           {sub.plan}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">{sub.startDate}</td>
-                      <td className="px-6 py-4 text-sm text-gray-600">{sub.expiryDate}</td>
-                      <td className="px-6 py-4">{getStatusBadge(sub.status)}</td>
+                      <td className="px-6 py-4 text-sm text-gray-600">
+                        {sub.startDate}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-600">
+                        {sub.expiryDate}
+                      </td>
+                      <td className="px-6 py-4">
+                        {getStatusBadge(sub.status)}
+                      </td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex items-center justify-end gap-3">
                           <button className="text-green-600 hover:bg-green-50 p-2 rounded-lg transition-colors">
@@ -206,7 +351,9 @@ export default function SubscriptionsPage() {
             <div className="p-6 space-y-3">
               {/* Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Name
+                </label>
                 <input
                   type="text"
                   value={name}
@@ -217,7 +364,9 @@ export default function SubscriptionsPage() {
 
               {/* Email */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email
+                </label>
                 <input
                   type="email"
                   value={email}
@@ -228,7 +377,9 @@ export default function SubscriptionsPage() {
 
               {/* Role */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Role
+                </label>
                 <select
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
@@ -242,10 +393,16 @@ export default function SubscriptionsPage() {
 
               {/* Subscription Status */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Subscription Status</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Subscription Status
+                </label>
                 <select
                   value={subscriptionStatus}
-                  onChange={(e) => setSubscriptionStatus(e.target.value as "Active" | "Inactive")}
+                  onChange={(e) =>
+                    setSubscriptionStatus(
+                      e.target.value as "Active" | "Inactive"
+                    )
+                  }
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 appearance-none bg-white"
                 >
                   <option>Active</option>
@@ -255,7 +412,9 @@ export default function SubscriptionsPage() {
 
               {/* Tracked Stocks */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Tracked Stocks</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Tracked Stocks
+                </label>
                 <input
                   type="number"
                   value={trackedStocks}
@@ -266,10 +425,14 @@ export default function SubscriptionsPage() {
 
               {/* Account Status */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Account Status</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Account Status
+                </label>
                 <select
                   value={accountStatus}
-                  onChange={(e) => setAccountStatus(e.target.value as "Active" | "Inactive")}
+                  onChange={(e) =>
+                    setAccountStatus(e.target.value as "Active" | "Inactive")
+                  }
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 appearance-none bg-white"
                 >
                   <option>Active</option>

@@ -1,7 +1,7 @@
 "use client";
 
 import GetStartedButton from "@/components/reusable/GetStartedButton";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export default function FeaturesSection() {
   const [animate, setAnimate] = useState(false);

@@ -1,96 +1,103 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import {
   Calculator,
   LayoutDashboard,
   BrainCircuit,
- 
   ChevronUp,
   ChevronDown,
   Trash2,
   Plus,
-} from "lucide-react"
+} from "lucide-react";
 
 export default function AIFinancialTools() {
-  const [activeTab, setActiveTab] = useState("manager")
-  const [isAnalyzing, setIsAnalyzing] = useState(false)
-  const [showResults, setShowResults] = useState(false)
-  const [loanAmount, setLoanAmount] = useState(5000)
-  const [duration, setDuration] = useState(4)
-  const [interestRate, setInterestRate] = useState(0)
-  const [loanResult, setLoanResult] = useState<{ monthly: string; total: string; months: number } | null>(null)
+  const [activeTab, setActiveTab] = useState("manager");
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const [loanAmount, setLoanAmount] = useState(5000);
+  const [duration, setDuration] = useState(4);
+  const [interestRate, setInterestRate] = useState(0);
+  const [loanResult, setLoanResult] = useState<{
+    monthly: string;
+    total: string;
+    months: number;
+  } | null>(null);
 
   const [assets, setAssets] = useState([
     { id: "1", type: "Property", name: "Main Residence", value: 500000 },
     { id: "2", type: "Investments", name: "Stock Portfolio", value: 500000 },
     { id: "3", type: "Cash", name: "Savings Account", value: 500000 },
-  ])
-  const [isAddingAsset, setIsAddingAsset] = useState(false)
-  const [newAssetType, setNewAssetType] = useState("property")
-  const [newAssetName, setNewAssetName] = useState("")
-  const [newAssetValue, setNewAssetValue] = useState(500)
+  ]);
+  const [isAddingAsset, setIsAddingAsset] = useState(false);
+  const [newAssetType, setNewAssetType] = useState("property");
+  const [newAssetName, setNewAssetName] = useState("");
+  const [newAssetValue, setNewAssetValue] = useState(500);
 
   const tabs = [
     { id: "manager", label: "Financial Manager", icon: BrainCircuit },
     { id: "loan", label: "Loan Calculator", icon: Calculator },
     { id: "wealth", label: "Wealth Dashboard", icon: LayoutDashboard },
-  ]
+  ];
 
   const handleAnalyze = () => {
-    setIsAnalyzing(true)
+    setIsAnalyzing(true);
     // Simulate AI analysis delay
     setTimeout(() => {
-      setIsAnalyzing(false)
-      setShowResults(true)
-    }, 1500)
-  }
+      setIsAnalyzing(false);
+      setShowResults(true);
+    }, 1500);
+  };
 
   const handleCalculateLoan = () => {
-    const P = loanAmount
-    const r = interestRate / 100 / 12
-    const n = duration
+    const P = loanAmount;
+    const r = interestRate / 100 / 12;
+    const n = duration;
 
-    let emi = 0
+    let emi = 0;
     if (r === 0) {
-      emi = P / n
+      emi = P / n;
     } else {
-      emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1)
+      emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
     }
 
     setLoanResult({
       monthly: emi.toFixed(2),
       total: (emi * n).toFixed(2),
       months: n,
-    })
-  }
+    });
+  };
 
   const handleAddAsset = () => {
-    if (!newAssetName) return
+    if (!newAssetName) return;
     const newAsset = {
       id: Math.random().toString(36).substr(2, 9),
       type: newAssetType.charAt(0).toUpperCase() + newAssetType.slice(1),
       name: newAssetName,
       value: newAssetValue,
-    }
-    setAssets([...assets, newAsset])
-    setIsAddingAsset(false)
-    setNewAssetName("")
-    setNewAssetValue(500)
-  }
+    };
+    setAssets([...assets, newAsset]);
+    setIsAddingAsset(false);
+    setNewAssetName("");
+    setNewAssetValue(500);
+  };
 
   const handleDeleteAsset = (id: string) => {
-    setAssets(assets.filter((a) => a.id !== id))
-  }
+    setAssets(assets.filter((a) => a.id !== id));
+  };
 
-  const totalNetWorth = assets.reduce((sum, asset) => sum + asset.value, 0)
+  const totalNetWorth = assets.reduce((sum, asset) => sum + asset.value, 0);
 
   return (
     <div className="max-w-7xl mx-auto space-y-10">
       {/* Page Header */}
       <section>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">AI Financial Tools</h1>
-        <p className="text-gray-400 font-medium text-sm">Smart financial planning powered by AI</p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          AI Financial Tools
+        </h1>
+        <p className="text-gray-400 font-medium text-sm">
+          Smart financial planning powered by AI
+        </p>
       </section>
 
       {/* Custom Tab Bar */}
@@ -105,7 +112,11 @@ export default function AIFinancialTools() {
                 : " text-gray-700 cursor-pointer"
             }`}
           >
-            <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? "text-white" : "text-gray-400"}`} />
+            <tab.icon
+              className={`w-4 h-4 ${
+                activeTab === tab.id ? "text-white" : "text-gray-400"
+              }`}
+            />
             {tab.label}
           </button>
         ))}
@@ -116,10 +127,14 @@ export default function AIFinancialTools() {
         {activeTab === "manager" && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
             <div>
-              <h3 className="text-gray-800 font-bold mb-6">Smart Financial Planning</h3>
+              <h3 className="text-gray-800 font-bold mb-6">
+                Smart Financial Planning
+              </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-2.5">
-                  <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">Monthly Income ($)</label>
+                  <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">
+                    Monthly Income ($)
+                  </label>
                   <div className="relative group">
                     <input
                       type="number"
@@ -128,10 +143,10 @@ export default function AIFinancialTools() {
                     />
                     <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-1">
                       <button className="text-gray-400 ">
-                            <ChevronUp className="w-4 h-4" />
+                        <ChevronUp className="w-4 h-4" />
                       </button>
                       <button className="text-gray-400 ">
-                       <ChevronDown className="w-4 h-4" />
+                        <ChevronDown className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
@@ -149,17 +164,19 @@ export default function AIFinancialTools() {
                     />
                     <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-1">
                       <button className="text-gray-400 hover:text-gray-600">
-                            <ChevronUp className="w-4 h-4" />
+                        <ChevronUp className="w-4 h-4" />
                       </button>
                       <button className="text-gray-400 hover:text-gray-600">
-                      <ChevronDown className="w-4 h-4" />
+                        <ChevronDown className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-2.5">
-                  <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">Monthly Loans ($)</label>
+                  <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">
+                    Monthly Loans ($)
+                  </label>
                   <div className="relative group">
                     <input
                       type="number"
@@ -168,10 +185,10 @@ export default function AIFinancialTools() {
                     />
                     <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-1">
                       <button className="text-gray-400 ">
-                         <ChevronUp className="w-4 h-4" />
+                        <ChevronUp className="w-4 h-4" />
                       </button>
                       <button className="text-gray-400 ">
-                       <ChevronDown className="w-4 h-4" />
+                        <ChevronDown className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
@@ -195,7 +212,9 @@ export default function AIFinancialTools() {
               <h3 className="text-gray-800 font-bold mb-6">Loan Calculator</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-2.5">
-                  <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">Loan Amount ($)</label>
+                  <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">
+                    Loan Amount ($)
+                  </label>
                   <div className="relative group">
                     <input
                       type="number"
@@ -221,7 +240,9 @@ export default function AIFinancialTools() {
                 </div>
 
                 <div className="space-y-2.5">
-                  <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">Duration (Months)</label>
+                  <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">
+                    Duration (Months)
+                  </label>
                   <div className="relative group">
                     <input
                       type="number"
@@ -230,10 +251,16 @@ export default function AIFinancialTools() {
                       className="w-full bg-[#fcfcfc] border border-gray-100 rounded-2xl p-4 text-gray-800 font-bold focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all"
                     />
                     <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-0.5">
-                      <button onClick={() => setDuration((v) => v + 1)} className="text-gray-400 hover:text-gray-600">
+                      <button
+                        onClick={() => setDuration((v) => v + 1)}
+                        className="text-gray-400 hover:text-gray-600"
+                      >
                         <ChevronUp className="w-4 h-4" />
                       </button>
-                      <button onClick={() => setDuration((v) => v - 1)} className="text-gray-400 hover:text-gray-600">
+                      <button
+                        onClick={() => setDuration((v) => v - 1)}
+                        className="text-gray-400 hover:text-gray-600"
+                      >
                         <ChevronDown className="w-4 h-4" />
                       </button>
                     </div>
@@ -241,7 +268,9 @@ export default function AIFinancialTools() {
                 </div>
 
                 <div className="space-y-2.5">
-                  <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">Interest Rate (%)</label>
+                  <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">
+                    Interest Rate (%)
+                  </label>
                   <div className="relative group">
                     <input
                       type="number"
@@ -282,7 +311,9 @@ export default function AIFinancialTools() {
             {/* Net Worth Header */}
             <div className="bg-[#f8f8ff] border-2 border-[#000080]/20 rounded-2xl p-8">
               <h3 className="text-primary font-bold mb-2">Total Net Worth</h3>
-              <p className="text-3xl font-bold text-gray-900">${totalNetWorth.toLocaleString()}</p>
+              <p className="text-3xl font-bold text-gray-900">
+                ${totalNetWorth.toLocaleString()}
+              </p>
             </div>
 
             {/* Add Asset Button */}
@@ -304,7 +335,9 @@ export default function AIFinancialTools() {
                 <h3 className="text-gray-800 font-bold">Add New Asset</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="space-y-2.5">
-                    <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">Type</label>
+                    <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">
+                      Type
+                    </label>
                     <select
                       value={newAssetType}
                       onChange={(e) => setNewAssetType(e.target.value)}
@@ -316,7 +349,9 @@ export default function AIFinancialTools() {
                     </select>
                   </div>
                   <div className="space-y-2.5">
-                    <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">Name</label>
+                    <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">
+                      Name
+                    </label>
                     <div className="relative">
                       <input
                         type="text"
@@ -332,12 +367,16 @@ export default function AIFinancialTools() {
                     </div>
                   </div>
                   <div className="space-y-2.5">
-                    <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">Value ($)</label>
+                    <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">
+                      Value ($)
+                    </label>
                     <div className="relative group">
                       <input
                         type="number"
                         value={newAssetValue}
-                        onChange={(e) => setNewAssetValue(Number(e.target.value))}
+                        onChange={(e) =>
+                          setNewAssetValue(Number(e.target.value))
+                        }
                         className="w-full bg-[#fcfcfc] border border-gray-100 rounded-2xl p-4 text-gray-800 font-bold focus:outline-none focus:ring-2 focus:ring-blue-100"
                       />
                       <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-0.5">
@@ -377,7 +416,10 @@ export default function AIFinancialTools() {
             {/* Asset Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {assets.map((asset) => (
-                <div key={asset.id} className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm space-y-4">
+                <div
+                  key={asset.id}
+                  className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm space-y-4"
+                >
                   <div className="flex justify-between items-start">
                     <span className="bg-[#e6f0ff] text-[#0066ff] text-[10px] font-bold px-2.5 py-1 rounded-md uppercase">
                       {asset.type}
@@ -391,7 +433,9 @@ export default function AIFinancialTools() {
                   </div>
                   <div className="space-y-1">
                     <p className="text-gray-900 font-bold">{asset.name}</p>
-                    <p className="text-gray-800 font-medium text-lg">${asset.value.toLocaleString()}</p>
+                    <p className="text-gray-800 font-medium text-lg">
+                      ${asset.value.toLocaleString()}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -407,7 +451,9 @@ export default function AIFinancialTools() {
           <div className="space-y-8">
             <div>
               <div className="flex justify-between items-end mb-3">
-                <span className="text-gray-600 text-sm font-bold">Financial Health Score</span>
+                <span className="text-gray-600 text-sm font-bold">
+                  Financial Health Score
+                </span>
                 <span className="text-gray-900 font-bold">50/100</span>
               </div>
               <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
@@ -420,8 +466,8 @@ export default function AIFinancialTools() {
 
             <div className="bg-white rounded-2xl p-6 border border-gray-100">
               <p className="text-gray-600 text-sm leading-relaxed">
-                Your debt-to-income ratio is high. Consider reducing monthly debt payments. Aim to save at least 10-20%
-                of your income.
+                Your debt-to-income ratio is high. Consider reducing monthly
+                debt payments. Aim to save at least 10-20% of your income.
               </p>
             </div>
           </div>
@@ -433,7 +479,9 @@ export default function AIFinancialTools() {
         <div className="bg-[#f8f8ff] rounded-3xl p-8 border border-[#e5e7eb] shadow-sm animate-in fade-in slide-in-from-top-4 duration-700">
           <h3 className="text-gray-800 font-bold mb-6">Monthly Payment</h3>
           <div className="space-y-4">
-            <div className="text-4xl font-bold text-gray-900">${loanResult.monthly}</div>
+            <div className="text-4xl font-bold text-gray-900">
+              ${loanResult.monthly}
+            </div>
             <p className="text-gray-500 font-medium text-sm">
               Total payment: ${loanResult.total} over {loanResult.months} months
             </p>
@@ -441,5 +489,5 @@ export default function AIFinancialTools() {
         </div>
       )}
     </div>
-  )
+  );
 }

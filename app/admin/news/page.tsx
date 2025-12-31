@@ -1,106 +1,110 @@
 // FILE: app/admin/news/page.tsx
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Edit2, Trash2, Plus, Star } from 'lucide-react';
-import SearchInput from '@/components/admin/SearchInput';
-import FilterSelect from '@/components/admin/FilterSelect';
-import NewsModal from '@/components/admin/modals/NewsModal';
-import PrimaryButton from '@/components/admin/buttons/PrimaryButton';
-import type { News, NewsFormData } from '@/types';
+import React, { useState } from "react";
+import { Edit2, Trash2, Plus, Star } from "lucide-react";
+import SearchInput from "@/components/admin/SearchInput";
+import FilterSelect from "@/components/admin/FilterSelect";
+import NewsModal from "@/components/admin/modals/NewsModal";
+import PrimaryButton from "@/components/admin/buttons/PrimaryButton";
+import type { News, NewsFormData } from "@/types";
 
 export default function NewsPage(): React.JSX.Element {
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [categoryFilter, setCategoryFilter] = useState<string>('All');
-  const [statusFilter, setStatusFilter] = useState<string>('All');
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [categoryFilter, setCategoryFilter] = useState<string>("All");
+  const [statusFilter, setStatusFilter] = useState<string>("All");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedNews, setSelectedNews] = useState<News | null>(null);
-  const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
+  const [modalMode, setModalMode] = useState<"add" | "edit">("add");
 
   const news: News[] = [
     {
       id: 1,
-      title: 'Market Rally Continues as Tech Stocks Surge',
-      category: 'Stock',
-      publishDate: '2024-01-15',
-      status: 'Published',
+      title: "Market Rally Continues as Tech Stocks Surge",
+      category: "Stock",
+      publishDate: "2024-01-15",
+      status: "Published",
       featured: true,
-      content: 'Lorem ipsum dolor sit amet...',
+      content: "Lorem ipsum dolor sit amet...",
     },
     {
       id: 2,
-      title: 'Bitcoin Reaches New All-Time High',
-      category: 'Crypto',
-      publishDate: '2024-01-15',
-      status: 'Published',
+      title: "Bitcoin Reaches New All-Time High",
+      category: "Crypto",
+      publishDate: "2024-01-15",
+      status: "Published",
       featured: false,
-      content: 'Lorem ipsum dolor sit amet...',
+      content: "Lorem ipsum dolor sit amet...",
     },
     {
       id: 3,
-      title: 'Fed Announces Interest Rate Decision',
-      category: 'Economy',
-      publishDate: '2024-01-15',
-      status: 'Draft',
+      title: "Fed Announces Interest Rate Decision",
+      category: "Economy",
+      publishDate: "2024-01-15",
+      status: "Draft",
       featured: true,
-      content: 'Lorem ipsum dolor sit amet...',
+      content: "Lorem ipsum dolor sit amet...",
     },
   ];
 
   const filteredNews = news.filter((item: News) => {
-    const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = categoryFilter === 'All' || item.category === categoryFilter;
-    const matchesStatus = statusFilter === 'All' || item.status === statusFilter;
+    const matchesSearch = item.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const matchesCategory =
+      categoryFilter === "All" || item.category === categoryFilter;
+    const matchesStatus =
+      statusFilter === "All" || item.status === statusFilter;
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
   const getCategoryColor = (category: string): string => {
     switch (category) {
-      case 'Stock':
-        return '#3B82F6';
-      case 'Crypto':
-        return '#A855F7';
-      case 'Economy':
-        return '#10B981';
-      case 'Commodity':
-        return '#F59E0B';
+      case "Stock":
+        return "#3B82F6";
+      case "Crypto":
+        return "#A855F7";
+      case "Economy":
+        return "#10B981";
+      case "Commodity":
+        return "#F59E0B";
       default:
-        return '#6B7280';
+        return "#6B7280";
     }
   };
 
   const getStatusColor = (status: string): string => {
     switch (status) {
-      case 'Published':
-        return '#10B981';
-      case 'Draft':
-        return '#6B7280';
-      case 'Archived':
-        return '#EF4444';
+      case "Published":
+        return "#10B981";
+      case "Draft":
+        return "#6B7280";
+      case "Archived":
+        return "#EF4444";
       default:
-        return '#6B7280';
+        return "#6B7280";
     }
   };
 
   const handleAddNews = (): void => {
-    setModalMode('add');
+    setModalMode("add");
     setSelectedNews(null);
     setIsModalOpen(true);
   };
 
   const handleEditNews = (item: News): void => {
-    setModalMode('edit');
+    setModalMode("edit");
     setSelectedNews(item);
     setIsModalOpen(true);
   };
 
   const handleSubmit = (data: NewsFormData): void => {
-    console.log('News data:', data);
+    console.log("News data:", data);
     // Handle form submission
   };
 
   const handleDeleteNews = (newsId: number): void => {
-    console.log('Delete news:', newsId);
+    console.log("Delete news:", newsId);
     // Handle delete
   };
 
@@ -110,7 +114,9 @@ export default function NewsPage(): React.JSX.Element {
         {/* Header */}
         <div>
           <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">News</h1>
-          <p className="text-sm text-gray-500 mt-1">Stay updated with the latest news and updates.</p>
+          <p className="text-sm text-gray-500 mt-1">
+            Stay updated with the latest news and updates.
+          </p>
         </div>
 
         {/* Search, Filters, and Add Button */}
@@ -127,7 +133,7 @@ export default function NewsPage(): React.JSX.Element {
               <FilterSelect
                 value={categoryFilter}
                 onChange={setCategoryFilter}
-                options={['All', 'Stock', 'Crypto', 'Economy', 'Commodity']}
+                options={["All", "Stock", "Crypto", "Economy", "Commodity"]}
                 placeholder="All"
               />
             </div>
@@ -135,11 +141,14 @@ export default function NewsPage(): React.JSX.Element {
               <FilterSelect
                 value={statusFilter}
                 onChange={setStatusFilter}
-                options={['All', 'Published', 'Draft', 'Archived']}
+                options={["All", "Published", "Draft", "Archived"]}
                 placeholder="All"
               />
             </div>
-            <PrimaryButton onClick={handleAddNews} className="flex items-center justify-center gap-2 whitespace-nowrap">
+            <PrimaryButton
+              onClick={handleAddNews}
+              className="flex items-center justify-center gap-2 whitespace-nowrap"
+            >
               <Plus size={18} />
               Add News
             </PrimaryButton>
@@ -175,18 +184,22 @@ export default function NewsPage(): React.JSX.Element {
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {filteredNews.map((item: News) => (
-                  <tr 
+                  <tr
                     key={`news-${item.id}`}
                     className="hover:bg-gray-50 transition-colors"
                   >
                     <td className="px-6 py-4">
-                      <p className="text-sm font-medium text-gray-900">{item.title}</p>
+                      <p className="text-sm font-medium text-gray-900">
+                        {item.title}
+                      </p>
                     </td>
                     <td className="px-6 py-4">
                       <span
                         className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold"
                         style={{
-                          backgroundColor: `${getCategoryColor(item.category)}20`,
+                          backgroundColor: `${getCategoryColor(
+                            item.category
+                          )}20`,
                           color: getCategoryColor(item.category),
                         }}
                       >
@@ -194,7 +207,9 @@ export default function NewsPage(): React.JSX.Element {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <p className="text-sm text-gray-600">{item.publishDate}</p>
+                      <p className="text-sm text-gray-600">
+                        {item.publishDate}
+                      </p>
                     </td>
                     <td className="px-6 py-4">
                       <span
@@ -207,7 +222,11 @@ export default function NewsPage(): React.JSX.Element {
                     <td className="px-6 py-4">
                       <Star
                         size={20}
-                        className={item.featured ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'}
+                        className={
+                          item.featured
+                            ? "text-yellow-500 fill-yellow-500"
+                            : "text-gray-300"
+                        }
                       />
                     </td>
                     <td className="px-6 py-4">
@@ -242,12 +261,20 @@ export default function NewsPage(): React.JSX.Element {
               <div key={`news-mobile-${item.id}`} className="p-4 space-y-3">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <h3 className="text-base font-semibold text-gray-900">{item.title}</h3>
-                    <p className="text-sm text-gray-600 mt-1">{item.publishDate}</p>
+                    <h3 className="text-base font-semibold text-gray-900">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 mt-1">
+                      {item.publishDate}
+                    </p>
                   </div>
                   <Star
                     size={20}
-                    className={item.featured ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'}
+                    className={
+                      item.featured
+                        ? "text-yellow-500 fill-yellow-500"
+                        : "text-gray-300"
+                    }
                   />
                 </div>
 
