@@ -3,8 +3,6 @@
 import  { useState } from "react";
 import { Search, ShieldCheck, TrendingUp, Sparkles, Plus } from "lucide-react";
 
-
-
 type Stock = {
   name: string;
   symbol: string;
@@ -16,7 +14,6 @@ type Stock = {
   upside: number;
   aiAnalysis: string;
 };
-
 
 // Mock stock data
 const MOCK_STOCKS: Record<string, Stock> = {
