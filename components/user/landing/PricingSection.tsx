@@ -92,14 +92,14 @@ export default function PricingSection() {
                 animate
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-10"
-              } ${plan.highlighted ? "md:-mt-4 md:mb-4" : ""}`}
+              } ${plan.highlighted ? "" : ""}`}
               style={{ transitionDelay: `${index * 150}ms` }}
             >
               <div
                 className={`relative rounded-2xl p-7 transition-all duration-300 h-[500px] flex flex-col justify-between ${
                   plan.highlighted
-                    ? "bg-[#00008B] text-white shadow-2xl"
-                    : "bg-[#F3F9FF] text-gray-900 border border-blue-100 hover:border-blue-200 hover:shadow-lg"
+                    ? "bg-[#00008B] text-white shadow-2xl border-blue-700"
+                    : "bg-[#F3F9FF] text-gray-900 border border-blue-300 hover:border-blue-200 hover:shadow-lg"
                 }`}
               >
                 {/* Badge for Popular Plan */}
@@ -188,10 +188,11 @@ export default function PricingSection() {
                   text={plan.buttonText}
                   href="/auth/register"
                   showArrow={false}
+                  borderClass="border  border-blue-200"
                   bgClass={`w-full py-3 px-6 rounded-lg font-semibold text-sm transition-all duration-300 ${
                     plan.highlighted
                       ? "bg-white text-blue-900 hover:bg-gray-50 shadow-lg"
-                      : "bg-white text-blue-900 border border-blue-900 hover:bg-blue-50"
+                      : "bg-white text-blue-900  hover:bg-blue-50"
                   }`}
                 />
               </div>
