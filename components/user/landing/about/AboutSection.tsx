@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export default function AboutSection() {
   const [animate, setAnimate] = useState(false);
-  const [videoPlaying, setVideoPlaying] = useState(false);
+  // const [videoPlaying, setVideoPlaying] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -213,7 +213,7 @@ export default function AboutSection() {
                 {/* Play Button Overlay */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <button
-                    onClick={() => setVideoPlaying(true)}
+                    // onClick={() => setVideoPlaying(true)}
                     className="w-20 h-20 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 transform hover:scale-110 group-hover:scale-110"
                   >
                     <svg

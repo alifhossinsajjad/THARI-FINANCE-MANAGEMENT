@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Chrome, Facebook, LogIn } from "lucide-react";
+import { Chrome, Facebook } from "lucide-react";
 
 export default function DashboardSignup() {
   const [formData, setFormData] = useState({

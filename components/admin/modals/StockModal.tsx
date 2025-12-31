@@ -1,24 +1,35 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
-import TextInput from '@/components/admin/inputs/TextInput';
-import SelectInput from '@/components/admin/inputs/SelectInput';
-import CheckboxInput from '@/components/admin/inputs/CheckboxInput';
-import PrimaryButton from '@/components/admin/buttons/PrimaryButton';
-import type { StockModalProps, StockFormData, RiskLevel, ShariaStatus } from '@/types';
+import { useState, useEffect } from "react";
+import { X } from "lucide-react";
+import TextInput from "@/components/admin/inputs/TextInput";
+import SelectInput from "@/components/admin/inputs/SelectInput";
+import CheckboxInput from "@/components/admin/inputs/CheckboxInput";
+import PrimaryButton from "@/components/admin/buttons/PrimaryButton";
+import type {
+  StockModalProps,
+  StockFormData,
+  RiskLevel,
+  ShariaStatus,
+} from "@/types";
 
-const StockModal: React.FC<StockModalProps> = ({ isOpen, onClose, stock, mode, onSubmit }) => {
+const StockModal: React.FC<StockModalProps> = ({
+  isOpen,
+  onClose,
+  stock,
+  mode,
+  onSubmit,
+}) => {
   const [formData, setFormData] = useState<StockFormData>({
-    stockName: '',
-    symbol: '',
-    riskLevel: 'Low',
-    shariaStatus: 'Halal',
+    stockName: "",
+    symbol: "",
+    riskLevel: "Low",
+    shariaStatus: "Halal",
     premiumOnly: false,
   });
 
   useEffect(() => {
-    if (stock && mode === 'edit') {
+    if (stock && mode === "edit") {
       setFormData({
         stockName: stock.stockName,
         symbol: stock.symbol,
@@ -28,10 +39,10 @@ const StockModal: React.FC<StockModalProps> = ({ isOpen, onClose, stock, mode, o
       });
     } else {
       setFormData({
-        stockName: '',
-        symbol: '',
-        riskLevel: 'Low',
-        shariaStatus: 'Halal',
+        stockName: "",
+        symbol: "",
+        riskLevel: "Low",
+        shariaStatus: "Halal",
         premiumOnly: false,
       });
     }
@@ -52,7 +63,7 @@ const StockModal: React.FC<StockModalProps> = ({ isOpen, onClose, stock, mode, o
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
       onClick={handleOverlayClick}
     >
@@ -60,7 +71,7 @@ const StockModal: React.FC<StockModalProps> = ({ isOpen, onClose, stock, mode, o
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <h2 className="text-lg font-semibold text-gray-900">
-            {mode === 'add' ? 'Add Stock' : 'Edit Stock'}
+            {mode === "add" ? "Add Stock" : "Edit Stock"}
           </h2>
           <button
             type="button"
@@ -93,31 +104,42 @@ const StockModal: React.FC<StockModalProps> = ({ isOpen, onClose, stock, mode, o
           <SelectInput
             label="Risk Level"
             value={formData.riskLevel}
-            onChange={(value) => setFormData({ ...formData, riskLevel: value as RiskLevel })}
-            options={['Low', 'Medium', 'High']}
+            onChange={(value) =>
+              setFormData({ ...formData, riskLevel: value as RiskLevel })
+            }
+            options={["Low", "Medium", "High"]}
             required
           />
 
           <SelectInput
             label="Sharia Status"
             value={formData.shariaStatus}
-            onChange={(value) => setFormData({ ...formData, shariaStatus: value as ShariaStatus })}
-            options={['Halal', 'Doubtful', 'Haram']}
+            onChange={(value) =>
+              setFormData({ ...formData, shariaStatus: value as ShariaStatus })
+            }
+            options={["Halal", "Doubtful", "Haram"]}
             required
           />
 
           <CheckboxInput
             label="Premium Access Only"
             checked={formData.premiumOnly}
-            onChange={(checked) => setFormData({ ...formData, premiumOnly: checked })}
+            onChange={(checked) =>
+              setFormData({ ...formData, premiumOnly: checked })
+            }
           />
 
           {/* Actions */}
           <div className="flex gap-3 pt-4">
             <PrimaryButton type="submit" variant="primary" fullWidth>
-              {mode === 'add' ? 'Add' : 'Update'}
+              {mode === "add" ? "Add" : "Update"}
             </PrimaryButton>
-            <PrimaryButton type="button" variant="secondary" fullWidth onClick={onClose}>
+            <PrimaryButton
+              type="button"
+              variant="secondary"
+              fullWidth
+              onClick={onClose}
+            >
               Cancel
             </PrimaryButton>
           </div>

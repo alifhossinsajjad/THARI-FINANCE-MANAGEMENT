@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
+import { useState } from "react";
 import {
   X,
   LogOut,
@@ -16,30 +16,34 @@ import {
   BarChart3,
   Settings,
   User,
-  Menu
-} from 'lucide-react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import type { MenuItem } from '@/types';
+  Menu,
+} from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import type { MenuItem } from "@/types";
 
 const AdminSidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const pathname = usePathname();
 
   const menuItems: MenuItem[] = [
-    { icon: BarChart3, label: 'Dashboard', href: '/admin' },
-    { icon: Users, label: 'Users', href: '/admin/users' },
-    { icon: CreditCard, label: 'Subscriptions', href: '/admin/subscriptions' },
-    { icon: TrendingUp, label: 'Stocks', href: '/admin/stocks' },
-    { icon: Package, label: 'Commodities', href: '/admin/commodities' },
-    { icon: Bitcoin, label: 'Crypto', href: '/admin/crypto' },
-    { icon: Newspaper, label: 'News', href: '/admin/news' },
-    { icon: Shield, label: 'Sharia Compliance', href: '/admin/compliance' },
-    { icon: Bell, label: 'Notifications', href: '/admin/notifications' },
-    { icon: MessageSquare, label: 'Communications', href: '/admin/communications' },
-    { icon: BarChart3, label: 'Reports', href: '/admin/reports' },
-    { icon: Settings, label: 'Settings', href: '/admin/settings' },
-    { icon: User, label: 'Profile', href: '/admin/profile' },
+    { icon: BarChart3, label: "Dashboard", href: "/admin" },
+    { icon: Users, label: "Users", href: "/admin/users" },
+    { icon: CreditCard, label: "Subscriptions", href: "/admin/subscriptions" },
+    { icon: TrendingUp, label: "Stocks", href: "/admin/stocks" },
+    { icon: Package, label: "Commodities", href: "/admin/commodities" },
+    { icon: Bitcoin, label: "Crypto", href: "/admin/crypto" },
+    { icon: Newspaper, label: "News", href: "/admin/news" },
+    { icon: Shield, label: "Sharia Compliance", href: "/admin/compliance" },
+    { icon: Bell, label: "Notifications", href: "/admin/notifications" },
+    {
+      icon: MessageSquare,
+      label: "Communications",
+      href: "/admin/communications",
+    },
+    { icon: BarChart3, label: "Reports", href: "/admin/reports" },
+    { icon: Settings, label: "Settings", href: "/admin/settings" },
+    { icon: User, label: "Profile", href: "/admin/profile" },
   ];
 
   const handleToggle = (): void => {
@@ -60,7 +64,7 @@ const AdminSidebar: React.FC = () => {
       <button
         onClick={handleToggle}
         className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white shadow-lg"
-        aria-label={isOpen ? 'Close menu' : 'Open menu'}
+        aria-label={isOpen ? "Close menu" : "Open menu"}
       >
         {isOpen ? (
           <X size={24} className="text-gray-900" />
@@ -82,8 +86,9 @@ const AdminSidebar: React.FC = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-[235px] bg-[#00008B] text-white z-50 transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'
-          } lg:translate-x-0`}
+        className={`fixed top-0 left-0 h-full w-[235px] bg-[#00008B] text-white z-50 transform transition-transform duration-300 ease-in-out ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
@@ -104,10 +109,11 @@ const AdminSidebar: React.FC = () => {
                   key={`${item.href}-${index}`}
                   href={item.href}
                   onClick={handleClose}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive
-                    ? 'bg-white/10 text-white'
-                    : 'text-white/70 hover:bg-white/5 hover:text-white'
-                    }`}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    isActive
+                      ? "bg-white/10 text-white"
+                      : "text-white/70 hover:bg-white/5 hover:text-white"
+                  }`}
                 >
                   <Icon size={20} />
                   <span>{item.label}</span>
@@ -120,7 +126,7 @@ const AdminSidebar: React.FC = () => {
           <div className="px-3 py-6 border-t border-white/10">
             <button
               className="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white transition-colors"
-              onClick={() => console.log('Logout clicked')}
+              onClick={() => console.log("Logout clicked")}
               type="button"
             >
               <LogOut size={20} />
