@@ -1,21 +1,22 @@
 'use client';
 
 import React, { useState } from 'react';
-import { 
-  X, 
-  LogOut, 
-  Users, 
-  CreditCard, 
-  TrendingUp, 
-  Package, 
-  Bitcoin, 
-  Newspaper, 
-  Shield, 
-  Bell, 
-  MessageSquare, 
-  BarChart3, 
-  Settings, 
-  Menu 
+import {
+  X,
+  LogOut,
+  Users,
+  CreditCard,
+  TrendingUp,
+  Package,
+  Bitcoin,
+  Newspaper,
+  Shield,
+  Bell,
+  MessageSquare,
+  BarChart3,
+  Settings,
+  User,
+  Menu
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -38,6 +39,7 @@ const AdminSidebar: React.FC = () => {
     { icon: MessageSquare, label: 'Communications', href: '/admin/communications' },
     { icon: BarChart3, label: 'Reports', href: '/admin/reports' },
     { icon: Settings, label: 'Settings', href: '/admin/settings' },
+    { icon: User, label: 'Profile', href: '/admin/profile' },
   ];
 
   const handleToggle = (): void => {
@@ -80,9 +82,8 @@ const AdminSidebar: React.FC = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-[235px] bg-[#00008B] text-white z-50 transform transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0`}
+        className={`fixed top-0 left-0 h-full w-[235px] bg-[#00008B] text-white z-50 transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'
+          } lg:translate-x-0`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
@@ -103,11 +104,10 @@ const AdminSidebar: React.FC = () => {
                   key={`${item.href}-${index}`}
                   href={item.href}
                   onClick={handleClose}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                    isActive
-                      ? 'bg-white/10 text-white'
-                      : 'text-white/70 hover:bg-white/5 hover:text-white'
-                  }`}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive
+                    ? 'bg-white/10 text-white'
+                    : 'text-white/70 hover:bg-white/5 hover:text-white'
+                    }`}
                 >
                   <Icon size={20} />
                   <span>{item.label}</span>
@@ -118,7 +118,7 @@ const AdminSidebar: React.FC = () => {
 
           {/* Logout */}
           <div className="px-3 py-6 border-t border-white/10">
-            <button 
+            <button
               className="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white transition-colors"
               onClick={() => console.log('Logout clicked')}
               type="button"

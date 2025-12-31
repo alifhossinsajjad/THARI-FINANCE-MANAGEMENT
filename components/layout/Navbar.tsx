@@ -86,7 +86,7 @@ export default function Navbar() {
     { label: "Home", href: "/" },
     { label: "About", href: "/about" },
     { label: "Pricing", href: "/pricing" },
-    { label: "Contact", href: "/contact" },
+    // { label: "Contact", href: "/contact" },
   ];
 
   return (

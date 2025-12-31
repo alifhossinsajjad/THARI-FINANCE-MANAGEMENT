@@ -1,10 +1,21 @@
 "use client";
 
-import CommonButton from "@/components/reusable/CommonButton";
 import GetStartedButton from "@/components/reusable/GetStartedButton";
 import Image from "next/image";
 
-export default function JourneySection() {
+type JourneySectionProps = {
+  heading?: string;
+  subheading?: string;
+  buttonText?: string;
+  buttonHref?: string;
+};
+
+export default function JourneySection({
+  heading = "Ready to Start Your Halal Investment Journey?",
+  subheading = "Join thousands of investors making ethical and informed financial decisions",
+  buttonText = "Get Started",
+  buttonHref = "/auth/register",
+}: JourneySectionProps) {
   return (
     <section className="relative w-full px-4 py-20 sm:px-6 lg:px-8">
       {/* Background Image */}
@@ -22,19 +33,18 @@ export default function JourneySection() {
 
       <div className="relative z-50 mx-auto max-w-4xl text-center">
         <h2 className="mb-6 text-3xl font-bold text-balance text-white sm:text-4xl ">
-          Ready to Start Your Halal Investment Journey?
+          {heading}
         </h2>
 
         <p className="mx-auto mb-8 max-w-3xl text-lg text-pretty text-gray-200 sm:text-xl">
-          Join thousands of investors making ethical and informed financial
-          decisions
+          {subheading}
         </p>
 
         {/* Using CommonButton with custom styling */}
-        
+
         <GetStartedButton
-          text="Get Started"
-          href="/auth/register"
+          text={buttonText}
+          href={buttonHref}
           showArrow={true}
           borderClass="border-[#0051C3]"
           bgClass="bg-white  hover:bg-gray-100"
