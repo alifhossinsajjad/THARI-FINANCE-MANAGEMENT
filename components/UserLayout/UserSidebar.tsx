@@ -25,9 +25,10 @@ const UserSidebar: React.FC = () => {
   const menuItems: MenuItem[] = [
     { icon: BarChart3, label: 'Home', href: '/user' },
     { icon: Users, label: 'Search Stock', href: '/user/searchStock' },
-    { icon: CreditCard, label: 'Subscriptions', href: '/user/subscriptions' },
-    { icon: TrendingUp, label: 'Stocks', href: '/user/stocks' },
-    { icon: Package, label: 'Commodities', href: '/user/commodities' },
+    { icon: CreditCard, label: 'WatchList', href: '/user/watchList' },
+    { icon: TrendingUp, label: 'Expense manager', href: '/user/expensiveManger' },
+    { icon: Package, label: 'Recommendations', href: '/user/recommendations' },
+    { icon: Package, label: 'News', href: '/user/news' },
     
   ];
 
