@@ -11,7 +11,10 @@ import {
   
   BarChart3, 
 
-  Menu 
+  Menu, 
+  Newspaper,
+  LayoutDashboard,
+  Search
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -23,12 +26,13 @@ const UserSidebar: React.FC = () => {
   const pathname = usePathname();
 
   const menuItems: MenuItem[] = [
-    { icon: BarChart3, label: 'Home', href: '/user' },
-    { icon: Users, label: 'Search Stock', href: '/user/searchStock' },
+    { icon: LayoutDashboard, label: 'Home', href: '/user' },
+    { icon: Search, label: 'Search Stock', href: '/user/searchStock' },
     { icon: CreditCard, label: 'WatchList', href: '/user/watchList' },
-    { icon: TrendingUp, label: 'Expense manager', href: '/user/expensiveManger' },
+
+    { icon: TrendingUp, label: 'Expense manager', href: '/user/expensiveManager' },
     { icon: Package, label: 'Recommendations', href: '/user/recommendations' },
-    { icon: Package, label: 'News', href: '/user/news' },
+    { icon: Newspaper, label: 'News', href: '/user/news' },
     
   ];
 
@@ -106,7 +110,42 @@ const UserSidebar: React.FC = () => {
                 </Link>
               );
             })}
+
+            <div className='mt-12 space-y-3'>
+           <div className='flex justify-between items-center'>
+            <h1 className='text-xl text-white/70'>AAPL</h1>
+            <button className='flex gap-2 items-center rounded-md px-2 py-1 bg-[#1010A2]'>
+                        <FaArrowTrendUp/>
+                        <p>+1.61%</p>
+            </button>
+           </div>
+           <div className='flex justify-between items-center'>
+            <h1 className='text-xl text-white/70'>MSFT</h1>
+            <button className='flex gap-2 items-center rounded-md px-2 py-1 bg-[#1010A2]'>
+                        <FaArrowTrendUp/>
+                        <p>+3.57%</p>
+            </button>
+           </div>
+           <div className='flex justify-between items-center'>
+            <h1 className='text-xl text-white/70'>TSLA</h1>
+            <button className='flex gap-2 items-center rounded-md px-2 py-1 bg-[#1010A2]'>
+                        <FaArrowTrendUp/>
+                        <p>+5.28%</p>
+            </button>
+           </div>
+           <div className='flex justify-between items-center'>
+            <h1 className='text-xl text-white/70'>NVDA</h1>
+            <button className='flex gap-2 items-center rounded-md px-2 py-1 bg-[#1010A2]'>
+                        <FaArrowTrendUp/>
+                        <p> +17.79%</p>
+            </button>
+           </div>
+           
+          </div>
           </nav>
+
+
+          
 
           {/* Logout */}
           <div className="px-3 py-6 border-t border-white/10">
