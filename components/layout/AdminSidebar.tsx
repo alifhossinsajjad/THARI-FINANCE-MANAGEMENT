@@ -86,7 +86,7 @@ const AdminSidebar: React.FC = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-[235px] bg-[#00008B] text-white z-50 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 h-full w-[235px] bg-primary text-white z-50 transform transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0`}
       >
@@ -94,7 +94,7 @@ const AdminSidebar: React.FC = () => {
           {/* Logo */}
           <div className="flex items-center gap-2 px-6 py-6">
             <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-              <div className="w-5 h-5 bg-[#00008B] rounded-full"></div>
+              <div className="w-5 h-5 bg-primary rounded-full"></div>
             </div>
             <span className="text-xl font-semibold">THARI</span>
           </div>

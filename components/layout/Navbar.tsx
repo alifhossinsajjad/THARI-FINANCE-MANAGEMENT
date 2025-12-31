@@ -98,7 +98,7 @@ export default function Navbar() {
             href="/"
             className="h-9 w-72 flex gap-4 items-center cursor-pointer"
           >
-            <div className="bg-[#00008B] p-2 rounded-2xl">
+            <div className="bg-primary p-2 rounded-2xl">
               <TrendingUp className="h-10 w-10 text-white " />
             </div>
             <h1 className="text-2xl font-bold text-[#00008B]">Thari Finance</h1>
@@ -120,7 +120,7 @@ export default function Navbar() {
                       : "text-black hover:text-blue-500"
                   }
                   after:content-[''] after:absolute after:left-0 after:-bottom-1
-                  after:h-[2px] after:w-full after:bg-[#00008B]
+                  after:h-[2px] after:w-full after:bg-primary
                   after:scale-x-0 after:origin-left
                   after:transition-transform after:duration-300
                   ${isActive ? "after:scale-x-100" : "hover:after:scale-x-100"}
@@ -299,7 +299,7 @@ export default function Navbar() {
                   <CommonButton
                     title="Sign Up"
                     width="w-full"
-                    bgColor="bg-[#00008B] hover:bg-[#245cc1]"
+                    bgColor="bg-primary hover:bg-[#245cc1]"
                     textColor="text-white"
                   />
                 </Link>

@@ -98,7 +98,7 @@ export default function PricingSection() {
               <div
                 className={`relative rounded-2xl p-7 transition-all duration-300 h-[500px] flex flex-col justify-between ${
                   plan.highlighted
-                    ? "bg-[#00008B] text-white shadow-2xl border-blue-700"
+                    ? "bg-primary text-white shadow-2xl border-blue-700"
                     : "bg-[#F3F9FF] text-gray-900 border border-blue-300 hover:border-blue-200 hover:shadow-lg"
                 }`}
               >

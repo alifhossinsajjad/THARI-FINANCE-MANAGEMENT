@@ -72,7 +72,7 @@ export default function AdminTermsPolicy() {
         <div className="mt-10">
           <button
             onClick={handleUpdate}
-            className="flex items-center gap-2 px-6 py-3 bg-[#00008B] cursor-pointer hover:bg-blue-900 text-white font-semibold rounded-lg transition-all shadow-md active:scale-95"
+            className="flex items-center gap-2 px-6 py-3 bg-primary cursor-pointer hover:bg-blue-900 text-white font-semibold rounded-lg transition-all shadow-md active:scale-95"
           >
             <Save size={18} />
             Update Terms & Privacy

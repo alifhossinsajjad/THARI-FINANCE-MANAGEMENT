@@ -144,7 +144,7 @@ export default function PlatformSettings() {
         <div className="mt-10">
           <button
             onClick={handleSave}
-            className="flex items-center gap-2 px-6 py-3 bg-[#00008B] cursor-pointer hover:bg-blue-900 text-white font-semibold rounded-xl transition-all shadow-md active:scale-95"
+            className="flex items-center gap-2 px-6 py-3 bg-primary cursor-pointer hover:bg-blue-900 text-white font-semibold rounded-xl transition-all shadow-md active:scale-95"
           >
             <Save size={18} />
             Save Changes
