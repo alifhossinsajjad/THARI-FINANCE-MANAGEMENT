@@ -1,172 +1,148 @@
-'use client';
+'use client'
 
-import React, { useState } from 'react';
-import { Edit2, Trash2, Plus } from 'lucide-react';
-import SearchInput from '@/components/admin/SearchInput';
-import CommodityModal from '@/components/admin/modals/CommodityModal';
-import PrimaryButton from '@/components/admin/buttons/PrimaryButton';
-import type { Commodity, CommodityFormData } from '@/types';
+import { useState } from "react"
+import { Search, Plus, SquarePen, Trash2 } from "lucide-react"
 
-export default function CommoditiesPage(): React.JSX.Element {
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [selectedCommodity, setSelectedCommodity] = useState<Commodity | null>(null);
-  const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
+export default function Commodities() {
+  // Modal states
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [editingIndex, setEditingIndex] = useState<number | null>(null)
 
-  const commodities: Commodity[] = [
-    {
-      id: 1,
-      name: 'Gold',
-      price: 2050.50,
-      premiumAccess: false,
-    },
-    {
-      id: 2,
-      name: 'Silver',
-      price: 2050.50,
-      premiumAccess: false,
-    },
-    {
-      id: 3,
-      name: 'Gold',
-      price: 2050.50,
-      premiumAccess: true,
-    },
-    {
-      id: 4,
-      name: 'Gold',
-      price: 2050.50,
-      premiumAccess: false,
-    },
-    {
-      id: 5,
-      name: 'Gold',
-      price: 2050.50,
-      premiumAccess: true,
-    },
-    {
-      id: 6,
-      name: 'Silver',
-      price: 2050.50,
-      premiumAccess: false,
-    },
-    {
-      id: 7,
-      name: 'Gold',
-      price: 2050.50,
-      premiumAccess: true,
-    },
-  ];
+  // Form states for Add
+  const [addName, setAddName] = useState("")
+  const [addPrice, setAddPrice] = useState("0")
+  const [addPremium, setAddPremium] = useState(false)
 
-  const filteredCommodities = commodities.filter((commodity: Commodity) => {
-    const matchesSearch = commodity.name.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesSearch;
-  });
+  // Form states for Edit
+  const [editName, setEditName] = useState("")
+  const [editPrice, setEditPrice] = useState("")
+  const [editPremium, setEditPremium] = useState(false)
 
-  const handleAddCommodity = (): void => {
-    setModalMode('add');
-    setSelectedCommodity(null);
-    setIsModalOpen(true);
-  };
+  // Sample data (in real app, use useState for mutable list)
+  const [commodities, setCommodities] = useState([
+    { name: "Gold", price: "$2050.50", premium: "No" },
+    { name: "Silver", price: "$2050.50", premium: "No" },
+    { name: "Gold", price: "$2050.50", premium: "Yes" },
+    { name: "Gold", price: "$2050.50", premium: "No" },
+    { name: "Gold", price: "$2050.50", premium: "Yes" },
+    { name: "Silver", price: "$2050.50", premium: "No" },
+    { name: "Gold", price: "$2050.50", premium: "Yes" },
+  ])
 
-  const handleEditCommodity = (commodity: Commodity): void => {
-    setModalMode('edit');
-    setSelectedCommodity(commodity);
-    setIsModalOpen(true);
-  };
+  // Open Edit Modal
+  const openEditModal = (index: number) => {
+    const item = commodities[index]
+    setEditingIndex(index)
+    setEditName(item.name)
+    setEditPrice(item.price.replace("$", "").replace(",", ""))
+    setEditPremium(item.premium === "Yes")
+    setIsEditModalOpen(true)
+  }
 
-  const handleSubmit = (data: CommodityFormData): void => {
-    console.log('Commodity data:', data);
-    // Handle form submission
-  };
+  // Handle Add
+  const handleAdd = () => {
+    const newCommodity = {
+      name: addName,
+      price: `$${Number(addPrice).toFixed(2)}`,
+      premium: addPremium ? "Yes" : "No",
+    }
+    setCommodities([...commodities, newCommodity])
+    setIsAddModalOpen(false)
+    setAddName("")
+    setAddPrice("0")
+    setAddPremium(false)
+  }
 
-  const handleDeleteCommodity = (commodityId: number): void => {
-    console.log('Delete commodity:', commodityId);
-    // Handle delete
-  };
+  // Handle Edit Save
+  const handleEditSave = () => {
+    if (editingIndex === null) return
+
+    const updatedCommodities = [...commodities]
+    updatedCommodities[editingIndex] = {
+      name: editName,
+      price: `$${Number(editPrice).toFixed(2)}`,
+      premium: editPremium ? "Yes" : "No",
+    }
+    setCommodities(updatedCommodities)
+    setIsEditModalOpen(false)
+    setEditingIndex(null)
+  }
+
+  // Handle Delete
+  const handleDelete = (index: number) => {
+    setCommodities(commodities.filter((_, i) => i !== index))
+  }
 
   return (
     <>
-      <div className="space-y-6">
-        {/* Header */}
-        <div>
-          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Commodities</h1>
-          <p className="text-sm text-gray-500 mt-1">Track commodity prices and market trends.</p>
-        </div>
+      <div className="mx-auto space-y-6 max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Header Section */}
+        <section>
+          <h1 className="text-3xl font-bold text-gray-900 mb-1">Commodities</h1>
+          <p className="text-gray-400 text-sm">Track commodity prices and market trends.</p>
+        </section>
 
-        {/* Search and Add Button */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1">
-            <SearchInput
-              value={searchQuery}
-              onChange={setSearchQuery}
+        {/* Actions Row */}
+        <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+          <div className="relative w-full max-w-2xl">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <input
+              type="text"
               placeholder="Search commodities..."
+              className="w-full bg-white border border-gray-200 rounded-xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all"
             />
           </div>
-          <PrimaryButton onClick={handleAddCommodity} className="flex items-center justify-center gap-2 whitespace-nowrap">
-            <Plus size={18} />
+          <button
+            onClick={() => setIsAddModalOpen(true)}
+            className="w-full sm:w-auto bg-primary text-white rounded-xl py-3 px-6 font-semibold flex items-center justify-center gap-2 transition-all shadow-sm text-sm hover:bg-primary/90 cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
             Add Commodity
-          </PrimaryButton>
+          </button>
         </div>
 
-        {/* Table Container */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-          {/* Desktop Table */}
-          <div className="hidden lg:block overflow-x-auto">
-            <table className="w-full">
+        {/* Table Section */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
               <thead>
-                <tr className="bg-gray-50 border-b border-gray-200">
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Name
-                  </th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Price (USD)
-                  </th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Premium Access
-                  </th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Actions
-                  </th>
+                <tr className="border-b border-gray-50">
+                  <th className="px-6 py-4 text-sm font-bold text-gray-600">Name</th>
+                  <th className="px-6 py-4 text-sm font-bold text-gray-600 text-center">Price (USD)</th>
+                  <th className="px-6 py-4 text-sm font-bold text-gray-600 text-center">Premium Access</th>
+                  <th className="px-6 py-4 text-sm font-bold text-gray-600 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
-                {filteredCommodities.map((commodity: Commodity) => (
-                  <tr 
-                    key={`commodity-${commodity.id}`}
-                    className="hover:bg-gray-50 transition-colors"
-                  >
+              <tbody className="divide-y divide-gray-50">
+                {commodities.map((item, i) => (
+                  <tr key={i} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4">
-                      <p className="text-sm font-medium text-gray-900">{commodity.name}</p>
+                      <div className="text-sm font-medium text-gray-800">{item.name}</div>
                     </td>
-                    <td className="px-6 py-4">
-                      <p className="text-sm text-gray-600">${commodity.price.toFixed(2)}</p>
+                    <td className="px-6 py-4 text-center">
+                      <div className="text-sm font-medium text-gray-800">{item.price}</div>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-4 text-center">
                       <span
-                        className="text-sm font-medium"
-                        style={{ color: commodity.premiumAccess ? '#9333EA' : '#6B7280' }}
+                        className={`text-sm font-medium ${item.premium === "Yes" ? "text-purple-500" : "text-gray-500"}`}
                       >
-                        {commodity.premiumAccess ? 'Yes' : 'No'}
+                        {item.premium}
                       </span>
                     </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex items-center justify-end gap-3">
                         <button
-                          type="button"
-                          onClick={() => handleEditCommodity(commodity)}
-                          className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                          aria-label="Edit commodity"
+                          onClick={() => openEditModal(i)}
+                          className=" rounded transition-colors group cursor-pointer"
                         >
-                          <Edit2 size={18} />
+                          <SquarePen className="w-4 h-4 text-blue-500" />
                         </button>
                         <button
-                          type="button"
-                          onClick={() => handleDeleteCommodity(commodity.id)}
-                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                          aria-label="Delete commodity"
+                          onClick={() => handleDelete(i)}
+                          className="  rounded transition-colors group cursor-pointer"
                         >
-                          <Trash2 size={18} />
+                          <Trash2 className="w-4 h-4 text-red-500" />
                         </button>
                       </div>
                     </td>
@@ -175,58 +151,136 @@ export default function CommoditiesPage(): React.JSX.Element {
               </tbody>
             </table>
           </div>
-
-          {/* Mobile Cards */}
-          <div className="lg:hidden divide-y divide-gray-200">
-            {filteredCommodities.map((commodity: Commodity) => (
-              <div key={`commodity-mobile-${commodity.id}`} className="p-4 space-y-3">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <h3 className="text-base font-semibold text-gray-900">{commodity.name}</h3>
-                    <p className="text-sm text-gray-600 mt-1">${commodity.price.toFixed(2)}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">Premium Access:</span>
-                  <span
-                    className="font-medium"
-                    style={{ color: commodity.premiumAccess ? '#9333EA' : '#6B7280' }}
-                  >
-                    {commodity.premiumAccess ? 'Yes' : 'No'}
-                  </span>
-                </div>
-
-                <div className="flex gap-2 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => handleEditCommodity(commodity)}
-                    className="flex-1 px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleDeleteCommodity(commodity.id)}
-                    className="flex-1 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
-      {/* Commodity Modal */}
-      <CommodityModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        commodity={selectedCommodity}
-        mode={modalMode}
-        onSubmit={handleSubmit}
-      />
+      {/* ==================== ADD MODAL ==================== */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+              <h2 className="text-lg font-semibold text-gray-900">Add Commodity</h2>
+              <button
+                onClick={() => setIsAddModalOpen(false)}
+                className="text-gray-400 hover:text-gray-600 text-2xl cursor-pointer"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="p-6 space-y-5">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                <input
+                  type="text"
+                  value={addName}
+                  onChange={(e) => setAddName(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-100"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Price (USD)</label>
+                <input
+                  type="text"
+                  value={addPrice}
+                  onChange={(e) => setAddPrice(e.target.value.replace(/[^0-9.]/g, ""))}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-100"
+                />
+              </div>
+
+              <div className="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  checked={addPremium}
+                  onChange={(e) => setAddPremium(e.target.checked)}
+                  className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                />
+                <label className="text-sm text-gray-700">Premium Access Only</label>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 px-6 pb-6">
+              <button
+                onClick={handleAdd}
+                className="bg-primary text-white font-medium rounded-lg px-6 py-3 hover:bg-primary/90 transition-colors cursor-pointer"
+              >
+                Add
+              </button>
+              <button
+                onClick={() => setIsAddModalOpen(false)}
+                className="bg-gray-200 text-gray-800 font-medium rounded-lg px-6 py-3 hover:bg-gray-300 transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ==================== EDIT MODAL (Same Design) ==================== */}
+      {isEditModalOpen && (
+        <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+              <h2 className="text-lg font-semibold text-gray-900">Edit Commodity</h2>
+              <button
+                onClick={() => setIsEditModalOpen(false)}
+                className="text-gray-400 hover:text-gray-600 text-2xl cursor-pointer"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="p-6 space-y-5">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                <input
+                  type="text"
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-100"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Price (USD)</label>
+                <input
+                  type="text"
+                  value={editPrice}
+                  onChange={(e) => setEditPrice(e.target.value.replace(/[^0-9.]/g, ""))}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-100"
+                />
+              </div>
+
+              <div className="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  checked={editPremium}
+                  onChange={(e) => setEditPremium(e.target.checked)}
+                  className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                />
+                <label className="text-sm text-gray-700">Premium Access Only</label>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 px-6 pb-6">
+              <button
+                onClick={handleEditSave}
+                className="bg-primary text-white font-medium rounded-lg px-6 py-3 hover:bg-primary/90 transition-colors cursor-pointer"
+              >
+                Save
+              </button>
+              <button
+                onClick={() => setIsEditModalOpen(false)}
+                className="bg-gray-200 text-gray-800 font-medium rounded-lg px-6 py-3 hover:bg-gray-300 transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
-  );
+  )
 }
