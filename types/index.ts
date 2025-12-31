@@ -72,6 +72,20 @@ export interface StockFormData {
   premiumOnly: boolean;
 }
 
+// Commodity Types
+export interface Commodity {
+  id: number;
+  name: string;
+  price: number;
+  premiumAccess: boolean;
+}
+
+export interface CommodityFormData {
+  name: string;
+  price: number;
+  premiumAccessOnly: boolean;
+}
+
 // Modal Props
 export interface UserDetailModalProps {
   isOpen: boolean;
@@ -85,6 +99,14 @@ export interface StockModalProps {
   stock: Stock | null;
   mode: 'add' | 'edit';
   onSubmit: (data: StockFormData) => void;
+}
+
+export interface CommodityModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  commodity: Commodity | null;
+  mode: 'add' | 'edit';
+  onSubmit: (data: CommodityFormData) => void;
 }
 
 // Input Props
@@ -131,4 +153,14 @@ export interface CheckboxInputProps {
   label: string;
   checked: boolean;
   onChange: (checked: boolean) => void;
+}
+
+export interface NumberInputProps {
+  label: string;
+  value: number;
+  onChange: (value: number) => void;
+  placeholder?: string;
+  required?: boolean;
+  min?: number;
+  step?: number;
 }
