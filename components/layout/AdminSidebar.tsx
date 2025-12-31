@@ -21,6 +21,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { MenuItem } from "@/types";
+import { FaArrowTrendUp } from "react-icons/fa6";
 
 const AdminSidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -92,12 +93,12 @@ const AdminSidebar: React.FC = () => {
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex items-center gap-2 px-6 py-6">
-            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-              <div className="w-5 h-5 bg-primary rounded-full"></div>
-            </div>
-            <span className="text-xl font-semibold">THARI</span>
-          </div>
+           <div className="flex items-center gap-2 px-4 py-6">
+                      <div className="w-10 h-10 bg-white rounded-md flex items-center justify-center">
+                        <FaArrowTrendUp className="text-primary " size={24} />
+                      </div>
+                      <span className="text-xl font-semibold">Thari Finance</span>
+                    </div>
 
           {/* Menu Items */}
           <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
