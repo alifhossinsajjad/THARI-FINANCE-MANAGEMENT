@@ -33,3 +33,39 @@ export interface Activity {
 export interface AdminLayoutProps {
   children: React.ReactNode;
 }
+
+// User Types
+export type UserRole = 'Elite' | 'Free';
+export type UserStatus = 'Active' | 'Inactive' | 'Suspended' | 'Pending';
+export type SubscriptionStatus = 'Active' | 'Inactive' | 'Pending';
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: UserRole;
+  subscription: SubscriptionStatus;
+  trackedStocks: number;
+  status: UserStatus;
+}
+
+// Modal Props
+export interface UserDetailModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  user: User | null;
+}
+
+// Input Props
+export interface SearchInputProps {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+}
+
+export interface FilterSelectProps {
+  value: string;
+  onChange: (value: string) => void;
+  options: string[];
+  placeholder?: string;
+}
