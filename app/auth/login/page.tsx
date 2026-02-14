@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useAppDispatch } from "@/Redux/hooks";
+import { setUser } from "@/Redux/features/auth/authSlice";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -43,10 +45,24 @@ export default function LoginPage() {
     }));
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Login attempt:", { email, password, rememberMe });
-    // TODO: Implement login logic
+  const dispatch = useAppDispatch();
+
+  const handleLogin = () => {
+    // for testing redux work or not
+    dispatch(
+      setUser({
+        user: {
+          userId: "123",
+          name: "Shaikat",
+          email: "test@gmail.com",
+          role: "user",
+          profileImg: "",
+          iat: 0,
+          exp: 0,
+        },
+        token: "fake-jwt-token",
+      }),
+    );
   };
 
   return (

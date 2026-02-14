@@ -1,10 +1,13 @@
 "use client";
 
 import GetStartedButton from "@/components/reusable/GetStartedButton";
+
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export default function HeroBanner() {
+  // const user = useAppSelector(selectCurrentUser);
+
   const [animate, setAnimate] = useState(false);
   const [particlePositions, setParticlePositions] = useState<
     Array<{ left: number; top: number; delay: number; duration: number }>

@@ -2,15 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Search,
-  Edit2,
-  Trash2,
-  Clock,
-  CheckCircle,
-  Users,
-  TrendingUp,
-} from "lucide-react";
+import { Search, Edit2, Trash2, Clock, Users, TrendingUp } from "lucide-react";
 
 type ComplianceItem = {
   id: number;
