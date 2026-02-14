@@ -122,7 +122,7 @@ const initialSubscriptions: Subscription[] = [
 export default function SubscriptionsPage() {
   const [subscriptions] = useState(initialSubscriptions);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<Subscription | null>(null);
+  const [, setSelectedUser] = useState<Subscription | null>(null);
 
   // Form states
   const [name, setName] = useState("");
@@ -134,10 +134,10 @@ export default function SubscriptionsPage() {
 
   const activeCount = subscriptions.filter((s) => s.status === "Active").length;
   const pendingCount = subscriptions.filter(
-    (s) => s.status === "Pending"
+    (s) => s.status === "Pending",
   ).length;
   const expiredCount = subscriptions.filter(
-    (s) => s.status === "Expired"
+    (s) => s.status === "Expired",
   ).length;
 
   const openEditModal = (sub: Subscription) => {
@@ -400,7 +400,7 @@ export default function SubscriptionsPage() {
                   value={subscriptionStatus}
                   onChange={(e) =>
                     setSubscriptionStatus(
-                      e.target.value as "Active" | "Inactive"
+                      e.target.value as "Active" | "Inactive",
                     )
                   }
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 appearance-none bg-white"
