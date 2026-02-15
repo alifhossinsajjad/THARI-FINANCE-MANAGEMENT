@@ -115,10 +115,9 @@ export default function Navbar() {
                 key={item.href}
                 href={item.href}
                 className={`relative text-lg font-medium transition-colors 
-                  ${
-                    isActive
-                      ? "text-[#00008B]"
-                      : "text-black hover:text-blue-500"
+                  ${isActive
+                    ? "text-[#00008B]"
+                    : "text-black hover:text-blue-500"
                   }
                   after:content-[''] after:absolute after:left-0 after:-bottom-1
                   after:h-[2px] after:w-full after:bg-primary
@@ -129,9 +128,8 @@ export default function Navbar() {
               >
                 {item.label}
                 <span
-                  className={`absolute -bottom-1 left-0 h-[2px] w-full origin-left transform bg-white transition-transform duration-300 ease-out ${
-                    isActive ? "scale-x-100" : "scale-x-0 hover:scale-x-100"
-                  }`}
+                  className={`absolute -bottom-1 left-0 h-[2px] w-full origin-left transform bg-white transition-transform duration-300 ease-out ${isActive ? "scale-x-100" : "scale-x-0 hover:scale-x-100"
+                    }`}
                 />
               </Link>
             );
@@ -194,8 +192,8 @@ export default function Navbar() {
               text="Login"
               href="/auth/login"
               showArrow={false}
-              // bgClass="bg-white  hover:bg-gray-100"
-              // borderClass="border-[#0051C3]"
+            // bgClass="bg-white  hover:bg-gray-100"
+            // borderClass="border-[#0051C3]"
             />
             <GetStartedButton
               text="Sign Up"
@@ -230,11 +228,10 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-lg font-medium ${
-                    isActive
+                  className={`text-lg font-medium ${isActive
                       ? "text-[#2d6ef0]"
                       : "text-gray-300 hover:text-blue-500"
-                  }`}
+                    }`}
                   onClick={() => setIsOpen(false)}
                 >
                   {item.label}
