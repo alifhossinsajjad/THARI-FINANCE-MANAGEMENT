@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import ReduxProviderWrapper from "@/Redux/reduxProvider/ReduxProviderWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,8 +19,15 @@ export default function RootLayout({
   children,
 }: Readonly<RootLayoutProps>): React.JSX.Element {
   return (
+    // <html lang="en">
+    //   <body className={inter.className}>{children}</body>
+    // </html>
+
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {/*  Wrap your whole app with Redux Provider */}
+        <ReduxProviderWrapper>{children}</ReduxProviderWrapper>
+      </body>
     </html>
   );
 }

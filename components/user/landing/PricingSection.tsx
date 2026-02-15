@@ -1,7 +1,7 @@
 "use client";
 
 import GetStartedButton from "@/components/reusable/GetStartedButton";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export default function PricingSection() {
   const [animate, setAnimate] = useState(false);
@@ -71,9 +71,8 @@ export default function PricingSection() {
       <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-8">
         {/* Section Header */}
         <div
-          className={`text-center mb-12 transition-all duration-1000 ${
-            animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
+          className={`text-center mb-12 transition-all duration-1000 ${animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            }`}
         >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
             Simple, Transparent Pricing
@@ -88,19 +87,17 @@ export default function PricingSection() {
           {pricingPlans.map((plan, index) => (
             <div
               key={index}
-              className={`transition-all duration-700 ${
-                animate
+              className={`transition-all duration-700 ${animate
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-10"
-              } ${plan.highlighted ? "" : ""}`}
+                } ${plan.highlighted ? "" : ""}`}
               style={{ transitionDelay: `${index * 150}ms` }}
             >
               <div
-                className={`relative rounded-2xl p-7 transition-all duration-300 h-[500px] flex flex-col justify-between ${
-                  plan.highlighted
-                    ? "bg-[#00008B] text-white shadow-2xl border-blue-700"
+                className={`relative rounded-2xl p-7 transition-all duration-300 h-[500px] flex flex-col justify-between ${plan.highlighted
+                    ? "bg-primary text-white shadow-2xl border-blue-700"
                     : "bg-[#F3F9FF] text-gray-900 border border-blue-300 hover:border-blue-200 hover:shadow-lg"
-                }`}
+                  }`}
               >
                 {/* Badge for Popular Plan */}
                 {plan.badge && (
@@ -113,18 +110,16 @@ export default function PricingSection() {
 
                 {/* Plan Name */}
                 <h3
-                  className={`text-lg font-bold mb-2 ${
-                    plan.highlighted ? "text-white" : "text-gray-900"
-                  }`}
+                  className={`text-lg font-bold mb-2 ${plan.highlighted ? "text-white" : "text-gray-900"
+                    }`}
                 >
                   {plan.name}
                 </h3>
 
                 {/* Tagline */}
                 <p
-                  className={`text-xs mb-5 leading-relaxed min-h-[2.5rem] ${
-                    plan.highlighted ? "text-white/90" : "text-gray-600"
-                  }`}
+                  className={`text-xs mb-5 leading-relaxed min-h-[2.5rem] ${plan.highlighted ? "text-white/90" : "text-gray-600"
+                    }`}
                 >
                   {plan.tagline}
                 </p>
@@ -133,16 +128,14 @@ export default function PricingSection() {
                 <div className="mb-6">
                   <div className="flex items-baseline">
                     <span
-                      className={`text-4xl font-bold ${
-                        plan.highlighted ? "text-white" : "text-gray-900"
-                      }`}
+                      className={`text-4xl font-bold ${plan.highlighted ? "text-white" : "text-gray-900"
+                        }`}
                     >
                       ${plan.price}
                     </span>
                     <span
-                      className={`ml-1 text-sm ${
-                        plan.highlighted ? "text-white/80" : "text-gray-600"
-                      }`}
+                      className={`ml-1 text-sm ${plan.highlighted ? "text-white/80" : "text-gray-600"
+                        }`}
                     >
                       {plan.period}
                     </span>
@@ -154,14 +147,12 @@ export default function PricingSection() {
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start gap-2.5">
                       <div
-                        className={`mt-0.5 flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center ${
-                          plan.highlighted ? "bg-white/20" : "bg-gray-900"
-                        }`}
+                        className={`mt-0.5 flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center ${plan.highlighted ? "bg-white/20" : "bg-gray-900"
+                          }`}
                       >
                         <svg
-                          className={`w-2.5 h-2.5 ${
-                            plan.highlighted ? "text-white" : "text-white"
-                          }`}
+                          className={`w-2.5 h-2.5 ${plan.highlighted ? "text-white" : "text-white"
+                            }`}
                           fill="currentColor"
                           viewBox="0 0 20 20"
                         >
@@ -173,9 +164,8 @@ export default function PricingSection() {
                         </svg>
                       </div>
                       <span
-                        className={`text-xs leading-relaxed ${
-                          plan.highlighted ? "text-white/90" : "text-gray-700"
-                        }`}
+                        className={`text-xs leading-relaxed ${plan.highlighted ? "text-white/90" : "text-gray-700"
+                          }`}
                       >
                         {feature}
                       </span>
@@ -189,11 +179,10 @@ export default function PricingSection() {
                   href="/auth/register"
                   showArrow={false}
                   borderClass="border  border-blue-200"
-                  bgClass={`w-full py-3 px-6 rounded-lg font-semibold text-sm transition-all duration-300 ${
-                    plan.highlighted
+                  bgClass={`w-full py-3 px-6 rounded-lg font-semibold text-sm transition-all duration-300 ${plan.highlighted
                       ? "bg-white text-blue-900 hover:bg-gray-50 shadow-lg"
                       : "bg-white text-blue-900  hover:bg-blue-50"
-                  }`}
+                    }`}
                 />
               </div>
             </div>
@@ -202,9 +191,8 @@ export default function PricingSection() {
 
         {/* Bottom Text */}
         <div
-          className={`text-center mt-10 transition-all duration-1000 delay-500 ${
-            animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
+          className={`text-center mt-10 transition-all duration-1000 delay-500 ${animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            }`}
         >
           <p className="text-gray-600 text-xs">
             All plans include a 14-day free trial. No credit card required.

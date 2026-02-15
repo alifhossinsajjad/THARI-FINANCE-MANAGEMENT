@@ -27,7 +27,7 @@ const GetStartedButton: React.FC<GetStartedButtonProps> = ({
     >
       {text}
       {showArrow && (
-        <div className="bg-[#00008B] text-white p-2 rounded-full">
+        <div className="bg-primary text-white p-2 rounded-full">
           <MoveUpRight className="h-6 w-6" />
         </div>
       )}

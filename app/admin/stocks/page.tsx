@@ -1,144 +1,146 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Edit2, Trash2, Plus } from 'lucide-react';
-import SearchInput from '@/components/admin/SearchInput';
-import FilterSelect from '@/components/admin/FilterSelect';
-import StockModal from '@/components/admin/modals/StockModal';
-import PrimaryButton from '@/components/admin/buttons/PrimaryButton';
-import type { Stock, StockFormData } from '@/types';
+import { useState } from "react";
+import { Edit2, Trash2, Plus } from "lucide-react";
+import SearchInput from "@/components/admin/SearchInput";
+import FilterSelect from "@/components/admin/FilterSelect";
+import StockModal from "@/components/admin/modals/StockModal";
+import PrimaryButton from "@/components/admin/buttons/PrimaryButton";
+import type { Stock, StockFormData } from "@/types";
 
 export default function StocksPage(): React.JSX.Element {
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [riskFilter, setRiskFilter] = useState<string>('All');
-  const [shariaFilter, setShariaFilter] = useState<string>('All');
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [riskFilter, setRiskFilter] = useState<string>("All");
+  const [shariaFilter, setShariaFilter] = useState<string>("All");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedStock, setSelectedStock] = useState<Stock | null>(null);
-  const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
+  const [modalMode, setModalMode] = useState<"add" | "edit">("add");
 
   const stocks: Stock[] = [
     {
       id: 1,
-      stockName: 'Apple Inc.',
-      symbol: 'AAPL',
-      riskLevel: 'Low',
-      shariaStatus: 'Halal',
+      stockName: "Apple Inc.",
+      symbol: "AAPL",
+      riskLevel: "Low",
+      shariaStatus: "Halal",
       premium: false,
-      flags: ['Opportunity'],
+      flags: ["Opportunity"],
     },
     {
       id: 2,
-      stockName: 'Apple Inc.',
-      symbol: 'TSLA',
-      riskLevel: 'Low',
-      shariaStatus: 'Halal',
+      stockName: "Apple Inc.",
+      symbol: "TSLA",
+      riskLevel: "Low",
+      shariaStatus: "Halal",
       premium: true,
-      flags: ['Opportunity'],
+      flags: ["Opportunity"],
     },
     {
       id: 3,
-      stockName: 'Apple Inc.',
-      symbol: 'AAPL',
-      riskLevel: 'Low',
-      shariaStatus: 'Doubtful',
+      stockName: "Apple Inc.",
+      symbol: "AAPL",
+      riskLevel: "Low",
+      shariaStatus: "Doubtful",
       premium: false,
-      flags: ['Opportunity', 'Undervalued'],
+      flags: ["Opportunity", "Undervalued"],
     },
     {
       id: 4,
-      stockName: 'Apple Inc.',
-      symbol: 'MSFT',
-      riskLevel: 'High',
-      shariaStatus: 'Halal',
+      stockName: "Apple Inc.",
+      symbol: "MSFT",
+      riskLevel: "High",
+      shariaStatus: "Halal",
       premium: true,
       flags: [],
     },
     {
       id: 5,
-      stockName: 'Apple Inc.',
-      symbol: 'AAPL',
-      riskLevel: 'Low',
-      shariaStatus: 'Haram',
+      stockName: "Apple Inc.",
+      symbol: "AAPL",
+      riskLevel: "Low",
+      shariaStatus: "Haram",
       premium: false,
-      flags: ['Opportunity'],
+      flags: ["Opportunity"],
     },
     {
       id: 6,
-      stockName: 'Apple Inc.',
-      symbol: 'AAPL',
-      riskLevel: 'Medium',
-      shariaStatus: 'Halal',
+      stockName: "Apple Inc.",
+      symbol: "AAPL",
+      riskLevel: "Medium",
+      shariaStatus: "Halal",
       premium: true,
-      flags: ['Undervalued'],
+      flags: ["Undervalued"],
     },
     {
       id: 7,
-      stockName: 'Apple Inc.',
-      symbol: 'MSFT',
-      riskLevel: 'Low',
-      shariaStatus: 'Halal',
+      stockName: "Apple Inc.",
+      symbol: "MSFT",
+      riskLevel: "Low",
+      shariaStatus: "Halal",
       premium: false,
       flags: [],
     },
   ];
 
   const filteredStocks = stocks.filter((stock: Stock) => {
-    const matchesSearch = stock.stockName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         stock.symbol.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesRisk = riskFilter === 'All' || stock.riskLevel === riskFilter;
-    const matchesSharia = shariaFilter === 'All' || stock.shariaStatus === shariaFilter;
+    const matchesSearch =
+      stock.stockName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      stock.symbol.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesRisk = riskFilter === "All" || stock.riskLevel === riskFilter;
+    const matchesSharia =
+      shariaFilter === "All" || stock.shariaStatus === shariaFilter;
     return matchesSearch && matchesRisk && matchesSharia;
   });
 
   const getRiskColor = (risk: string): string => {
     switch (risk) {
-      case 'Low':
-        return '#10B981';
-      case 'Medium':
-        return '#F59E0B';
-      case 'High':
-        return '#EF4444';
+      case "Low":
+        return "#10B981";
+      case "Medium":
+        return "#F59E0B";
+      case "High":
+        return "#EF4444";
       default:
-        return '#6B7280';
+        return "#6B7280";
     }
   };
 
   const getShariaColor = (status: string): string => {
     switch (status) {
-      case 'Halal':
-        return '#10B981';
-      case 'Doubtful':
-        return '#F59E0B';
-      case 'Haram':
-        return '#EF4444';
+      case "Halal":
+        return "#10B981";
+      case "Doubtful":
+        return "#F59E0B";
+      case "Haram":
+        return "#EF4444";
       default:
-        return '#6B7280';
+        return "#6B7280";
     }
   };
 
   const getFlagColor = (flag: string): string => {
-    return flag === 'Opportunity' ? '#3B82F6' : '#F59E0B';
+    return flag === "Opportunity" ? "#3B82F6" : "#F59E0B";
   };
 
   const handleAddStock = (): void => {
-    setModalMode('add');
+    setModalMode("add");
     setSelectedStock(null);
     setIsModalOpen(true);
   };
 
   const handleEditStock = (stock: Stock): void => {
-    setModalMode('edit');
+    setModalMode("edit");
     setSelectedStock(stock);
     setIsModalOpen(true);
   };
 
   const handleSubmit = (data: StockFormData): void => {
-    console.log('Stock data:', data);
+    console.log("Stock data:", data);
     // Handle form submission
   };
 
   const handleDeleteStock = (stockId: number): void => {
-    console.log('Delete stock:', stockId);
+    console.log("Delete stock:", stockId);
     // Handle delete
   };
 
@@ -147,8 +149,12 @@ export default function StocksPage(): React.JSX.Element {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Stocks</h1>
-          <p className="text-sm text-gray-500 mt-1">Track stock prices and market trends.</p>
+          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+            Stocks
+          </h1>
+          <p className="text-sm text-gray-500 mt-1">
+            Track stock prices and market trends.
+          </p>
         </div>
 
         {/* Search, Filters, and Add Button */}
@@ -165,7 +171,7 @@ export default function StocksPage(): React.JSX.Element {
               <FilterSelect
                 value={riskFilter}
                 onChange={setRiskFilter}
-                options={['All', 'Low', 'Medium', 'High']}
+                options={["All", "Low", "Medium", "High"]}
                 placeholder="All"
               />
             </div>
@@ -173,11 +179,14 @@ export default function StocksPage(): React.JSX.Element {
               <FilterSelect
                 value={shariaFilter}
                 onChange={setShariaFilter}
-                options={['All', 'Halal', 'Doubtful', 'Haram']}
+                options={["All", "Halal", "Doubtful", "Haram"]}
                 placeholder="All"
               />
             </div>
-            <PrimaryButton onClick={handleAddStock} className="flex items-center gap-2 whitespace-nowrap">
+            <PrimaryButton
+              onClick={handleAddStock}
+              className="flex items-center gap-2 whitespace-nowrap"
+            >
               <Plus size={18} />
               Add Stock
             </PrimaryButton>
@@ -216,12 +225,14 @@ export default function StocksPage(): React.JSX.Element {
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {filteredStocks.map((stock: Stock) => (
-                  <tr 
+                  <tr
                     key={`stock-${stock.id}`}
                     className="hover:bg-gray-50 transition-colors"
                   >
                     <td className="px-6 py-4">
-                      <p className="text-sm font-medium text-gray-900">{stock.stockName}</p>
+                      <p className="text-sm font-medium text-gray-900">
+                        {stock.stockName}
+                      </p>
                     </td>
                     <td className="px-6 py-4">
                       <p className="text-sm text-gray-600">{stock.symbol}</p>
@@ -241,7 +252,9 @@ export default function StocksPage(): React.JSX.Element {
                       <span
                         className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold"
                         style={{
-                          backgroundColor: `${getShariaColor(stock.shariaStatus)}20`,
+                          backgroundColor: `${getShariaColor(
+                            stock.shariaStatus
+                          )}20`,
                           color: getShariaColor(stock.shariaStatus),
                         }}
                       >
@@ -249,7 +262,9 @@ export default function StocksPage(): React.JSX.Element {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <p className="text-sm text-gray-600">{stock.premium ? 'Yes' : 'No'}</p>
+                      <p className="text-sm text-gray-600">
+                        {stock.premium ? "Yes" : "No"}
+                      </p>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex flex-wrap gap-1">
@@ -299,7 +314,9 @@ export default function StocksPage(): React.JSX.Element {
               <div key={`stock-mobile-${stock.id}`} className="p-4 space-y-3">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <h3 className="text-base font-semibold text-gray-900">{stock.stockName}</h3>
+                    <h3 className="text-base font-semibold text-gray-900">
+                      {stock.stockName}
+                    </h3>
                     <p className="text-sm text-gray-600 mt-1">{stock.symbol}</p>
                   </div>
                 </div>
@@ -317,7 +334,9 @@ export default function StocksPage(): React.JSX.Element {
                   <span
                     className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold"
                     style={{
-                      backgroundColor: `${getShariaColor(stock.shariaStatus)}20`,
+                      backgroundColor: `${getShariaColor(
+                        stock.shariaStatus
+                      )}20`,
                       color: getShariaColor(stock.shariaStatus),
                     }}
                   >
@@ -339,7 +358,9 @@ export default function StocksPage(): React.JSX.Element {
 
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-gray-600">Premium:</span>
-                  <span className="font-medium text-gray-900">{stock.premium ? 'Yes' : 'No'}</span>
+                  <span className="font-medium text-gray-900">
+                    {stock.premium ? "Yes" : "No"}
+                  </span>
                 </div>
 
                 <div className="flex gap-2 pt-2">

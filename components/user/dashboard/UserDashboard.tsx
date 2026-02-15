@@ -1,8 +1,15 @@
-import { Calendar, ArrowUpRight, Star, Search, TrendingUp, Zap } from "lucide-react"
+import {
+  Calendar,
+  ArrowUpRight,
+  Star,
+  Search,
+  TrendingUp,
+  Zap,
+} from "lucide-react";
 
 export default function UserDashboard() {
   return (
-    <div className="max-w-7xl mx-auto space-y-10">
+    <div className="mx-auto space-y-10">
       {/* Header Section */}
       <section>
         <h1 className="text-3xl font-bold text-zinc-800 mb-2">Welcome back!</h1>
@@ -10,7 +17,8 @@ export default function UserDashboard() {
           Hi, MD! <span className="">👋</span>
         </h2>
         <p className="text-gray-400 max-w-2xl leading-relaxed text-sm">
-          Your financial insights at a glance. Track your halal investments and discover new opportunities.
+          Your financial insights at a glance. Track your halal investments and
+          discover new opportunities.
         </p>
       </section>
 
@@ -20,7 +28,9 @@ export default function UserDashboard() {
         <div className="lg:col-span-7 bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col">
           <div className="flex justify-between items-start mb-6">
             <div>
-              <h3 className="text-gray-800 font-semibold mb-2">Subscription Status</h3>
+              <h3 className="text-gray-800 font-semibold mb-2">
+                Subscription Status
+              </h3>
               <span className="bg-[#fff1f1] text-[#ff5a5a] text-[10px] font-bold px-3 py-1 rounded-full border border-red-50 uppercase tracking-wider">
                 Inactive
               </span>
@@ -31,10 +41,11 @@ export default function UserDashboard() {
           </div>
           <div className="bg-[#fff5f5] rounded-xl p-4 mb-8 border border-red-50">
             <p className="text-gray-600 text-[13px]">
-              You dont have an active subscription. Choose a plan to get started.
+              You dont have an active subscription. Choose a plan to get
+              started.
             </p>
           </div>
-          <button className="mt-auto bg-primary  text-white rounded-xl py-4 px-6 font-semibold flex items-center justify-center gap-2 transition-all group w-fit text-sm shadow-sm shadow-blue-900/20">
+          <button className="mt-auto bg-primary  text-white rounded-xl py-4 px-6 font-semibold flex items-center justify-center gap-2 transition-all group w-fit text-sm shadow-sm shadow-blue-900/20 cursor-pointer">
             View Plans
             <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </button>
@@ -70,12 +81,19 @@ export default function UserDashboard() {
                 border: "border-green-100",
               },
             ].map((stat, i) => (
-              <div key={i} className="flex items-center justify-between p-2 rounded-xl">
+              <div
+                key={i}
+                className="flex items-center justify-between p-2 rounded-xl"
+              >
                 <div className="flex items-center gap-4">
-                  <div className={`${stat.bg} ${stat.border} border p-2 rounded-xl`}>
+                  <div
+                    className={`${stat.bg} ${stat.border} border p-2 rounded-xl`}
+                  >
                     <stat.icon className={`w-5 h-5 ${stat.color}`} />
                   </div>
-                  <span className="text-gray-500 font-medium text-sm">{stat.label}</span>
+                  <span className="text-gray-500 font-medium text-sm">
+                    {stat.label}
+                  </span>
                 </div>
                 <span className="text-gray-800 font-bold">{stat.value}</span>
               </div>
@@ -131,7 +149,9 @@ export default function UserDashboard() {
                   <div className={`${link.iconBg} p-3 rounded-xl`}>
                     <link.icon className={`w-5 h-5 ${link.iconColor}`} />
                   </div>
-                  <span className={`font-semibold text-sm ${link.text}`}>{link.title}</span>
+                  <span className={`font-semibold text-sm ${link.text}`}>
+                    {link.title}
+                  </span>
                 </div>
                 <ArrowUpRight
                   className={`w-4 h-4 opacity-50 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 ${link.text}`}
@@ -180,7 +200,8 @@ export default function UserDashboard() {
                 </div>
                 <div>
                   <p className="text-gray-700 text-sm font-medium">
-                    {item.label} <span className="text-[#10b981] font-bold">{item.val}</span>
+                    {item.label}{" "}
+                    <span className="text-[#10b981] font-bold">{item.val}</span>
                   </p>
                   <p className="text-gray-400 text-xs mt-0.5">{item.time}</p>
                 </div>
@@ -191,12 +212,35 @@ export default function UserDashboard() {
 
         {/* Top Performers */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <h3 className="text-gray-800 font-semibold mb-6">Top Halal Performers</h3>
+          <h3 className="text-gray-800 font-semibold mb-6">
+            Top Halal Performers
+          </h3>
           <div className="space-y-6">
             {[
-              { sym: "NVDA", name: "NVIDIA", price: "$612.50", chg: "+8.4%", char: "N", bg: "bg-[#060661]" },
-              { sym: "MSFT", name: "Microsoft", price: "$398.75", chg: "+3.2%", char: "M", bg: "bg-[#00008b]" },
-              { sym: "AAPL", name: "Apple", price: "$178.32", chg: "+2.1%", char: "A", bg: "bg-[#00004d]" },
+              {
+                sym: "NVDA",
+                name: "NVIDIA",
+                price: "$612.50",
+                chg: "+8.4%",
+                char: "N",
+                bg: "bg-[#060661]",
+              },
+              {
+                sym: "MSFT",
+                name: "Microsoft",
+                price: "$398.75",
+                chg: "+3.2%",
+                char: "M",
+                bg: "bg-primary",
+              },
+              {
+                sym: "AAPL",
+                name: "Apple",
+                price: "$178.32",
+                chg: "+2.1%",
+                char: "A",
+                bg: "bg-[#00004d]",
+              },
             ].map((stock, i) => (
               <div key={i} className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
@@ -206,13 +250,21 @@ export default function UserDashboard() {
                     {stock.char}
                   </div>
                   <div>
-                    <p className="text-gray-900 font-bold text-sm leading-none mb-1">{stock.sym}</p>
-                    <p className="text-gray-400 text-[10px] font-medium">{stock.name}</p>
+                    <p className="text-gray-900 font-bold text-sm leading-none mb-1">
+                      {stock.sym}
+                    </p>
+                    <p className="text-gray-400 text-[10px] font-medium">
+                      {stock.name}
+                    </p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-gray-900 font-bold text-sm leading-none mb-1">{stock.price}</p>
-                  <p className="text-blue-600 text-[10px] font-bold">{stock.chg}</p>
+                  <p className="text-gray-900 font-bold text-sm leading-none mb-1">
+                    {stock.price}
+                  </p>
+                  <p className="text-blue-600 text-[10px] font-bold">
+                    {stock.chg}
+                  </p>
                 </div>
               </div>
             ))}
@@ -220,5 +272,5 @@ export default function UserDashboard() {
         </div>
       </div>
     </div>
-  )
+  );
 }

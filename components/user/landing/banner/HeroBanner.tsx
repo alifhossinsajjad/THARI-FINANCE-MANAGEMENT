@@ -1,10 +1,13 @@
 "use client";
 
 import GetStartedButton from "@/components/reusable/GetStartedButton";
+
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export default function HeroBanner() {
+  // const user = useAppSelector(selectCurrentUser);
+
   const [animate, setAnimate] = useState(false);
   const [particlePositions, setParticlePositions] = useState<
     Array<{ left: number; top: number; delay: number; duration: number }>
@@ -80,9 +83,8 @@ export default function HeroBanner() {
       {/* Main Content */}
       <div className="relative z-10 mx-auto max-w-7xl pt-48 justify-center px-6 lg:px-8 flex flex-col items-center">
         <div
-          className={`text-center transition-all duration-1000 ${
-            animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
+          className={`text-center transition-all duration-1000 ${animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            }`}
         >
           {/* Main Heading */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
@@ -97,9 +99,8 @@ export default function HeroBanner() {
 
           {/* CTA Buttons */}
           <div
-            className={`flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 transition-all duration-1000 delay-300 ${
-              animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
+            className={`flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 transition-all duration-1000 delay-300 ${animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
           >
             <GetStartedButton
               text="Get Started"
@@ -119,9 +120,8 @@ export default function HeroBanner() {
 
           {/* Social Proof */}
           <div
-            className={`flex  justify-center items-center gap-3 transition-all duration-1000 delay-500 ${
-              animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
+            className={`flex  justify-center items-center gap-3 transition-all duration-1000 delay-500 ${animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
           >
             {/* User Avatars */}
             <div className="flex -space-x-3">
@@ -143,9 +143,8 @@ export default function HeroBanner() {
 
         {/* Decorative Divider Line */}
         <div
-          className={`mt-16 w-px h-24 bg-gradient-to-b from-blue-400 to-transparent transition-all duration-1000 delay-700 ${
-            animate ? "opacity-100" : "opacity-0"
-          }`}
+          className={`mt-16 w-px h-24 bg-gradient-to-b from-blue-400 to-transparent transition-all duration-1000 delay-700 ${animate ? "opacity-100" : "opacity-0"
+            }`}
         ></div>
       </div>
 

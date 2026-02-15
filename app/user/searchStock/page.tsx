@@ -1,6 +1,6 @@
 "use client";
 
-import  { useState } from "react";
+import { useState } from "react";
 import { Search, ShieldCheck, TrendingUp, Sparkles, Plus } from "lucide-react";
 
 type Stock = {
@@ -38,7 +38,8 @@ const MOCK_STOCKS: Record<string, Stock> = {
     rating: "Buy",
     priceTarget: 270,
     upside: 9.9,
-    aiAnalysis: "Tesla is compliant with low debt levels. Positive growth outlook.",
+    aiAnalysis:
+      "Tesla is compliant with low debt levels. Positive growth outlook.",
   },
   MSFT: {
     name: "Microsoft Corp.",
@@ -66,7 +67,9 @@ const MOCK_STOCKS: Record<string, Stock> = {
 
 export default function StockSearchPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedStock, setSelectedStock] = useState<Stock | "NOT_FOUND" | null>(null);
+  const [selectedStock, setSelectedStock] = useState<
+    Stock | "NOT_FOUND" | null
+  >(null);
 
   const suggestedStocks = Object.keys(MOCK_STOCKS);
 
@@ -84,8 +87,12 @@ export default function StockSearchPage() {
       <div className=" mx-auto space-y-8">
         {/* Header */}
         <header className="space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight text-slate-800">Stock Search</h1>
-          <p className="text-slate-500">Search and find stocks quickly and easily.</p>
+          <h1 className="text-3xl font-bold tracking-tight text-slate-800">
+            Stock Search
+          </h1>
+          <p className="text-slate-500">
+            Search and find stocks quickly and easily.
+          </p>
         </header>
 
         {/* Search Bar */}
@@ -117,7 +124,9 @@ export default function StockSearchPage() {
         {/* Suggested Stocks */}
         {!selectedStock && (
           <div className="bg-slate-50/50 border border-slate-100 rounded-2xl p-6">
-            <h2 className="text-sm font-bold text-slate-700 mb-4">Try searching for:</h2>
+            <h2 className="text-sm font-bold text-slate-700 mb-4">
+              Try searching for:
+            </h2>
             <div className="flex flex-wrap gap-3">
               {suggestedStocks.map((stock) => (
                 <button
@@ -148,12 +157,20 @@ export default function StockSearchPage() {
             {/* Price Card */}
             <div className="bg-white border border-slate-100 rounded-2xl p-6 flex justify-between items-start shadow-sm">
               <div>
-                <h2 className="text-xl font-bold text-slate-800">{selectedStock.name}</h2>
-                <p className="text-slate-500 font-medium">{selectedStock.symbol}</p>
+                <h2 className="text-xl font-bold text-slate-800">
+                  {selectedStock.name}
+                </h2>
+                <p className="text-slate-500 font-medium">
+                  {selectedStock.symbol}
+                </p>
               </div>
               <div className="text-right">
-                <p className="text-xl font-bold text-slate-800">${selectedStock.price}</p>
-                <p className="text-xs text-slate-400 uppercase font-semibold">Current Price</p>
+                <p className="text-xl font-bold text-slate-800">
+                  ${selectedStock.price}
+                </p>
+                <p className="text-xs text-slate-400 uppercase font-semibold">
+                  Current Price
+                </p>
               </div>
             </div>
 
@@ -172,7 +189,9 @@ export default function StockSearchPage() {
               <div className="space-y-2">
                 <div className="flex justify-between text-sm font-medium">
                   <span className="text-slate-600">Compliance Score</span>
-                  <span className="text-slate-800">{selectedStock.complianceScore}/100</span>
+                  <span className="text-slate-800">
+                    {selectedStock.complianceScore}/100
+                  </span>
                 </div>
                 <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
                   <div
@@ -198,11 +217,17 @@ export default function StockSearchPage() {
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-slate-600 text-sm">Price Target</span>
-                  <span className="text-slate-800 font-bold">${selectedStock.priceTarget}</span>
+                  <span className="text-slate-800 font-bold">
+                    ${selectedStock.priceTarget}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-600 text-sm">Potential Upside</span>
-                  <span className="text-emerald-500 font-bold">+{selectedStock.upside}%</span>
+                  <span className="text-slate-600 text-sm">
+                    Potential Upside
+                  </span>
+                  <span className="text-emerald-500 font-bold">
+                    +{selectedStock.upside}%
+                  </span>
                 </div>
               </div>
             </div>
@@ -213,7 +238,9 @@ export default function StockSearchPage() {
                 <Sparkles className="w-5 h-5 text-purple-500" />
                 AI Analysis
               </div>
-              <p className="text-sm leading-relaxed text-slate-600">{selectedStock.aiAnalysis}</p>
+              <p className="text-sm leading-relaxed text-slate-600">
+                {selectedStock.aiAnalysis}
+              </p>
             </div>
 
             {/* Add to Watchlist */}
