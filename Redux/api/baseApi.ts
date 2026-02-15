@@ -5,13 +5,14 @@ import { RootState } from "../store";
 export const baseApi = createApi({
   reducerPath: "baseApi", // or just "api" if you prefer
   baseQuery: fetchBaseQuery({
-    // baseUrl: "http://localhost:5000/api",
-    baseUrl: "https://api.covermate.org/api/v1",
+    baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL as string,
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth?.accessToken;
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
+      headers.set("Accept", "application/json");
+      headers.set("Content-Type", "application/json");
       return headers;
     },
   }),
