@@ -1,7 +1,13 @@
 "use client";
 
-import { LogOut, Menu, Settings, User as UserIcon, X, LayoutDashboard } from "lucide-react";
-import Image from "next/image";
+import {
+  LogOut,
+  Menu,
+  User as UserIcon,
+  X,
+  LayoutDashboard,
+} from "lucide-react";
+
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -101,9 +107,10 @@ export default function Navbar() {
                   key={item.href}
                   href={item.href}
                   className={`relative text-sm lg:text-base font-medium transition-colors py-2
-                    ${isActive
-                      ? "text-primary"
-                      : "text-gray-700 hover:text-primary"
+                    ${
+                      isActive
+                        ? "text-primary"
+                        : "text-gray-700 hover:text-primary"
                     }
                     after:content-[''] after:absolute after:left-0 after:-bottom-1
                     after:h-[2px] after:w-full after:bg-primary
@@ -147,7 +154,11 @@ export default function Navbar() {
                     </div>
 
                     <Link
-                      href={user.role === "admin" ? "/admin/dashboard" : "/userDashboard/profile"}
+                      href={
+                        user.role === "admin"
+                          ? "/admin/dashboard"
+                          : "/userDashboard/profile"
+                      }
                       className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       onClick={() => setProfileDropdownOpen(false)}
                     >
@@ -185,7 +196,11 @@ export default function Navbar() {
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
-            {isOpen ? <X size={24} className="text-gray-700" /> : <Menu size={24} className="text-gray-700" />}
+            {isOpen ? (
+              <X size={24} className="text-gray-700" />
+            ) : (
+              <Menu size={24} className="text-gray-700" />
+            )}
           </button>
         </div>
       </div>
@@ -205,10 +220,11 @@ export default function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`px-4 py-2.5 text-base font-medium rounded-lg transition-colors ${isActive
-                      ? "bg-primary/10 text-primary"
-                      : "text-gray-700 hover:bg-gray-50"
-                      }`}
+                    className={`px-4 py-2.5 text-base font-medium rounded-lg transition-colors ${
+                      isActive
+                        ? "bg-primary/10 text-primary"
+                        : "text-gray-700 hover:bg-gray-50"
+                    }`}
                     onClick={() => setIsOpen(false)}
                   >
                     {item.label}
@@ -240,7 +256,11 @@ export default function Navbar() {
                 {/* Mobile Menu Actions */}
                 <div className="space-y-1">
                   <Link
-                    href={user.role === "admin" ? "/admin/dashboard" : "/userDashboard/profile"}
+                    href={
+                      user.role === "admin"
+                        ? "/admin/dashboard"
+                        : "/userDashboard/profile"
+                    }
                     className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg"
                     onClick={() => setIsOpen(false)}
                   >
