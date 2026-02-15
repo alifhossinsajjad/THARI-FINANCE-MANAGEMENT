@@ -120,7 +120,7 @@ export default function HeroBanner() {
               {/* Sign up link */}
               <p className=" text-white/80 text-sm mt-6">
                 Don't have an account?{' '}
-                <a href="#" className="text-white font-semibold hover:underline">
+                <a href="/auth/register" className="text-white font-semibold hover:underline">
                   Sign up
                 </a>
               </p>
