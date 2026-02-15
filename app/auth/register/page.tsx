@@ -5,6 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import {
+  useRegisterMutation,
+  useVerifyOtpMutation,
+} from "@/Redux/features/auth/authApi";
 
 export default function SignupPage() {
   const [fullName, setFullName] = useState("");
@@ -12,7 +18,13 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
-  // const [animate, setAnimate] = useState(true);
+  const [otp, setOtp] = useState("");
+  const [step, setStep] = useState<"register" | "otp">("register");
+
+  const [register, { isLoading: isRegisterLoading }] = useRegisterMutation();
+  const [verifyOtp, { isLoading: isVerifyLoading }] = useVerifyOtpMutation();
+  const router = useRouter();
+
   const animate = true;
 
   const particles = useMemo(() => {
@@ -56,22 +68,46 @@ export default function SignupPage() {
     }));
   }, []);
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     if (!agreedToTerms) {
-      alert("Please agree to the Terms & Conditions and Privacy Policy");
+      toast.error("Please agree to the Terms & Conditions");
       return;
     }
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
-    console.log("Signup attempt:", { fullName, email, password });
-    // TODO: Implement signup logic
+
+    try {
+      const userInfo = {
+        email,
+        password,
+        password_confirmation: confirmPassword,
+        role: "user",
+        terms_accepted: true,
+      };
+
+      await register(userInfo).unwrap();
+      toast.success("Registration successful! Please check your email for OTP.");
+      setStep("otp");
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Registration failed");
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    try {
+      await verifyOtp({ email, otp }).unwrap();
+      toast.success("Email verified successfully! Please login.");
+      router.push("/auth/login");
+    } catch (err: any) {
+      toast.error(err?.data?.message || "OTP Verification failed");
+    }
   };
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-gray-100">
-      {/* Left Section - Signup Form */}
+      {/* Left Section - Signup/OTP Form */}
       <div className="flex w-full lg:w-1/2 flex-col justify-center px-8 sm:px-12 lg:px-20 bg-white">
         <div
           className={`w-full max-w-md mx-auto transition-all duration-1000 ${animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
@@ -99,137 +135,193 @@ export default function SignupPage() {
             </span>
           </div>
 
-          {/* Heading */}
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Create Your Account
-            </h1>
-            <p className="text-gray-600 text-sm">
-              Start tracking stocks and exploring halal investment opportunities
-            </p>
-          </div>
+          {step === "register" ? (
+            <>
+              {/* Heading */}
+              <div className="mb-6">
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                  Create Your Account
+                </h1>
+                <p className="text-gray-600 text-sm">
+                  Start tracking stocks and exploring halal investment
+                  opportunities
+                </p>
+              </div>
 
-          {/* Signup Form */}
-          <div className="space-y-4">
-            {/* Full Name Input */}
-            <div>
-              <Label
-                htmlFor="fullName"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Full Name
-              </Label>
-              <Input
-                id="fullName"
-                type="text"
-                placeholder="Enter your Name"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent transition-all text-sm"
-                required
-              />
-            </div>
+              {/* Signup Form */}
+              <div className="space-y-4">
+                {/* Full Name Input - Not pushed to backend but kept for UI */}
+                <div>
+                  <Label
+                    htmlFor="fullName"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Full Name
+                  </Label>
+                  <Input
+                    id="fullName"
+                    type="text"
+                    placeholder="Enter your Name"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent transition-all text-sm"
+                    required
+                  />
+                </div>
 
-            {/* Email Input */}
-            <div>
-              <Label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Email
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="Enter your Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent transition-all text-sm"
-                required
-              />
-            </div>
+                {/* Email Input */}
+                <div>
+                  <Label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Email
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="Enter your Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent transition-all text-sm"
+                    required
+                  />
+                </div>
 
-            {/* Password Input */}
-            <div>
-              <Label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Password
-              </Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Enter your Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent transition-all text-sm"
-                required
-              />
-            </div>
+                {/* Password Input */}
+                <div>
+                  <Label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Password
+                  </Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="Enter your Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent transition-all text-sm"
+                    required
+                  />
+                </div>
 
-            {/* Confirm Password Input */}
-            <div>
-              <Label
-                htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Confirm Password
-              </Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                placeholder="Enter your password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent transition-all text-sm"
-                required
-              />
-            </div>
+                {/* Confirm Password Input */}
+                <div>
+                  <Label
+                    htmlFor="confirmPassword"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Confirm Password
+                  </Label>
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    placeholder="Enter your password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent transition-all text-sm"
+                    required
+                  />
+                </div>
 
-            {/* Terms & Conditions */}
-            <div className="flex items-start pt-2">
-              <input
-                type="checkbox"
-                id="terms"
-                checked={agreedToTerms}
-                onChange={(e) => setAgreedToTerms(e.target.checked)}
-                className="w-4 h-4 mt-0.5 text-blue-900 border-gray-300 rounded focus:ring-blue-900 cursor-pointer"
-              />
-              <label
-                htmlFor="terms"
-                className="ml-2 text-sm text-gray-700 cursor-pointer"
-              >
-                I agree to the{" "}
-                <a href="#" className="text-blue-900 hover:underline">
-                  Terms & Conditions
-                </a>{" "}
-                and{" "}
-                <a href="#" className="text-blue-900 hover:underline">
-                  Privacy Policy
-                </a>
-              </label>
-            </div>
+                {/* Terms & Conditions */}
+                <div className="flex items-start pt-2">
+                  <input
+                    type="checkbox"
+                    id="terms"
+                    checked={agreedToTerms}
+                    onChange={(e) => setAgreedToTerms(e.target.checked)}
+                    className="w-4 h-4 mt-0.5 text-blue-900 border-gray-300 rounded focus:ring-blue-900 cursor-pointer"
+                  />
+                  <label
+                    htmlFor="terms"
+                    className="ml-2 text-sm text-gray-700 cursor-pointer"
+                  >
+                    I agree to the{" "}
+                    <a href="#" className="text-blue-900 hover:underline">
+                      Terms & Conditions
+                    </a>{" "}
+                    and{" "}
+                    <a href="#" className="text-blue-900 hover:underline">
+                      Privacy Policy
+                    </a>
+                  </label>
+                </div>
 
-            {/* Create Account Button */}
-            <Button
-              onClick={handleSignup}
-              className="w-full bg-blue-900 text-white py-3 rounded-md font-semibold hover:bg-blue-800 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 mt-2"
-            >
-              Create Account
-            </Button>
+                {/* Create Account Button */}
+                <Button
+                  onClick={handleSignup}
+                  disabled={isRegisterLoading}
+                  className="w-full bg-blue-900 text-white py-3 rounded-md font-semibold hover:bg-blue-800 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 mt-2 disabled:bg-gray-400"
+                >
+                  {isRegisterLoading ? "Creating Account..." : "Create Account"}
+                </Button>
 
-            {/* Login Link */}
-            <p className=" text-sm text-gray-600">
-              Already have an account?{" "}
-              <Link
-                href="/auth/login"
-                className="text-blue-900 font-semibold hover:underline"
-              >
-                Login
-              </Link>
-            </p>
-          </div>
+                {/* Login Link */}
+                <p className=" text-sm text-gray-600">
+                  Already have an account?{" "}
+                  <Link
+                    href="/auth/login"
+                    className="text-blue-900 font-semibold hover:underline"
+                  >
+                    Login
+                  </Link>
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* OTP Verification Step */}
+              <div className="mb-6">
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                  Verify Your Email
+                </h1>
+                <p className="text-gray-600 text-sm">
+                  We've sent a code to <span className="font-bold">{email}</span>
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <Label
+                    htmlFor="otp"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Enter Verification Code
+                  </Label>
+                  <Input
+                    id="otp"
+                    type="text"
+                    placeholder="Enter OTP"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent transition-all text-sm"
+                    required
+                  />
+                </div>
+
+                <Button
+                  onClick={handleVerifyOtp}
+                  disabled={isVerifyLoading}
+                  className="w-full bg-blue-900 text-white py-3 rounded-md font-semibold hover:bg-blue-800 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 mt-2 disabled:bg-gray-400"
+                >
+                  {isVerifyLoading ? "Verifying..." : "Verify Email"}
+                </Button>
+
+                <p className="text-sm text-gray-600">
+                  Wrong email?{" "}
+                  <button
+                    onClick={() => setStep("register")}
+                    className="text-blue-900 font-semibold hover:underline"
+                  >
+                    Change email
+                  </button>
+                </p>
+              </div>
+            </>
+          )}
         </div>
       </div>
 

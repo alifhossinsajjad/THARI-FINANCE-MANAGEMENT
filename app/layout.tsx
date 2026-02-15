@@ -1,3 +1,5 @@
+import { Toaster } from "sonner";
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -19,14 +21,13 @@ export default function RootLayout({
   children,
 }: Readonly<RootLayoutProps>): React.JSX.Element {
   return (
-    // <html lang="en">
-    //   <body className={inter.className}>{children}</body>
-    // </html>
-
     <html lang="en">
       <body className={inter.className}>
         {/*  Wrap your whole app with Redux Provider */}
-        <ReduxProviderWrapper>{children}</ReduxProviderWrapper>
+        <ReduxProviderWrapper>
+          {children}
+          <Toaster richColors position="top-center" />
+        </ReduxProviderWrapper>
       </body>
     </html>
   );
