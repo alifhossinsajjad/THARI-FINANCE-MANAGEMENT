@@ -5,7 +5,7 @@ import { Eye, Edit2, Ban, Crown } from "lucide-react";
 import SearchInput from "@/components/admin/SearchInput";
 import FilterSelect from "@/components/admin/FilterSelect";
 import UserDetailModal from "@/components/admin/modals/UserDetailModal";
-import type { User } from "@/types";
+
 import { useGetAllUserByAdminQuery } from "@/Redux/features/AdminDashboard/Users/userManagementApi";
 
 export default function UsersPage(): React.JSX.Element {
@@ -14,7 +14,7 @@ export default function UsersPage(): React.JSX.Element {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [roleFilter, setRoleFilter] = useState<string>("All");
   const [statusFilter, setStatusFilter] = useState<string>("All");
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const users = data?.data;
   console.log("hh", users);
@@ -49,7 +49,7 @@ export default function UsersPage(): React.JSX.Element {
     }
   };
 
-  const handleViewUser = (user: User): void => {
+  const handleViewUser = (user: any): void => {
     setSelectedUser(user);
     setIsModalOpen(true);
   };
