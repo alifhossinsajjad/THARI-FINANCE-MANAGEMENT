@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import CommonButton from "../reusable/CommonButton";
 import GetStartedButton from "../reusable/GetStartedButton";
+import Logo from "../reusable/Logo";
 
 interface User {
   name: string;
@@ -98,10 +99,10 @@ export default function Navbar() {
             href="/"
             className="h-9 w-72 flex gap-4 items-center cursor-pointer"
           >
-            <div className="bg-primary p-2 rounded-2xl">
-              <TrendingUp className="h-10 w-10 text-white " />
+            <div className=" p-2 rounded-2xl">
+              <Logo />
             </div>
-            <h1 className="text-2xl font-bold text-[#00008B]">Thari Finance</h1>
+            
           </Link>
         </div>
 
@@ -205,12 +206,13 @@ export default function Navbar() {
         )}
 
         {/* Mobile Hamburger */}
-        <button
+        
+        {/* <button
           className="cursor-pointer text-white md:hidden"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
+        </button> */}
       </div>
 
       {/* Mobile Dropdown Menu */}
