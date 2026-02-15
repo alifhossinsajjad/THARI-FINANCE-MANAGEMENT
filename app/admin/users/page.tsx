@@ -6,89 +6,18 @@ import SearchInput from "@/components/admin/SearchInput";
 import FilterSelect from "@/components/admin/FilterSelect";
 import UserDetailModal from "@/components/admin/modals/UserDetailModal";
 import type { User } from "@/types";
+import { useGetAllUserByAdminQuery } from "@/Redux/features/AdminDashboard/Users/userManagementApi";
 
 export default function UsersPage(): React.JSX.Element {
+  const { data } = useGetAllUserByAdminQuery({});
+  console.log("iam the data for all user", data);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [roleFilter, setRoleFilter] = useState<string>("All");
   const [statusFilter, setStatusFilter] = useState<string>("All");
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  const users: User[] = [
-    {
-      id: 1,
-      name: "Ahmed Hassan",
-      email: "ahmed@example.com",
-      role: "Elite",
-      subscription: "Active",
-      trackedStocks: 15,
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "Ahmed Hassan",
-      email: "ahmed@example.com",
-      role: "Free",
-      subscription: "Active",
-      trackedStocks: 15,
-      status: "Active",
-    },
-    {
-      id: 3,
-      name: "Ahmed Hassan",
-      email: "ahmed@example.com",
-      role: "Elite",
-      subscription: "Inactive",
-      trackedStocks: 15,
-      status: "Active",
-    },
-    {
-      id: 4,
-      name: "Ahmed Hassan",
-      email: "ahmed@example.com",
-      role: "Free",
-      subscription: "Active",
-      trackedStocks: 15,
-      status: "Active",
-    },
-    {
-      id: 5,
-      name: "Ahmed Hassan",
-      email: "ahmed@example.com",
-      role: "Elite",
-      subscription: "Active",
-      trackedStocks: 15,
-      status: "Active",
-    },
-    {
-      id: 6,
-      name: "Ahmed Hassan",
-      email: "ahmed@example.com",
-      role: "Free",
-      subscription: "Active",
-      trackedStocks: 15,
-      status: "Suspended",
-    },
-    {
-      id: 7,
-      name: "Ahmed Hassan",
-      email: "ahmed@example.com",
-      role: "Elite",
-      subscription: "Pending",
-      trackedStocks: 15,
-      status: "Active",
-    },
-  ];
-
-  const filteredUsers = users.filter((user: User) => {
-    const matchesSearch =
-      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesRole = roleFilter === "All" || user.role === roleFilter;
-    const matchesStatus =
-      statusFilter === "All" || user.status === statusFilter;
-    return matchesSearch && matchesRole && matchesStatus;
-  });
+  const users = data?.data;
+  console.log("hh", users);
 
   const getRoleColor = (role: string): string => {
     return role === "Elite" ? "#9333EA" : "#6B7280";
@@ -191,9 +120,7 @@ export default function UsersPage(): React.JSX.Element {
                   <th className="text-left px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Subscription
                   </th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Tracked Stocks
-                  </th>
+
                   <th className="text-left px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Status
                   </th>
@@ -203,29 +130,29 @@ export default function UsersPage(): React.JSX.Element {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {filteredUsers.map((user: User) => (
+                {users?.map((user: any) => (
                   <tr
-                    key={`user-${user.id}`}
+                    key={`user-${user?.id}`}
                     className="hover:bg-gray-50 transition-colors"
                   >
                     <td className="px-6 py-4">
                       <p className="text-sm font-medium text-gray-900">
-                        {user.name}
+                        {user?.name || "..."}
                       </p>
                     </td>
                     <td className="px-6 py-4">
-                      <p className="text-sm text-gray-600">{user.email}</p>
+                      <p className="text-sm text-gray-600">{user?.email}</p>
                     </td>
                     <td className="px-6 py-4">
                       <span
                         className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold"
                         style={{
-                          backgroundColor: `${getRoleColor(user.role)}20`,
-                          color: getRoleColor(user.role),
+                          backgroundColor: `${getRoleColor(user?.role)}20`,
+                          color: getRoleColor(user?.role),
                         }}
                       >
-                        {user.role === "Elite" && <Crown size={12} />}
-                        {user.role}
+                        {user?.role === "Elite" && <Crown size={12} />}
+                        {user?.role}
                       </span>
                     </td>
                     <td className="px-6 py-4">
@@ -233,28 +160,24 @@ export default function UsersPage(): React.JSX.Element {
                         className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold"
                         style={{
                           backgroundColor: `${getSubscriptionColor(
-                            user.subscription
+                            user?.subscription,
                           )}20`,
-                          color: getSubscriptionColor(user.subscription),
+                          color: getSubscriptionColor(user?.subscription),
                         }}
                       >
-                        {user.subscription}
+                        {user?.subscription}
                       </span>
                     </td>
-                    <td className="px-6 py-4">
-                      <p className="text-sm font-medium text-gray-900">
-                        {user.trackedStocks}
-                      </p>
-                    </td>
+
                     <td className="px-6 py-4">
                       <span
-                        className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold"
-                        style={{
-                          backgroundColor: `${getStatusColor(user.status)}20`,
-                          color: getStatusColor(user.status),
-                        }}
+                        className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
+                          user?.status
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
+                        }`}
                       >
-                        {user.status}
+                        {user?.status ? "Active" : "Inactive"}
                       </span>
                     </td>
                     <td className="px-6 py-4">
@@ -291,14 +214,14 @@ export default function UsersPage(): React.JSX.Element {
 
           {/* Mobile Cards */}
           <div className="lg:hidden divide-y divide-gray-200">
-            {filteredUsers.map((user: User) => (
-              <div key={`user-mobile-${user.id}`} className="p-4 space-y-3">
+            {users?.map((user: any) => (
+              <div key={`user-mobile-${user?.id}`} className="p-4 space-y-3">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <h3 className="text-base font-semibold text-gray-900">
-                      {user.name}
+                      {user?.name}
                     </h3>
-                    <p className="text-sm text-gray-600 mt-1">{user.email}</p>
+                    <p className="text-sm text-gray-600 mt-1">{user?.email}</p>
                   </div>
                   <button
                     type="button"
@@ -314,39 +237,39 @@ export default function UsersPage(): React.JSX.Element {
                   <span
                     className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold"
                     style={{
-                      backgroundColor: `${getRoleColor(user.role)}20`,
-                      color: getRoleColor(user.role),
+                      backgroundColor: `${getRoleColor(user?.role)}20`,
+                      color: getRoleColor(user?.role),
                     }}
                   >
-                    {user.role === "Elite" && <Crown size={12} />}
-                    {user.role}
+                    {user?.role === "Elite" && <Crown size={12} />}
+                    {user?.role}
                   </span>
                   <span
                     className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold"
                     style={{
                       backgroundColor: `${getSubscriptionColor(
-                        user.subscription
+                        user?.subscription,
                       )}20`,
-                      color: getSubscriptionColor(user.subscription),
+                      color: getSubscriptionColor(user?.subscription),
                     }}
                   >
-                    {user.subscription}
+                    {user?.subscription}
                   </span>
                   <span
                     className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold"
                     style={{
-                      backgroundColor: `${getStatusColor(user.status)}20`,
-                      color: getStatusColor(user.status),
+                      backgroundColor: `${getStatusColor(user?.status)}20`,
+                      color: getStatusColor(user?.status),
                     }}
                   >
-                    {user.status}
+                    {user?.status}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-gray-600">Tracked Stocks:</span>
                   <span className="font-medium text-gray-900">
-                    {user.trackedStocks}
+                    {user?.trackedStocks}
                   </span>
                 </div>
 
@@ -367,6 +290,8 @@ export default function UsersPage(): React.JSX.Element {
               </div>
             ))}
           </div>
+
+          {/* here is the panination table  */}
         </div>
       </div>
 
