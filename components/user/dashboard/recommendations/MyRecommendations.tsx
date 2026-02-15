@@ -182,7 +182,7 @@ export default function MyRecommendations() {
                 <div className="col-span-1 text-right">
                   <p className="text-gray-400 text-sm">Return</p>
                   <p className="font-semibold text-green-600 flex items-center justify-end gap-1">
-                    <TrendingUp className="mr-3"/> +{rec.return.toFixed(2)}%
+                    <TrendingUp className="mr-3" /> +{rec.return.toFixed(2)}%
                   </p>
                 </div>
               </div>
