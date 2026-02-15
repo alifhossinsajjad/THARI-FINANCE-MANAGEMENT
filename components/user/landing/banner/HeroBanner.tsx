@@ -1,16 +1,14 @@
 "use client";
 
 import GetStartedButton from "@/components/reusable/GetStartedButton";
-import React, { useState } from "react";
+import { useState } from "react";
 import { WiStars } from "react-icons/wi";
 
 import { HiOutlineMail } from "react-icons/hi";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-
 export default function HeroBanner() {
   const [showPassword, setShowPassword] = useState(false);
-
   return (
     <div className="relative bg-primary min-h-screen">
       <div className="container mx-auto px-4 sm:px-10 lg:px-8 py-8 lg:py-20">
@@ -96,9 +94,12 @@ export default function HeroBanner() {
                       }
                     >
                       {showPassword ? (
-                        <AiOutlineEyeInvisible size={20} className="text-[#9CA3AF]"/>
+                        <AiOutlineEyeInvisible
+                          size={20}
+                          className="text-[#9CA3AF]"
+                        />
                       ) : (
-                        <AiOutlineEye size={20} className="text-[#9CA3AF]"/>
+                        <AiOutlineEye size={20} className="text-[#9CA3AF]" />
                       )}
                     </button>
                   </div>
@@ -148,7 +149,7 @@ export default function HeroBanner() {
                   className="text-white font-semibold hover:underline"
                 >
                   Sign up
-                </Link>
+                </a>
               </p>
             </div>
           </div>

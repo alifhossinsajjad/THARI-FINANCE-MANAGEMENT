@@ -21,7 +21,7 @@ export default function RootLayout({
   children,
 }: Readonly<RootLayoutProps>): React.JSX.Element {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         {/*  Wrap your whole app with Redux Provider */}
         <ReduxProviderWrapper>
