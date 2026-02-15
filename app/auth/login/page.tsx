@@ -7,12 +7,19 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useAppDispatch } from "@/Redux/hooks";
 import { setUser } from "@/Redux/features/auth/authSlice";
+import { useLoginMutation } from "@/Redux/features/auth/authApi";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const animate = true;
+
+  const [login, { isLoading }] = useLoginMutation();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const particles = useMemo(() => {
     // Pre-generated random values to avoid impure function calls during render
@@ -45,24 +52,25 @@ export default function LoginPage() {
     }));
   }, []);
 
-  const dispatch = useAppDispatch();
+  const handleLogin = async () => {
+    try {
+      const userInfo = { email, password };
+      const res = await login(userInfo).unwrap();
 
-  const handleLogin = () => {
-    // for testing redux work or not
-    dispatch(
-      setUser({
-        user: {
-          userId: "123",
-          name: "Shaikat",
-          email: "test@gmail.com",
-          role: "user",
-          profileImg: "",
-          iat: 0,
-          exp: 0,
-        },
-        token: "fake-jwt-token",
-      }),
-    );
+      if (res.success) {
+        dispatch(
+          setUser({
+            user: res.data.user,
+            token: res.data.token,
+          })
+        );
+        toast.success("Login successful!");
+        router.push("/");
+      }
+    } catch (err: any) {
+      console.error(err);
+      toast.error(err?.data?.message || "Login failed");
+    }
   };
 
   return (
@@ -162,9 +170,10 @@ export default function LoginPage() {
             {/* Login Button */}
             <Button
               onClick={handleLogin}
-              className="w-full bg-blue-900 text-white py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              disabled={isLoading}
+              className="w-full bg-blue-900 text-white py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:bg-gray-400"
             >
-              Log In
+              {isLoading ? "Logging in..." : "Log In"}
             </Button>
 
             {/* Sign Up Link */}
@@ -306,8 +315,8 @@ export default function LoginPage() {
             {/* Floating Stats */}
             <div
               className={`absolute top-20 right-8 bg-white/10 backdrop-blur-md rounded-lg p-4 transition-all duration-1000 ${animate
-                  ? "opacity-100 translate-x-0"
-                  : "opacity-0 translate-x-10"
+                ? "opacity-100 translate-x-0"
+                : "opacity-0 translate-x-10"
                 }`}
             >
               <div className="text-white text-2xl font-bold">+24.5%</div>
@@ -316,8 +325,8 @@ export default function LoginPage() {
 
             <div
               className={`absolute bottom-32 left-8 bg-white/10 backdrop-blur-md rounded-lg p-4 transition-all duration-1000 delay-300 ${animate
-                  ? "opacity-100 translate-x-0"
-                  : "opacity-0 -translate-x-10"
+                ? "opacity-100 translate-x-0"
+                : "opacity-0 -translate-x-10"
                 }`}
             >
               <div className="text-white text-2xl font-bold">$125K</div>
