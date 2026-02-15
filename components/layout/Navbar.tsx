@@ -1,24 +1,25 @@
 "use client";
 
-import { LogOut, Menu, Settings, User, X } from "lucide-react";
+import { LogOut, Menu, Settings, User as UserIcon, X, LayoutDashboard } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Logo from "../reusable/Logo";
-
-interface User {
-  name: string;
-  image: string;
-  role: string;
-}
+import { useAppDispatch, useAppSelector } from "@/Redux/hooks";
+import { logout, selectCurrentUser } from "@/Redux/features/auth/authSlice";
+import { toast } from "sonner";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
+
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectCurrentUser);
 
   // Handle clicks outside mobile menu
   useEffect(() => {
@@ -64,18 +65,13 @@ export default function Navbar() {
     };
   }, [profileDropdownOpen]);
 
-  // Simulate authentication
-  const [user, setUser] = useState<User | null>({
-    name: "John Doe",
-    image: "/placeholder.svg",
-    role: "user",
-  });
-
   // Handle logout
   const handleLogout = () => {
-    setUser(null);
+    dispatch(logout());
     setProfileDropdownOpen(false);
-    // Add actual logout logic here (e.g., clear tokens, redirect)
+    setIsOpen(false);
+    toast.success("Logged out successfully");
+    router.push("/auth/login");
   };
 
   // Navigation items for user
@@ -105,10 +101,9 @@ export default function Navbar() {
                   key={item.href}
                   href={item.href}
                   className={`relative text-sm lg:text-base font-medium transition-colors py-2
-                    ${
-                      isActive
-                        ? "text-primary"
-                        : "text-gray-700 hover:text-primary"
+                    ${isActive
+                      ? "text-primary"
+                      : "text-gray-700 hover:text-primary"
                     }
                     after:content-[''] after:absolute after:left-0 after:-bottom-1
                     after:h-[2px] after:w-full after:bg-primary
@@ -124,48 +119,56 @@ export default function Navbar() {
           </nav>
 
           {/* Desktop Profile Section - Only shows when logged in */}
-          {/* <div className="hidden md:flex items-center space-x-3 lg:space-x-4">
-            {user && (
+          <div className="hidden md:flex items-center space-x-3 lg:space-x-4">
+            {user ? (
               <div className="relative" ref={profileDropdownRef}>
                 <button
                   onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-                  className="flex items-center space-x-2 focus:outline-none"
+                  className="flex items-center space-x-2 focus:outline-none hover:opacity-80 transition-opacity"
                 >
-                  <Image
-                    height={36}
-                    width={36}
-                    src={user.image || "/placeholder.svg"}
-                    quality={100}
-                    alt={`${user.name} profile`}
-                    className="rounded-full object-cover w-8 h-8 lg:w-9 lg:h-9"
-                  />
-                  <span className="text-sm font-medium text-gray-700 hidden lg:block">
-                    {user.name}
+                  <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-900 font-bold border border-blue-200">
+                    {user.email?.charAt(0).toUpperCase() || "U"}
+                  </div>
+                  <span className="text-sm font-medium text-gray-700 hidden lg:block max-w-[100px] truncate">
+                    {user.email?.split("@")[0]}
                   </span>
                 </button>
 
-               
+                {/* Dropdown Menu */}
                 {profileDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50 transform origin-top-right transition-all duration-200 ease-out">
+                    <div className="px-4 py-3 border-b border-gray-100 mb-1">
+                      <p className="text-sm font-semibold text-gray-900 truncate">
+                        {user.email}
+                      </p>
+                      <p className="text-xs text-gray-500 capitalize">
+                        {user.role}
+                      </p>
+                    </div>
+
+                    <Link
+                      href={user.role === "admin" ? "/admin/dashboard" : "/userDashboard/profile"}
+                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      onClick={() => setProfileDropdownOpen(false)}
+                    >
+                      <LayoutDashboard className="mr-3 h-4 w-4 text-gray-500" />
+                      Dashboard
+                    </Link>
+
                     <Link
                       href="/userDashboard/profile"
-                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       onClick={() => setProfileDropdownOpen(false)}
                     >
-                      <User className="mr-3 h-4 w-4" />
+                      <UserIcon className="mr-3 h-4 w-4 text-gray-500" />
                       Profile
                     </Link>
-                    <Link
-                      href="/userDashboard/settings"
-                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                      onClick={() => setProfileDropdownOpen(false)}
-                    >
-                      <Settings className="mr-3 h-4 w-4" />
-                      Settings
-                    </Link>
+
+                    <div className="border-t border-gray-100 my-1"></div>
+
                     <button
                       onClick={handleLogout}
-                      className="flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                      className="flex w-full items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
                     >
                       <LogOut className="mr-3 h-4 w-4" />
                       Logout
@@ -173,8 +176,8 @@ export default function Navbar() {
                   </div>
                 )}
               </div>
-            )}
-          </div> */}
+            ) : null}
+          </div>
 
           {/* Mobile Menu Button */}
           <button
@@ -202,11 +205,10 @@ export default function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`px-4 py-2.5 text-base font-medium rounded-lg transition-colors ${
-                      isActive
-                        ? "bg-primary/10 text-primary"
-                        : "text-gray-700 hover:bg-gray-50"
-                    }`}
+                    className={`px-4 py-2.5 text-base font-medium rounded-lg transition-colors ${isActive
+                      ? "bg-primary/10 text-primary"
+                      : "text-gray-700 hover:bg-gray-50"
+                      }`}
                     onClick={() => setIsOpen(false)}
                   >
                     {item.label}
@@ -215,54 +217,48 @@ export default function Navbar() {
               })}
             </nav>
 
-            {/* Mobile Profile Section - Only shows when logged in */}
-            {/* {user && (
+            {/* Mobile Profile Section */}
+            {user ? (
               <div className="border-t border-gray-200 pt-4">
-             
+                {/* User Info */}
                 <div className="px-4 py-3 bg-gray-50 rounded-lg mb-4">
                   <div className="flex items-center space-x-3">
-                    <Image
-                      height={48}
-                      width={48}
-                      src={user.image || "/placeholder.svg"}
-                      quality={100}
-                      alt={`${user.name} profile`}
-                      className="rounded-full object-cover w-12 h-12"
-                    />
-                    <div>
-                      <p className="text-sm font-semibold text-gray-900">
-                        {user.name}
+                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-900 font-bold border border-blue-200">
+                      {user.email?.charAt(0).toUpperCase() || "U"}
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-sm font-semibold text-gray-900 truncate">
+                        {user.email?.split("@")[0]}
                       </p>
-                      <p className="text-xs text-gray-500 capitalize">
-                        {user.role}
+                      <p className="text-xs text-gray-500 truncate">
+                        {user.email}
                       </p>
                     </div>
                   </div>
                 </div>
 
-            
+                {/* Mobile Menu Actions */}
                 <div className="space-y-1">
+                  <Link
+                    href={user.role === "admin" ? "/admin/dashboard" : "/userDashboard/profile"}
+                    className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <LayoutDashboard className="mr-3 h-5 w-5 text-gray-500" />
+                    Dashboard
+                  </Link>
+
                   <Link
                     href="/userDashboard/profile"
                     className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg"
                     onClick={() => setIsOpen(false)}
                   >
-                    <User className="mr-3 h-5 w-5" />
+                    <UserIcon className="mr-3 h-5 w-5 text-gray-500" />
                     Profile
                   </Link>
-                  <Link
-                    href="/userDashboard/settings"
-                    className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <Settings className="mr-3 h-5 w-5" />
-                    Settings
-                  </Link>
+
                   <button
-                    onClick={() => {
-                      handleLogout();
-                      setIsOpen(false);
-                    }}
+                    onClick={handleLogout}
                     className="flex w-full items-center px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-lg"
                   >
                     <LogOut className="mr-3 h-5 w-5" />
@@ -270,7 +266,7 @@ export default function Navbar() {
                   </button>
                 </div>
               </div>
-            )} */}
+            ) : null}
           </div>
         </div>
       )}

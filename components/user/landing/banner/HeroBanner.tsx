@@ -1,20 +1,55 @@
 "use client";
 
 import GetStartedButton from "@/components/reusable/GetStartedButton";
-import React, { useState } from "react";
 import { WiStars } from "react-icons/wi";
 
 import { HiOutlineMail } from "react-icons/hi";
-import { RiLockPasswordLine } from "react-icons/ri";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { RiLockPasswordLine, RiEyeLine, RiEyeOffLine } from "react-icons/ri";
+import Link from "next/link";
+import { useState } from "react";
+import { useAppDispatch } from "@/Redux/hooks";
+import { useLoginMutation } from "@/Redux/features/auth/authApi";
+import { setUser } from "@/Redux/features/auth/authSlice";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function HeroBanner() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+
+  const [login, { isLoading }] = useLoginMutation();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const userInfo = { email, password };
+      const res = await login(userInfo).unwrap();
+
+      if (res.success) {
+        dispatch(
+          setUser({
+            user: res.data.user,
+            token: res.data.token,
+          })
+        );
+        toast.success("Login successful!");
+        router.push("/");
+      }
+    } catch (err: any) {
+      console.error(err);
+      toast.error(err?.data?.message || "Login failed");
+    }
+  };
 
   return (
     <div className="relative bg-primary min-h-screen">
       <div className="container mx-auto px-4 sm:px-10 lg:px-8 py-8 lg:py-20">
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 xl:gap-58">
+
           {/* LEFT SECTION - Content */}
           <div className="w-full lg:w-1/2 space-y-8 lg:space-y-8">
             {/* Powered by badge */}
@@ -32,11 +67,10 @@ export default function HeroBanner() {
 
             {/* Description */}
             <p className="text-white/90 text-base sm:text-lg lg:text-xl leading-relaxed">
-              Thari (powered by halarain.com) helps Muslims quickly check
-              whether a stock is Sharia-compliant (Halal) or non-compliant
-              (Haram). Get clear compliance insights, practical analysis, and
-              simple financial tools—plus community discussions on investing and
-              crypto.
+              Thari (powered by halarain.com) helps Muslims quickly check whether
+              a stock is Sharia-compliant (Halal) or non-compliant (Haram). Get
+              clear compliance insights, practical analysis, and simple financial
+              tools—plus community discussions on investing and crypto.
             </p>
 
             {/* CTA Button */}
@@ -48,6 +82,7 @@ export default function HeroBanner() {
           {/* RIGHT SECTION - Login Card */}
           <div className="w-full lg:w-1/2 max-w-md mx-auto lg:mx-0">
             <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 sm:p-8 shadow-xl">
+
               {/* Welcome Header */}
               <div className=" mb-6">
                 <h2 className="text-white text-2xl sm:text-3xl font-bold mb-2">
@@ -59,7 +94,7 @@ export default function HeroBanner() {
               </div>
 
               {/* Login Form */}
-              <form className="space-y-4">
+              <form onSubmit={handleLogin} className="space-y-4">
                 {/* Email Field */}
                 <div>
                   <label className="block text-white/90 text-sm font-medium mb-2">
@@ -70,35 +105,38 @@ export default function HeroBanner() {
                     <input
                       type="email"
                       placeholder="Enter your email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       className="w-full bg-white border border-white/30 rounded-lg py-3 pl-10 pr-4 text-gray-700 placeholder:text-[#9CA3AF] focus:outline-none focus:border-white/60 transition-colors"
+                      required
                     />
                   </div>
                 </div>
 
                 {/* Password Field */}
                 <div>
-                  <label className="block text-white text-sm font-medium mb-2">
+                  <label className="block text-[#9CA3AF] text-sm font-medium mb-2">
                     Password
                   </label>
                   <div className="relative">
                     <RiLockPasswordLine className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9CA3AF] text-lg" />
                     <input
                       type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
-                      className="w-full bg-white border border-white/30 rounded-lg py-3 pl-10 pr-12 text-gray-700 placeholder:text-[#9CA3AF] focus:outline-none focus:border-white/60 transition-colors"
+                      placeholder="Type your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full bg-white border border-white/30 rounded-lg py-3 pl-10 pr-10 text-gray-700 placeholder:text-[#9CA3AF] focus:outline-none focus:border-white/60 transition-colors"
+                      required
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white/90 transition-colors focus:outline-none"
-                      aria-label={
-                        showPassword ? "Hide password" : "Show password"
-                      }
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-gray-700 focus:outline-none"
                     >
                       {showPassword ? (
-                        <AiOutlineEyeInvisible size={20} className="text-[#9CA3AF]"/>
+                        <RiEyeOffLine className="text-lg" />
                       ) : (
-                        <AiOutlineEye size={20} className="text-[#9CA3AF]"/>
+                        <RiEyeLine className="text-lg" />
                       )}
                     </button>
                   </div>
@@ -110,13 +148,12 @@ export default function HeroBanner() {
                     <input
                       type="checkbox"
                       className="rounded border-white/30 bg-white/10"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
                     />
                     <span>Remember me</span>
                   </label>
-                  <a
-                    href="#"
-                    className="text-white/80 hover:text-white transition-colors"
-                  >
+                  <a href="#" className="text-white/80 hover:text-white transition-colors">
                     Forgot password?
                   </a>
                 </div>
@@ -124,9 +161,10 @@ export default function HeroBanner() {
                 {/* Login Button */}
                 <button
                   type="submit"
-                  className="w-full bg-white text-primary font-semibold py-3 rounded-lg hover:bg-white/90 transition-colors mt-6"
+                  disabled={isLoading}
+                  className="w-full bg-white text-primary font-semibold py-3 rounded-lg hover:bg-white/90 transition-colors mt-6 disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  Log In
+                  {isLoading ? "Logging in..." : "Log In"}
                 </button>
               </form>
 
@@ -140,13 +178,11 @@ export default function HeroBanner() {
                 </div>
               </div> */}
 
+
               {/* Sign up link */}
               <p className=" text-white/80 text-sm mt-6">
-                Don't have an account?{" "}
-                <a
-                  href="/auth/register"
-                  className="text-white font-semibold hover:underline"
-                >
+                Don't have an account?{' '}
+                <Link href="/auth/register" className="text-white font-semibold hover:underline">
                   Sign up
                 </Link>
               </p>
