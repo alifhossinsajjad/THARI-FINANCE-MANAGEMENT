@@ -74,8 +74,7 @@ export default function CommunicationsPage() {
   const handleMarkRead = (id: number) => {
     // In real app: update state / API
     alert(
-      `Marked message ${id} as ${
-        messages.find((m) => m.id === id)?.read ? "Unread" : "Read"
+      `Marked message ${id} as ${messages.find((m) => m.id === id)?.read ? "Unread" : "Read"
       }`
     );
   };
@@ -112,31 +111,28 @@ export default function CommunicationsPage() {
         <div className="flex flex-wrap gap-3">
           <button
             onClick={() => setStatusFilter("All")}
-            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-              statusFilter === "All"
+            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${statusFilter === "All"
                 ? "bg-primary text-white cursor-pointer"
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer"
-            }`}
+              }`}
           >
             All
           </button>
           <button
             onClick={() => setStatusFilter("Unread")}
-            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 ${
-              statusFilter === "Unread"
+            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 ${statusFilter === "Unread"
                 ? "bg-primary text-white cursor-pointer"
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer"
-            }`}
+              }`}
           >
             Unread ({unreadCount})
           </button>
           <button
             onClick={() => setStatusFilter("Read")}
-            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-              statusFilter === "Read"
+            className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${statusFilter === "Read"
                 ? "bg-primary text-white cursor-pointer"
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer"
-            }`}
+              }`}
           >
             Read
           </button>
@@ -153,9 +149,8 @@ export default function CommunicationsPage() {
           filteredMessages.map((msg) => (
             <div
               key={msg.id}
-              className={`bg-white rounded-xl shadow-sm border ${
-                !msg.read ? "border-blue-200 bg-blue-50/30" : "border-gray-200"
-              } overflow-hidden hover:shadow-md transition-shadow`}
+              className={`bg-white rounded-xl shadow-sm border ${!msg.read ? "border-blue-200 bg-blue-50/30" : "border-gray-200"
+                } overflow-hidden hover:shadow-md transition-shadow`}
             >
               <div className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                 {/* Left: Sender + Content */}

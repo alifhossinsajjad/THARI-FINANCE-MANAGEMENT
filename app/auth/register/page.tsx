@@ -74,9 +74,8 @@ export default function SignupPage() {
       {/* Left Section - Signup Form */}
       <div className="flex w-full lg:w-1/2 flex-col justify-center px-8 sm:px-12 lg:px-20 bg-white">
         <div
-          className={`w-full max-w-md mx-auto transition-all duration-1000 ${
-            animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
+          className={`w-full max-w-md mx-auto transition-all duration-1000 ${animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            }`}
         >
           {/* Logo */}
           <div className="flex items-center gap-2 mb-8">
@@ -288,9 +287,8 @@ export default function SignupPage() {
 
           {/* Chart Lines and Labels */}
           <svg
-            className={`relative z-20 w-full max-w-2xl h-80 transition-all duration-1500 ${
-              animate ? "opacity-100 scale-100" : "opacity-0 scale-95"
-            }`}
+            className={`relative z-20 w-full max-w-2xl h-80 transition-all duration-1500 ${animate ? "opacity-100 scale-100" : "opacity-0 scale-95"
+              }`}
             viewBox="0 0 600 300"
             fill="none"
           >
@@ -388,9 +386,8 @@ export default function SignupPage() {
 
           {/* Floating Metric Labels */}
           <div
-            className={`absolute top-24 left-16 transition-all duration-1000 ${
-              animate ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
-            }`}
+            className={`absolute top-24 left-16 transition-all duration-1000 ${animate ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
+              }`}
           >
             <div className="bg-blue-500 text-white px-3 py-1 rounded text-xs font-semibold shadow-lg">
               2330.82
@@ -398,9 +395,8 @@ export default function SignupPage() {
           </div>
 
           <div
-            className={`absolute top-32 right-32 transition-all duration-1000 delay-200 ${
-              animate ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
-            }`}
+            className={`absolute top-32 right-32 transition-all duration-1000 delay-200 ${animate ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
+              }`}
           >
             <div className="bg-emerald-500 text-white px-3 py-1 rounded text-xs font-semibold shadow-lg">
               3158.84
@@ -409,41 +405,36 @@ export default function SignupPage() {
 
           {/* Percentage Labels */}
           <div
-            className={`absolute top-44 right-24 transition-all duration-1000 delay-300 ${
-              animate ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute top-44 right-24 transition-all duration-1000 delay-300 ${animate ? "opacity-100" : "opacity-0"
+              }`}
           >
             <div className="text-emerald-400 text-sm font-semibold">+12%</div>
           </div>
 
           <div
-            className={`absolute top-52 left-32 transition-all duration-1000 delay-400 ${
-              animate ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute top-52 left-32 transition-all duration-1000 delay-400 ${animate ? "opacity-100" : "opacity-0"
+              }`}
           >
             <div className="text-blue-400 text-sm font-semibold">+7.1%</div>
           </div>
 
           <div
-            className={`absolute bottom-32 left-24 transition-all duration-1000 delay-500 ${
-              animate ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute bottom-32 left-24 transition-all duration-1000 delay-500 ${animate ? "opacity-100" : "opacity-0"
+              }`}
           >
             <div className="text-gray-400 text-sm font-semibold">-3.4%</div>
           </div>
 
           <div
-            className={`absolute bottom-36 right-16 transition-all duration-1000 delay-600 ${
-              animate ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute bottom-36 right-16 transition-all duration-1000 delay-600 ${animate ? "opacity-100" : "opacity-0"
+              }`}
           >
             <div className="text-gray-400 text-sm font-semibold">+5.2%</div>
           </div>
 
           <div
-            className={`absolute top-36 left-1/2 transform -translate-x-1/2 transition-all duration-1000 delay-700 ${
-              animate ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute top-36 left-1/2 transform -translate-x-1/2 transition-all duration-1000 delay-700 ${animate ? "opacity-100" : "opacity-0"
+              }`}
           >
             <div className="text-gray-500 text-sm font-semibold">-3.9%</div>
           </div>

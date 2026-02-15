@@ -235,11 +235,10 @@ export default function PushNotificationsPage() {
                       </td>
                       <td className="px-6 py-4">
                         <span
-                          className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium ${
-                            notif.status === "Sent"
+                          className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium ${notif.status === "Sent"
                               ? "bg-green-100 text-green-700"
                               : "bg-yellow-100 text-yellow-700"
-                          }`}
+                            }`}
                         >
                           {notif.status}
                         </span>

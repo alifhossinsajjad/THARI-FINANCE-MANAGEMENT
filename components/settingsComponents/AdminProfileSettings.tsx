@@ -93,14 +93,12 @@ export default function ProfileSettings() {
       </div>
       <button
         onClick={onClick}
-        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-          active ? "bg-blue-900" : "bg-gray-200"
-        }`}
+        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${active ? "bg-blue-900" : "bg-gray-200"
+          }`}
       >
         <span
-          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-            active ? "translate-x-6" : "translate-x-1"
-          }`}
+          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${active ? "translate-x-6" : "translate-x-1"
+            }`}
         />
       </button>
     </div>
@@ -169,11 +167,10 @@ export default function ProfileSettings() {
           <button
             key={tab.name}
             onClick={() => setActiveTab(tab.name)}
-            className={`flex items-center gap-2 pb-4 text-sm font-medium transition-all relative ${
-              activeTab === tab.name
+            className={`flex items-center gap-2 pb-4 text-sm font-medium transition-all relative ${activeTab === tab.name
                 ? "text-blue-900"
                 : "text-gray-500 hover:text-gray-700"
-            }`}
+              }`}
           >
             {tab.icon}
             {tab.name}
@@ -401,16 +398,14 @@ export default function ProfileSettings() {
                   onClick={() =>
                     setSecurityConfig({ twoFactor: !securityConfig.twoFactor })
                   }
-                  className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors ${
-                    securityConfig.twoFactor ? "bg-blue-900" : "bg-gray-300"
-                  }`}
+                  className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors ${securityConfig.twoFactor ? "bg-blue-900" : "bg-gray-300"
+                    }`}
                 >
                   <span
-                    className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
-                      securityConfig.twoFactor
+                    className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${securityConfig.twoFactor
                         ? "translate-x-6"
                         : "translate-x-1"
-                    }`}
+                      }`}
                   />
                 </button>
               </div>

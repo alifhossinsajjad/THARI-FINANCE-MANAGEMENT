@@ -106,16 +106,14 @@ export default function AIFinancialTools() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center gap-2.5 px-6 py-3 rounded-xl font-semibold text-sm transition-all border shadow-sm border-gray-200 ${
-              activeTab === tab.id
+            className={`flex items-center gap-2.5 px-6 py-3 rounded-xl font-semibold text-sm transition-all border shadow-sm border-gray-200 ${activeTab === tab.id
                 ? "bg-primary text-white  cursor-pointer"
                 : " text-gray-700 cursor-pointer"
-            }`}
+              }`}
           >
             <tab.icon
-              className={`w-4 h-4 ${
-                activeTab === tab.id ? "text-white" : "text-gray-400"
-              }`}
+              className={`w-4 h-4 ${activeTab === tab.id ? "text-white" : "text-gray-400"
+                }`}
             />
             {tab.label}
           </button>

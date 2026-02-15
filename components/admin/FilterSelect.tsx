@@ -46,9 +46,8 @@ const FilterSelect: React.FC<FilterSelectProps> = ({
         </span>
         <ChevronDown
           size={18}
-          className={`text-gray-400 transition-transform ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`text-gray-400 transition-transform ${isOpen ? "rotate-180" : ""
+            }`}
         />
       </button>
 
@@ -59,9 +58,8 @@ const FilterSelect: React.FC<FilterSelectProps> = ({
               key={`option-${index}`}
               type="button"
               onClick={() => handleSelect(option)}
-              className={`w-full px-4 py-2.5 text-left text-sm hover:bg-gray-50 transition-colors ${
-                value === option ? "text-blue-600 bg-blue-50" : "text-gray-900"
-              }`}
+              className={`w-full px-4 py-2.5 text-left text-sm hover:bg-gray-50 transition-colors ${value === option ? "text-blue-600 bg-blue-50" : "text-gray-900"
+                }`}
             >
               {option}
             </button>

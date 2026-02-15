@@ -84,9 +84,8 @@ export default function NewsletterSubscribe() {
 
             {status !== "idle" && (
               <p
-                className={`mt-5 text-sm ${
-                  status === "success" ? "text-green-300" : "text-red-300"
-                }`}
+                className={`mt-5 text-sm ${status === "success" ? "text-green-300" : "text-red-300"
+                  }`}
               >
                 {message}
               </p>

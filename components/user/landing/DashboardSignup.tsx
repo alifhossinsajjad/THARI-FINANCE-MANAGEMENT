@@ -90,9 +90,8 @@ export default function DashboardSignup() {
               required
               value={formData.fullName}
               onChange={handleChange}
-              className={`w-full px-4 py-3 border ${
-                errors.fullName ? "border-red-500" : "border-gray-300"
-              } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition`}
+              className={`w-full px-4 py-3 border ${errors.fullName ? "border-red-500" : "border-gray-300"
+                } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition`}
               placeholder="John Doe"
             />
             {errors.fullName && (
@@ -116,9 +115,8 @@ export default function DashboardSignup() {
               required
               value={formData.email}
               onChange={handleChange}
-              className={`w-full px-4 py-3 border ${
-                errors.email ? "border-red-500" : "border-gray-300"
-              } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition`}
+              className={`w-full px-4 py-3 border ${errors.email ? "border-red-500" : "border-gray-300"
+                } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition`}
               placeholder="you@example.com"
             />
             {errors.email && (
@@ -142,9 +140,8 @@ export default function DashboardSignup() {
               required
               value={formData.password}
               onChange={handleChange}
-              className={`w-full px-4 py-3 border ${
-                errors.password ? "border-red-500" : "border-gray-300"
-              } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition`}
+              className={`w-full px-4 py-3 border ${errors.password ? "border-red-500" : "border-gray-300"
+                } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition`}
               placeholder="••••••••"
             />
             {errors.password && (
@@ -168,9 +165,8 @@ export default function DashboardSignup() {
               required
               value={formData.confirmPassword}
               onChange={handleChange}
-              className={`w-full px-4 py-3 border ${
-                errors.confirmPassword ? "border-red-500" : "border-gray-300"
-              } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition`}
+              className={`w-full px-4 py-3 border ${errors.confirmPassword ? "border-red-500" : "border-gray-300"
+                } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition`}
               placeholder="••••••••"
             />
             {errors.confirmPassword && (

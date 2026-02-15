@@ -161,9 +161,8 @@ export default function FeaturesSection() {
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
         {/* Section Header */}
         <div
-          className={`text-center mb-16 transition-all duration-1000 ${
-            animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
+          className={`text-center mb-16 transition-all duration-1000 ${animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            }`}
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
             Why Choose Us
@@ -179,47 +178,41 @@ export default function FeaturesSection() {
           {features.map((feature, index) => (
             <div
               key={index}
-              className={`group relative transition-all duration-700 ${
-                animate
+              className={`group relative transition-all duration-700 ${animate
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-10"
-              }`}
+                }`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
               <div
-                className={`${
-                  feature.highlighted
+                className={`${feature.highlighted
                     ? "bg-blue-900 text-white shadow-2xl scale-105"
                     : "bg-white border border-gray-200 hover:border-blue-200"
-                } rounded-2xl p-8 h-full transition-all duration-300 hover:shadow-xl ${
-                  !feature.highlighted && "hover:-translate-y-2"
-                }`}
+                  } rounded-2xl p-8 h-full transition-all duration-300 hover:shadow-xl ${!feature.highlighted && "hover:-translate-y-2"
+                  }`}
               >
                 {/* Icon */}
                 <div
-                  className={`inline-flex items-center justify-center w-14 h-14 rounded-full mb-6 ${
-                    feature.highlighted
+                  className={`inline-flex items-center justify-center w-14 h-14 rounded-full mb-6 ${feature.highlighted
                       ? "bg-white/20 text-white"
                       : "bg-blue-50 text-blue-900"
-                  } transition-all duration-300 group-hover:scale-110`}
+                    } transition-all duration-300 group-hover:scale-110`}
                 >
                   {feature.icon}
                 </div>
 
                 {/* Title */}
                 <h3
-                  className={`text-xl font-bold mb-3 ${
-                    feature.highlighted ? "text-white" : "text-gray-900"
-                  }`}
+                  className={`text-xl font-bold mb-3 ${feature.highlighted ? "text-white" : "text-gray-900"
+                    }`}
                 >
                   {feature.title}
                 </h3>
 
                 {/* Description */}
                 <p
-                  className={`text-sm leading-relaxed ${
-                    feature.highlighted ? "text-white/90" : "text-gray-600"
-                  }`}
+                  className={`text-sm leading-relaxed ${feature.highlighted ? "text-white/90" : "text-gray-600"
+                    }`}
                 >
                   {feature.description}
                 </p>
@@ -235,9 +228,8 @@ export default function FeaturesSection() {
 
         {/* Bottom CTA */}
         <div
-          className={`text-center mt-16 transition-all duration-1000 delay-700 ${
-            animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
+          className={`text-center mt-16 transition-all duration-1000 delay-700 ${animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            }`}
         >
           <GetStartedButton
             text="Get Started Today"
