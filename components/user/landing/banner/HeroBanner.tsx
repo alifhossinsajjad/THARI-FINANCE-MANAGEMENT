@@ -34,7 +34,7 @@ export default function HeroBanner() {
           setUser({
             user: res.data.user,
             token: res.data.token,
-          })
+          }),
         );
         toast.success("Login successful!");
         router.push("/");
@@ -49,7 +49,6 @@ export default function HeroBanner() {
     <div className="relative bg-primary min-h-screen">
       <div className="container mx-auto px-4 sm:px-10 lg:px-8 py-8 lg:py-20">
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 xl:gap-58">
-
           {/* LEFT SECTION - Content */}
           <div className="w-full lg:w-1/2 space-y-8 lg:space-y-8">
             {/* Powered by badge */}
@@ -67,10 +66,11 @@ export default function HeroBanner() {
 
             {/* Description */}
             <p className="text-white/90 text-base sm:text-lg lg:text-xl leading-relaxed">
-              Thari (powered by halarain.com) helps Muslims quickly check whether
-              a stock is Sharia-compliant (Halal) or non-compliant (Haram). Get
-              clear compliance insights, practical analysis, and simple financial
-              tools—plus community discussions on investing and crypto.
+              Thari (powered by halarain.com) helps Muslims quickly check
+              whether a stock is Sharia-compliant (Halal) or non-compliant
+              (Haram). Get clear compliance insights, practical analysis, and
+              simple financial tools—plus community discussions on investing and
+              crypto.
             </p>
 
             {/* CTA Button */}
@@ -82,7 +82,6 @@ export default function HeroBanner() {
           {/* RIGHT SECTION - Login Card */}
           <div className="w-full lg:w-1/2 max-w-md mx-auto lg:mx-0">
             <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 sm:p-8 shadow-xl">
-
               {/* Welcome Header */}
               <div className=" mb-6">
                 <h2 className="text-white text-2xl sm:text-3xl font-bold mb-2">
@@ -153,7 +152,10 @@ export default function HeroBanner() {
                     />
                     <span>Remember me</span>
                   </label>
-                  <a href="#" className="text-white/80 hover:text-white transition-colors">
+                  <a
+                    href="#"
+                    className="text-white/80 hover:text-white transition-colors"
+                  >
                     Forgot password?
                   </a>
                 </div>
@@ -178,13 +180,15 @@ export default function HeroBanner() {
                 </div>
               </div> */}
 
-
               {/* Sign up link */}
               <p className=" text-white/80 text-sm mt-6">
-                Don't have an account?{' '}
-                <Link href="/auth/register" className="text-white font-semibold hover:underline">
+                Don't have an account?{" "}
+                <a
+                  href="/auth/register"
+                  className="text-white font-semibold hover:underline"
+                >
                   Sign up
-                </Link>
+                </a>
               </p>
             </div>
           </div>
