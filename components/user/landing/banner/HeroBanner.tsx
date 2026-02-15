@@ -1,16 +1,20 @@
+"use client";
+
 import GetStartedButton from "@/components/reusable/GetStartedButton";
-import React from "react";
+import React, { useState } from "react";
 import { WiStars } from "react-icons/wi";
 
 import { HiOutlineMail } from "react-icons/hi";
 import { RiLockPasswordLine } from "react-icons/ri";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 export default function HeroBanner() {
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <div className="relative bg-primary min-h-screen">
       <div className="container mx-auto px-4 sm:px-10 lg:px-8 py-8 lg:py-20">
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16 xl:gap-58">
-          
           {/* LEFT SECTION - Content */}
           <div className="w-full lg:w-1/2 space-y-8 lg:space-y-8">
             {/* Powered by badge */}
@@ -20,30 +24,30 @@ export default function HeroBanner() {
                 Powered by: halarain.com
               </span>
             </div>
-            
+
             {/* Main heading */}
             <h1 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold leading-tight">
               #1 Platform for Sharia-compliant stock insights
             </h1>
-            
+
             {/* Description */}
             <p className="text-white/90 text-base sm:text-lg lg:text-xl leading-relaxed">
-              Thari (powered by halarain.com) helps Muslims quickly check whether
-              a stock is Sharia-compliant (Halal) or non-compliant (Haram). Get
-              clear compliance insights, practical analysis, and simple financial
-              tools—plus community discussions on investing and crypto.
+              Thari (powered by halarain.com) helps Muslims quickly check
+              whether a stock is Sharia-compliant (Halal) or non-compliant
+              (Haram). Get clear compliance insights, practical analysis, and
+              simple financial tools—plus community discussions on investing and
+              crypto.
             </p>
-            
+
             {/* CTA Button */}
             <div className="pt-4">
               <GetStartedButton />
             </div>
           </div>
-          
+
           {/* RIGHT SECTION - Login Card */}
           <div className="w-full lg:w-1/2 max-w-md mx-auto lg:mx-0">
             <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 sm:p-8 shadow-xl">
-              
               {/* Welcome Header */}
               <div className=" mb-6">
                 <h2 className="text-white text-2xl sm:text-3xl font-bold mb-2">
@@ -53,7 +57,7 @@ export default function HeroBanner() {
                   Access your dashboard and manage your investments
                 </p>
               </div>
-              
+
               {/* Login Form */}
               <form className="space-y-4">
                 {/* Email Field */}
@@ -70,33 +74,53 @@ export default function HeroBanner() {
                     />
                   </div>
                 </div>
-                
+
                 {/* Password Field */}
                 <div>
-                  <label className="block text-[#9CA3AF] text-sm font-medium mb-2">
+                  <label className="block text-white text-sm font-medium mb-2">
                     Password
                   </label>
                   <div className="relative">
                     <RiLockPasswordLine className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9CA3AF] text-lg" />
                     <input
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
-                      className="w-full bg-white border border-white/30 rounded-lg py-3 pl-10 pr-4 text-gray-700 placeholder:text-[#9CA3AF] focus:outline-none focus:border-white/60 transition-colors"
+                      className="w-full bg-white border border-white/30 rounded-lg py-3 pl-10 pr-12 text-gray-700 placeholder:text-[#9CA3AF] focus:outline-none focus:border-white/60 transition-colors"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white/90 transition-colors focus:outline-none"
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
+                    >
+                      {showPassword ? (
+                        <AiOutlineEyeInvisible size={20} className="text-[#9CA3AF]"/>
+                      ) : (
+                        <AiOutlineEye size={20} className="text-[#9CA3AF]"/>
+                      )}
+                    </button>
                   </div>
                 </div>
-                
+
                 {/* Remember me & Forgot password */}
                 <div className="flex items-center justify-between text-sm">
                   <label className="flex items-center gap-2 text-white/80">
-                    <input type="checkbox" className="rounded border-white/30 bg-white/10" />
+                    <input
+                      type="checkbox"
+                      className="rounded border-white/30 bg-white/10"
+                    />
                     <span>Remember me</span>
                   </label>
-                  <a href="#" className="text-white/80 hover:text-white transition-colors">
+                  <a
+                    href="#"
+                    className="text-white/80 hover:text-white transition-colors"
+                  >
                     Forgot password?
                   </a>
                 </div>
-                
+
                 {/* Login Button */}
                 <button
                   type="submit"
@@ -105,7 +129,7 @@ export default function HeroBanner() {
                   Log In
                 </button>
               </form>
-              
+
               {/* Divider */}
               {/* <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
@@ -115,12 +139,14 @@ export default function HeroBanner() {
                   <span className="px-2 bg-transparent text-white/60">or</span>
                 </div>
               </div> */}
-      
-              
+
               {/* Sign up link */}
               <p className=" text-white/80 text-sm mt-6">
-                Don't have an account?{' '}
-                <a href="/auth/register" className="text-white font-semibold hover:underline">
+                Don't have an account?{" "}
+                <a
+                  href="/auth/register"
+                  className="text-white font-semibold hover:underline"
+                >
                   Sign up
                 </a>
               </p>

@@ -18,19 +18,7 @@ export default function JourneySection({
 }: JourneySectionProps) {
   return (
     <section className="relative w-full px-4 py-20 sm:px-6 lg:px-8 bg-gradient-to-r from-[#0230C9]/80 to-[#00249A]/75">
-      {/* Background Image */}
-      {/* <Image
-        src="/images/landingPage/cover.jpg"
-        alt="Transactions Background"
-        width={1600}
-        height={1600}
-        quality={100}
-        className="absolute inset-0 z-10 h-full w-full object-cover opacity-20"
-      /> */}
-
-      {/* Background overlay for better text readability */}
-      {/* <div className="absolute inset-0 bg-gradient-to-r from-blue-[#00249A] to-blue-[#0230C9]"></div> */}
-
+     
       <div className="relative z-50 mx-auto max-w-4xl text-center ">
         <h2 className="mb-6 text-3xl font-bold text-balance text-white sm:text-4xl ">
           {heading}
