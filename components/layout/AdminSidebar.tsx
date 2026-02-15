@@ -14,14 +14,17 @@ import {
   Bell,
   MessageSquare,
   BarChart3,
+  Boxes,
   Settings,
   User,
   Menu,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import type { MenuItem } from "@/types";
 import { FaArrowTrendUp } from "react-icons/fa6";
+import { useDispatch } from "react-redux";
+import { logout } from "@/Redux/features/auth/authSlice";
 
 const AdminSidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -31,6 +34,7 @@ const AdminSidebar: React.FC = () => {
     { icon: BarChart3, label: "Dashboard", href: "/admin" },
     { icon: Users, label: "Users", href: "/admin/users" },
     { icon: CreditCard, label: "Subscriptions", href: "/admin/subscriptions" },
+
     { icon: TrendingUp, label: "Stocks", href: "/admin/stocks" },
     { icon: Package, label: "Commodities", href: "/admin/commodities" },
     { icon: Bitcoin, label: "Crypto", href: "/admin/crypto" },
@@ -43,6 +47,7 @@ const AdminSidebar: React.FC = () => {
       href: "/admin/communications",
     },
     { icon: BarChart3, label: "Reports", href: "/admin/reports" },
+    { icon: Boxes, label: "About", href: "/admin/adminAbout" },
     { icon: Settings, label: "Settings", href: "/admin/settings" },
     { icon: User, label: "Profile", href: "/admin/profile" },
   ];
@@ -57,6 +62,22 @@ const AdminSidebar: React.FC = () => {
 
   const handleOverlayClick = (): void => {
     setIsOpen(false);
+  };
+
+  // handel log out
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    // 1. Clear redux auth state
+    dispatch(logout());
+
+    // 2. Optional: clear any localStorage/sessionStorage if you store token there
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
+
+    // 3. Redirect to login page
+    router.replace("/auth/login");
   };
 
   return (
@@ -87,17 +108,20 @@ const AdminSidebar: React.FC = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-[235px] bg-primary text-white z-50 transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"
-          } lg:translate-x-0`}
+        className={`fixed top-0 left-0 h-full w-[235px] bg-primary text-white z-50 transform transition-transform duration-300 ease-in-out ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex items-center gap-2 px-4 py-6">
-            <div className="w-10 h-10 bg-white rounded-md flex items-center justify-center">
-              <FaArrowTrendUp className="text-primary " size={24} />
+          <Link href="/">
+            <div className="flex items-center gap-2 px-4 py-6">
+              <div className="w-10 h-10 bg-white rounded-md flex items-center justify-center">
+                <FaArrowTrendUp className="text-primary " size={24} />
+              </div>
+              <span className="text-xl font-semibold">Thari Finance</span>
             </div>
-            <span className="text-xl font-semibold">Thari Finance</span>
-          </div>
+          </Link>
 
           {/* Menu Items */}
           <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
@@ -109,10 +133,11 @@ const AdminSidebar: React.FC = () => {
                   key={`${item.href}-${index}`}
                   href={item.href}
                   onClick={handleClose}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    isActive
                       ? "bg-white/10 text-white"
                       : "text-white/70 hover:bg-white/5 hover:text-white"
-                    }`}
+                  }`}
                 >
                   <Icon size={20} />
                   <span>{item.label}</span>
@@ -125,7 +150,7 @@ const AdminSidebar: React.FC = () => {
           <div className="px-3 py-6 border-t border-white/10">
             <button
               className="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white transition-colors"
-              onClick={() => console.log("Logout clicked")}
+              onClick={handleLogout}
               type="button"
             >
               <LogOut size={20} />

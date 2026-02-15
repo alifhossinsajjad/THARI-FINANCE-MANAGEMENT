@@ -1,7 +1,6 @@
 "use client";
 
 import GetStartedButton from "@/components/reusable/GetStartedButton";
-import Image from "next/image";
 
 type JourneySectionProps = {
   heading?: string;
@@ -18,7 +17,6 @@ export default function JourneySection({
 }: JourneySectionProps) {
   return (
     <section className="relative w-full px-4 py-20 sm:px-6 lg:px-8 bg-gradient-to-r from-[#0230C9]/80 to-[#00249A]/75">
-     
       <div className="relative z-50 mx-auto max-w-4xl text-center ">
         <h2 className="mb-6 text-3xl font-bold text-balance text-white sm:text-4xl ">
           {heading}
