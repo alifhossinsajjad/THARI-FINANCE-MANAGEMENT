@@ -13,9 +13,10 @@ export const baseApi = createApi({
       }
       headers.set("Accept", "application/json");
       headers.set("Content-Type", "application/json");
+      headers.set("ngrok-skip-browser-warning", "true");
       return headers;
     },
   }),
   endpoints: () => ({}),
-  tagTypes: ["User", ""],
+  tagTypes: ["User", "pricing"],
 });
