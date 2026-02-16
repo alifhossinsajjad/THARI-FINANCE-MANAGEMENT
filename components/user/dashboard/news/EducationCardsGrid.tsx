@@ -54,7 +54,7 @@ const articles: Article[] = [
 export default function EducationCardsGrid() {
   return (
     <section className="pt-16  md:pt-20 pb-4 bg-gray-50">
-      <div className=" px-6 lg:px-8 md:max-w-[60vw]">
+      <div className=" px-6 lg:px-8 lg:max-w-[60vw]">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {articles.map((article, index) => (
             <div
@@ -62,7 +62,7 @@ export default function EducationCardsGrid() {
               className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-200 flex flex-col h-full"
             >
               {/* Image / Chart */}
-              <div className="relative aspect-[4/3] bg-gray-900">
+              <div className="relative aspect-4/3 bg-gray-900">
                 <Image
                   width={1600}
                   height={1600}
@@ -78,12 +78,12 @@ export default function EducationCardsGrid() {
               </div>
 
               {/* Content */}
-              <div className="p-5 flex flex-col flex-grow">
+              <div className="p-5 flex flex-col grow">
                 <h3 className="text-lg font-semibold text-gray-900 mb-3 line-clamp-2">
                   {article.title}
                 </h3>
 
-                <p className="text-sm text-gray-600 mb-4 line-clamp-3 flex-grow">
+                <p className="text-sm text-gray-600 mb-4 line-clamp-3 grow">
                   {article.description}
                 </p>
 
