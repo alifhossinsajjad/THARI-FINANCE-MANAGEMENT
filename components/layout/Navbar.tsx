@@ -113,7 +113,11 @@ export default function Navbar() {
                         : "text-gray-700 hover:text-primary"
                     }
                     after:content-[''] after:absolute after:left-0 after:-bottom-1
+<<<<<<< HEAD
                     after:h-0.5 after:w-full after:bg-primary
+=======
+                    after:h-1 after:w-full after:bg-primary
+>>>>>>> fdaf72a254455b09d536cec5b4a0f7ab99a32c14
                     after:scale-x-0 after:origin-left
                     after:transition-transform after:duration-300
                     ${isActive ? "after:scale-x-100" : "hover:after:scale-x-100"}

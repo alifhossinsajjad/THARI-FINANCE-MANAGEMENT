@@ -1,5 +1,4 @@
 import HeroBanner from "@/components/user/landing/banner/HeroBanner";
-import FeaturesSection from "@/components/user/landing/FeaturesSection";
 import JourneySection from "@/components/user/landing/JourneySection";
 import PricingSection from "@/components/user/landing/PricingSection";
 
@@ -8,7 +7,7 @@ export default function Home() {
     <div className="">
       <main className="">
         <HeroBanner />
-        <FeaturesSection />
+        {/* <FeaturesSection /> */}
         <PricingSection />
         <JourneySection />
       </main>

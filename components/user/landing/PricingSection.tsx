@@ -1,66 +1,32 @@
 "use client";
 
 import GetStartedButton from "@/components/reusable/GetStartedButton";
-import { useState, useEffect } from "react";
+import { useGetPricingPlansQuery } from "@/Redux/features/pricing/pricingApi";
+
+import { MoveUpRight } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 
 export default function PricingSection() {
   const [animate, setAnimate] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimate(true);
-    }, 0);
+  const { data : pricing, isLoading, error } = useGetPricingPlansQuery();
+  
+  console.log("Pricing Data:", pricing);
+  console.log("Pricing Error:", error);
 
-    return () => clearTimeout(timer);
-  }, []);
 
-  const pricingPlans = [
-    {
-      name: "Beginner",
-      tagline: "Perfect for individuals taking control of their portfolio",
-      price: "9.95",
-      period: "/month",
-      features: [
-        "Perfect for small projects & individual contractors",
-        "Generate 15 proposals per month",
-        "Basic AI templates for bids & quotes",
-        "Access on web & mobile",
-        "Community support",
-      ],
-      buttonText: "Get Started",
-      highlighted: false,
-    },
-    {
-      name: "Elite",
-      badge: "Popular",
-      tagline: "For growing professionals who want deeper insights",
-      price: "29.95",
-      period: "/month",
-      features: [
-        "Designed for growing businesses & professionals",
-        "Generate unlimited proposals",
-        "Advanced AI templates & customization",
-        "Basic AI templates for bids & quotes",
-        "Priority support",
-      ],
-      buttonText: "See Pricing",
-      highlighted: true,
-    },
-    {
-      name: "Elite Pro",
-      tagline: "Designed for company and constructor who want complete control",
-      price: "49.95",
-      period: "/month",
-      features: [
-        "Designed for growing businesses & professionals",
-        "Generate unlimited proposals",
-        "Advanced AI templates & customization",
-        "Basic AI templates for bids & quotes",
-      ],
-      buttonText: "Get Started",
-      highlighted: false,
-    },
-  ];
+  if (isLoading) {
+    return <div className="text-center py-10">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center py-10">Failed to load pricing</div>;
+  }
+
+
+  
+
 
   return (
     <section className="relative py-16 lg:py-20 bg-white overflow-hidden">
@@ -70,63 +36,78 @@ export default function PricingSection() {
 
       <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-8">
         {/* Section Header */}
-        <div
-          className={`text-center mb-12 transition-all duration-1000 ${
-            animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
-        >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-            Simple, Transparent Pricing
-          </h2>
-          <p className="text-sm md:text-base text-gray-600">
-            Start free and upgrade when you&#39;re ready for more features
-          </p>
+        <div className="flex justify-between">
+          <div
+            className={` mb-12 transition-all duration-1000 ${
+              animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            }`}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+              Simple, Transparent Pricing
+            </h2>
+            <p className="text-sm md:text-lg ">
+              Start free and upgrade when you&#39;re ready for more features
+            </p>
+          </div>
+          <div>
+            <Link href={"/pricing"}>
+              <div className="flex items-center gap-2 bg-primary text-white py-3 pr-2 pl-8 rounded-full ">
+                <p className="text-lg font-bold">See More</p>
+                <div className="bg-white rounded-4xl p-2">
+                  <MoveUpRight className="h-6 w-6 text-primary" />
+                </div>
+              </div>
+            </Link>
+          </div>
         </div>
 
         {/* Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-center">
-          {pricingPlans.map((plan, index) => (
+          {pricing?.slice(0,3).map((plan, index) => (
             <div
               key={index}
-              className={`transition-all duration-700 ${
+              className={`transition-all duration-700  ${
                 animate
                   ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-10"
-              } ${plan.highlighted ? "" : ""}`}
+                  : "opacity-100 translate-y-10"
+              } ${plan.is_popular ? "" : ""}`}
               style={{ transitionDelay: `${index * 150}ms` }}
             >
               <div
-                className={`relative rounded-2xl p-7 transition-all duration-300 h-[500px] flex flex-col justify-between ${
-                  plan.highlighted
+                className={`relative rounded-2xl p-7 transition-all duration-300 h-125 flex flex-col justify-between ${
+                  plan.is_popular
                     ? "bg-primary text-white shadow-2xl border-blue-700"
                     : "bg-[#F3F9FF] text-gray-900 border border-blue-300 hover:border-blue-200 hover:shadow-lg"
                 }`}
               >
-                {/* Badge for Popular Plan */}
-                {plan.badge && (
-                  <div className="absolute -top-3 right-6">
-                    <span className="inline-block bg-white text-blue-900 px-3 py-1 rounded-full text-xs font-semibold shadow-md">
-                      {plan.badge}
-                    </span>
-                  </div>
-                )}
+                <div className="flex justify-between">
+                  {/* Plan Name */}
+                  <h3
+                    className={`text-lg font-bold mb-2 ${
+                      plan.is_popular ? "text-white" : "text-gray-900"
+                    }`}
+                  >
+                    {plan.title}
+                  </h3>
 
-                {/* Plan Name */}
-                <h3
-                  className={`text-lg font-bold mb-2 ${
-                    plan.highlighted ? "text-white" : "text-gray-900"
-                  }`}
-                >
-                  {plan.name}
-                </h3>
+                  {/* Badge for Popular Plan */}
+                  {plan.is_popular && (
+                    <div className=" right-6">
+                      <span className="inline-block bg-primary text-white border border-[#F2F8FF] px-3 py-1 rounded-lg text-xs font-semibold shadow-md">
+                        {/* {plan.is_popular} */}
+                        {'populer'}
+                      </span>
+                    </div>
+                  )}
+                </div>
 
                 {/* Tagline */}
                 <p
                   className={`text-xs mb-5 leading-relaxed min-h-[2.5rem] ${
-                    plan.highlighted ? "text-white/90" : "text-gray-600"
+                    plan.is_popular ? "text-white/90" : "text-gray-600"
                   }`}
                 >
-                  {plan.tagline}
+                  {plan.description}
                 </p>
 
                 {/* Price */}
@@ -134,17 +115,17 @@ export default function PricingSection() {
                   <div className="flex items-baseline">
                     <span
                       className={`text-4xl font-bold ${
-                        plan.highlighted ? "text-white" : "text-gray-900"
+                        plan.is_popular ? "text-white" : "text-gray-900"
                       }`}
                     >
                       ${plan.price}
                     </span>
                     <span
                       className={`ml-1 text-sm ${
-                        plan.highlighted ? "text-white/80" : "text-gray-600"
+                        plan.is_popular ? "text-white/80" : "text-gray-600"
                       }`}
                     >
-                      {plan.period}
+                      {plan.duration_type}
                     </span>
                   </div>
                 </div>
@@ -154,13 +135,13 @@ export default function PricingSection() {
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start gap-2.5">
                       <div
-                        className={`mt-0.5 flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center ${
-                          plan.highlighted ? "bg-white/20" : "bg-gray-900"
+                        className={`mt-0.5 shrink-0 w-4 h-4 rounded-full flex items-center justify-center ${
+                          plan.is_popular ? "bg-white/20" : "bg-gray-900"
                         }`}
                       >
                         <svg
                           className={`w-2.5 h-2.5 ${
-                            plan.highlighted ? "text-white" : "text-white"
+                            plan.is_popular ? "text-white" : "text-white"
                           }`}
                           fill="currentColor"
                           viewBox="0 0 20 20"
@@ -174,7 +155,7 @@ export default function PricingSection() {
                       </div>
                       <span
                         className={`text-xs leading-relaxed ${
-                          plan.highlighted ? "text-white/90" : "text-gray-700"
+                          plan.is_popular ? "text-white/90" : "text-gray-700"
                         }`}
                       >
                         {feature}
@@ -185,12 +166,12 @@ export default function PricingSection() {
 
                 {/* CTA Button */}
                 <GetStartedButton
-                  text={plan.buttonText}
+                  text='Get Sart'
                   href="/auth/register"
                   showArrow={false}
                   borderClass="border  border-blue-200"
                   bgClass={`w-full py-3 px-6 rounded-lg font-semibold text-sm transition-all duration-300 ${
-                    plan.highlighted
+                    plan.is_popular
                       ? "bg-white text-blue-900 hover:bg-gray-50 shadow-lg"
                       : "bg-white text-blue-900  hover:bg-blue-50"
                   }`}
@@ -198,17 +179,6 @@ export default function PricingSection() {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Bottom Text */}
-        <div
-          className={`text-center mt-10 transition-all duration-1000 delay-500 ${
-            animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
-        >
-          <p className="text-gray-600 text-xs">
-            All plans include a 14-day free trial. No credit card required.
-          </p>
         </div>
       </div>
     </section>
