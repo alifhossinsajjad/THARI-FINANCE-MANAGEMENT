@@ -148,7 +148,7 @@ export default function HeroBanner() {
                   className="text-white font-semibold hover:underline"
                 >
                   Sign up
-                </a>
+                </Link>
               </p>
             </div>
           </div>
