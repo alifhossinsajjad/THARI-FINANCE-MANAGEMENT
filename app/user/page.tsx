@@ -1,9 +1,10 @@
-import user from "@/components/user/dashboard/user";
+import UserDashboard from "@/components/user/dashboard/UserDashboard";
+
 
 export default function UserHomePage() {
   return (
     <main className="min-h-screen  ">
-      <user />
+      <UserDashboard />
     </main>
-  );
+  )
 }

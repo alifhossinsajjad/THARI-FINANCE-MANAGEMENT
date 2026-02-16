@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -29,47 +29,6 @@ export default function SignupPage() {
   const router = useRouter();
 
   const animate = true;
-
-  const particles = useMemo(() => {
-    // Pre-generated random values to avoid impure function calls during render
-    const positions = [
-      { left: 12.5, top: 23.7, delay: 0.8, duration: 3.2 },
-      { left: 34.2, top: 56.1, delay: 1.3, duration: 4.5 },
-      { left: 67.8, top: 12.9, delay: 0.5, duration: 2.8 },
-      { left: 89.1, top: 78.3, delay: 1.9, duration: 3.7 },
-      { left: 45.6, top: 34.5, delay: 2.1, duration: 4.1 },
-      { left: 23.4, top: 91.2, delay: 0.7, duration: 3.3 },
-      { left: 78.9, top: 45.6, delay: 1.4, duration: 2.9 },
-      { left: 15.3, top: 67.8, delay: 2.2, duration: 4.6 },
-      { left: 56.7, top: 8.4, delay: 0.9, duration: 3.1 },
-      { left: 92.5, top: 51.7, delay: 1.6, duration: 3.9 },
-      { left: 8.7, top: 72.3, delay: 2.4, duration: 4.2 },
-      { left: 63.2, top: 28.9, delay: 0.6, duration: 2.7 },
-      { left: 37.5, top: 84.1, delay: 1.8, duration: 3.5 },
-      { left: 71.8, top: 16.4, delay: 2.5, duration: 4.8 },
-      { left: 4.2, top: 63.7, delay: 1.1, duration: 3.0 },
-      { left: 85.4, top: 39.5, delay: 0.4, duration: 2.6 },
-      { left: 27.9, top: 96.8, delay: 1.7, duration: 4.3 },
-      { left: 52.1, top: 7.2, delay: 2.3, duration: 3.4 },
-      { left: 76.3, top: 54.9, delay: 0.8, duration: 2.5 },
-      { left: 19.6, top: 82.4, delay: 1.5, duration: 4.0 },
-      { left: 48.7, top: 13.6, delay: 2.0, duration: 3.6 },
-      { left: 91.2, top: 67.3, delay: 0.3, duration: 2.9 },
-      { left: 31.5, top: 42.8, delay: 1.2, duration: 4.4 },
-      { left: 64.9, top: 85.1, delay: 1.9, duration: 3.8 },
-      { left: 11.4, top: 29.7, delay: 0.7, duration: 3.2 },
-      { left: 73.8, top: 71.5, delay: 2.1, duration: 4.7 },
-      { left: 43.2, top: 5.9, delay: 0.9, duration: 2.4 },
-      { left: 86.7, top: 58.3, delay: 1.6, duration: 3.5 },
-      { left: 25.1, top: 94.6, delay: 2.3, duration: 4.1 },
-      { left: 59.5, top: 37.2, delay: 1.0, duration: 3.3 },
-    ];
-
-    return Array.from({ length: 30 }, (_, i) => ({
-      id: i,
-      ...positions[i],
-    }));
-  }, []);
 
   const handleSignup = async () => {
     if (!agreedToTerms) {

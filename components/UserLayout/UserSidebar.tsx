@@ -16,6 +16,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { MenuItem } from "@/types";
 import { FaArrowTrendUp } from "react-icons/fa6";
+import Image from "next/image";
 
 const UserSidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -75,16 +76,23 @@ const UserSidebar: React.FC = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-[235px] bg-primary text-white z-50 transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"
-          } lg:translate-x-0`}
+        className={`fixed top-0 left-0 h-full w-58.75 bg-primary text-white z-50 transform transition-transform duration-300 ease-in-out ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex items-center gap-2 px-4 py-6">
-            <div className="w-10 h-10 bg-white rounded-md flex items-center justify-center">
-              <FaArrowTrendUp className="text-primary " size={24} />
+          <div className=" mx-auto py-4">
+            <div className="flex items-center gap-2 pr-6">
+              <Image
+                src="/images/FooterLogo.png"
+                alt="THARI Logo"
+                width={40}
+                height={40}
+                priority
+              />
+              <h1 className="font-semibold text-2xl tracking-tight">THARI</h1>
             </div>
-            <span className="text-xl font-semibold">Thari Finance</span>
           </div>
 
           {/* Menu Items */}
@@ -97,10 +105,11 @@ const UserSidebar: React.FC = () => {
                   key={`${item.href}-${index}`}
                   href={item.href}
                   onClick={handleClose}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    isActive
                       ? "bg-white/10 text-white"
                       : "text-white/70 hover:bg-white/5 hover:text-white"
-                    }`}
+                  }`}
                 >
                   <Icon size={20} />
                   <span>{item.label}</span>

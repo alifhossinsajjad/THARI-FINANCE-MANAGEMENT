@@ -113,7 +113,7 @@ export default function Navbar() {
                         : "text-gray-700 hover:text-primary"
                     }
                     after:content-[''] after:absolute after:left-0 after:-bottom-1
-                    after:h-[2px] after:w-full after:bg-primary
+                    after:h-2 after:w-full after:bg-primary
                     after:scale-x-0 after:origin-left
                     after:transition-transform after:duration-300
                     ${isActive ? "after:scale-x-100" : "hover:after:scale-x-100"}
@@ -136,7 +136,7 @@ export default function Navbar() {
                   <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-900 font-bold border border-blue-200">
                     {user.email?.charAt(0).toUpperCase() || "U"}
                   </div>
-                  <span className="text-sm font-medium text-gray-700 hidden lg:block max-w-[100px] truncate">
+                  <span className="text-sm font-medium text-gray-700 hidden lg:block max-w-25 truncate">
                     {user.email?.split("@")[0]}
                   </span>
                 </button>
@@ -154,11 +154,7 @@ export default function Navbar() {
                     </div>
 
                     <Link
-                      href={
-                        user.role === "admin"
-                          ? "/admin/dashboard"
-                          : "/user/profile"
-                      }
+                      href={user.role === "admin" ? "/admin" : "/user"}
                       className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       onClick={() => setProfileDropdownOpen(false)}
                     >
