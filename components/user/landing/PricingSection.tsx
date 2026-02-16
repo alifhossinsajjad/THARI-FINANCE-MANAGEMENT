@@ -5,14 +5,14 @@ import { useGetPricingPlansQuery } from "@/Redux/features/pricing/pricingApi";
 
 import { MoveUpRight } from "lucide-react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function PricingSection() {
   const [animate, setAnimate] = useState(false);
 
-  const { data, isLoading, error } = useGetPricingPlansQuery();
+  const { data : pricing, isLoading, error } = useGetPricingPlansQuery();
   
-  console.log("Pricing Data:", data);
+  console.log("Pricing Data:", pricing);
   console.log("Pricing Error:", error);
 
 
@@ -24,61 +24,9 @@ export default function PricingSection() {
     return <div className="text-center py-10">Failed to load pricing</div>;
   }
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setAnimate(true);
-  //   }, 0);
 
-  //   return () => clearTimeout(timer);
-  // }, []);
+  
 
-  const pricingPlans = [
-    {
-      name: "Beginner",
-      tagline: "Perfect for individuals taking control of their portfolio",
-      price: "9.95",
-      period: "/month",
-      features: [
-        "Perfect for small projects & individual contractors",
-        "Generate 15 proposals per month",
-        "Basic AI templates for bids & quotes",
-        "Access on web & mobile",
-        "Community support",
-      ],
-
-      highlighted: false,
-    },
-    {
-      name: "Elite",
-      badge: "Popular",
-      tagline: "For growing professionals who want deeper insights",
-      price: "29.95",
-      period: "/month",
-      features: [
-        "Designed for growing businesses & professionals",
-        "Generate unlimited proposals",
-        "Advanced AI templates & customization",
-        "Basic AI templates for bids & quotes",
-        "Priority support",
-      ],
-      buttonText: "See Pricing",
-      highlighted: true,
-    },
-    {
-      name: "Elite Pro",
-      tagline: "Designed for company and constructor who want complete control",
-      price: "49.95",
-      period: "/month",
-      features: [
-        "Designed for growing businesses & professionals",
-        "Generate unlimited proposals",
-        "Advanced AI templates & customization",
-        "Basic AI templates for bids & quotes",
-      ],
-      buttonText: "Get Started",
-      highlighted: false,
-    },
-  ];
 
   return (
     <section className="relative py-16 lg:py-20 bg-white overflow-hidden">
@@ -115,18 +63,18 @@ export default function PricingSection() {
 
         {/* Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-center">
-          {data?.slice(0, 3).map((plan, index) => (
+          {pricing?.slice(0,3).map((plan, index) => (
             <div
               key={index}
-              className={`transition-all duration-700 ${
+              className={`transition-all duration-700  ${
                 animate
                   ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-10"
+                  : "opacity-100 translate-y-10"
               } ${plan.is_popular ? "" : ""}`}
               style={{ transitionDelay: `${index * 150}ms` }}
             >
               <div
-                className={`relative rounded-2xl p-7 transition-all duration-300 h-[500px] flex flex-col justify-between ${
+                className={`relative rounded-2xl p-7 transition-all duration-300 h-125 flex flex-col justify-between ${
                   plan.is_popular
                     ? "bg-primary text-white shadow-2xl border-blue-700"
                     : "bg-[#F3F9FF] text-gray-900 border border-blue-300 hover:border-blue-200 hover:shadow-lg"
@@ -146,7 +94,8 @@ export default function PricingSection() {
                   {plan.is_popular && (
                     <div className=" right-6">
                       <span className="inline-block bg-primary text-white border border-[#F2F8FF] px-3 py-1 rounded-lg text-xs font-semibold shadow-md">
-                        {plan.is_popular}
+                        {/* {plan.is_popular} */}
+                        {'populer'}
                       </span>
                     </div>
                   )}
@@ -186,7 +135,7 @@ export default function PricingSection() {
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start gap-2.5">
                       <div
-                        className={`mt-0.5 flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center ${
+                        className={`mt-0.5 shrink-0 w-4 h-4 rounded-full flex items-center justify-center ${
                           plan.is_popular ? "bg-white/20" : "bg-gray-900"
                         }`}
                       >
