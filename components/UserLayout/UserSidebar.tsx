@@ -83,7 +83,7 @@ const UserSidebar: React.FC = () => {
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className=" mx-auto py-4">
-            <div className="flex items-center gap-2 pr-6">
+            <Link href="/" className="flex items-center gap-2 pr-6">
               <Image
                 src="/images/FooterLogo.png"
                 alt="THARI Logo"
@@ -92,7 +92,7 @@ const UserSidebar: React.FC = () => {
                 priority
               />
               <h1 className="font-semibold text-2xl tracking-tight">THARI</h1>
-            </div>
+            </Link>
           </div>
 
           {/* Menu Items */}

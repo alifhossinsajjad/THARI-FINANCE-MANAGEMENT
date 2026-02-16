@@ -8,7 +8,7 @@ export default function FeaturedHalalPortfolioCard() {
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200 max-w-full mx-auto">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
         {/* LEFT: Chart Visualization */}
-        <div className="relative  flex flex-col justify-center items-center min-h-[320px] lg:min-h-auto">
+        <div className="relative  flex flex-col justify-center items-center min-h-80 lg:min-h-auto">
           {/* Subtle grid background */}
           <div className="absolute inset-0 opacity-10 pointer-events-none">
             <div className="w-full h-full bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)] bg-[size:20px_20px]" />

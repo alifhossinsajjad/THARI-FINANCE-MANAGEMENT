@@ -14,6 +14,7 @@ import {
 } from "@/Redux/features/auth/authApi";
 import Logo from "@/components/reusable/Logo";
 import RegisterRightSection from "@/components/auth/RegisterRightSection";
+import TermsModal from "@/components/common/TermsModal";
 
 export default function SignupPage() {
   const [fullName, setFullName] = useState("");
@@ -27,6 +28,8 @@ export default function SignupPage() {
   const [register, { isLoading: isRegisterLoading }] = useRegisterMutation();
   const [verifyOtp, { isLoading: isVerifyLoading }] = useVerifyOtpMutation();
   const router = useRouter();
+
+  const [showTermsModal, setShowTermsModal] = useState(false);
 
   const animate = true;
 
@@ -190,13 +193,28 @@ export default function SignupPage() {
                     className="ml-2 text-sm text-gray-700 cursor-pointer"
                   >
                     I agree to the{" "}
-                    <a href="#" className="text-blue-900 hover:underline">
+                    {/* Changed from <a href="#"> to button-like link */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowTermsModal(true);
+                      }}
+                      className="text-blue-900 hover:underline font-medium cursor-pointer"
+                    >
                       Terms & Conditions
-                    </a>{" "}
+                    </button>{" "}
                     and{" "}
-                    <a href="#" className="text-blue-900 hover:underline">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowTermsModal(true);
+                      }}
+                      // href="#"
+                      className="text-blue-900 hover:underline cursor-pointer"
+                    >
                       Privacy Policy
-                    </a>
+                    </button>
                   </label>
                 </div>
 
@@ -278,6 +296,15 @@ export default function SignupPage() {
 
       {/* Right Section - Financial Chart Visualization */}
       <RegisterRightSection />
+      <TermsModal
+        isOpen={showTermsModal}
+        onClose={() => setShowTermsModal(false)}
+        onAgree={() => {
+          setAgreedToTerms(true); // auto-check the box
+          setShowTermsModal(false);
+          toast.success("Terms accepted");
+        }}
+      />
     </div>
   );
 }
