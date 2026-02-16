@@ -1,13 +1,13 @@
-import { TrendingUp, TrendingDown, Trash2 } from "lucide-react"
+import { TrendingUp, TrendingDown, Trash2 } from "lucide-react";
 
 interface StockData {
-  symbol: string
-  name: string
-  price: string
-  change: string
-  isPositive: boolean
-  halalStatus: string
-  rating: "Strong Buy" | "Buy"
+  symbol: string;
+  name: string;
+  price: string;
+  change: string;
+  isPositive: boolean;
+  halalStatus: string;
+  rating: "Strong Buy" | "Buy";
 }
 
 const stocks: StockData[] = [
@@ -56,14 +56,16 @@ const stocks: StockData[] = [
     halalStatus: "Halal",
     rating: "Buy",
   },
-]
+];
 
 export default function Watchlist() {
   return (
     <div className=" mx-auto space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-gray-900 mb-2">My Watchlist</h1>
-        <p className="text-gray-500 font-medium">Track your favorite halal stocks</p>
+        <p className="text-gray-500 font-medium">
+          Track your favorite halal stocks
+        </p>
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -71,12 +73,24 @@ export default function Watchlist() {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-gray-100">
-                <th className="px-6 py-5 text-sm font-bold text-gray-600">Stock</th>
-                <th className="px-6 py-5 text-sm font-bold text-gray-600">Price</th>
-                <th className="px-6 py-5 text-sm font-bold text-gray-600">Change</th>
-                <th className="px-6 py-5 text-sm font-bold text-gray-600">Halal Status</th>
-                <th className="px-6 py-5 text-sm font-bold text-gray-600">Rating</th>
-                <th className="px-6 py-5 text-sm font-bold text-gray-600 text-center">Action</th>
+                <th className="px-6 py-5 text-sm font-bold text-gray-600">
+                  Stock
+                </th>
+                <th className="px-6 py-5 text-sm font-bold text-gray-600">
+                  Price
+                </th>
+                <th className="px-6 py-5 text-sm font-bold text-gray-600">
+                  Change
+                </th>
+                <th className="px-6 py-5 text-sm font-bold text-gray-600">
+                  Halal Status
+                </th>
+                <th className="px-6 py-5 text-sm font-bold text-gray-600">
+                  Rating
+                </th>
+                <th className="px-6 py-5 text-sm font-bold text-gray-600 text-center">
+                  Action
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -89,12 +103,18 @@ export default function Watchlist() {
                 >
                   <td className="px-6 py-5">
                     <div className="space-y-0.5">
-                      <p className="text-gray-900 font-bold text-sm leading-none">{stock.symbol}</p>
-                      <p className="text-gray-400 text-xs font-medium">{stock.name}</p>
+                      <p className="text-gray-900 font-bold text-sm leading-none">
+                        {stock.symbol}
+                      </p>
+                      <p className="text-gray-400 text-xs font-medium">
+                        {stock.name}
+                      </p>
                     </div>
                   </td>
                   <td className="px-6 py-5">
-                    <span className="text-gray-900 font-bold text-sm">{stock.price}</span>
+                    <span className="text-gray-900 font-bold text-sm">
+                      {stock.price}
+                    </span>
                   </td>
                   <td className="px-6 py-5">
                     <div
@@ -102,7 +122,11 @@ export default function Watchlist() {
                         stock.isPositive ? "text-green-500" : "text-red-500"
                       }`}
                     >
-                      {stock.isPositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+                      {stock.isPositive ? (
+                        <TrendingUp className="w-4 h-4" />
+                      ) : (
+                        <TrendingDown className="w-4 h-4" />
+                      )}
                       <span>{stock.change}</span>
                     </div>
                   </td>
@@ -134,5 +158,5 @@ export default function Watchlist() {
         </div>
       </div>
     </div>
-  )
+  );
 }

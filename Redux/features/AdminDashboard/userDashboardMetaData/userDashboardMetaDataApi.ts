@@ -1,6 +1,6 @@
 import { baseApi } from "@/Redux/api/baseApi";
 
-const userDashboardMetaDataApi = baseApi.injectEndpoints({
+const userMetaDataApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getShowAllTotalActiveUserMetaData: builder.query({
       query: () => ({
@@ -11,5 +11,4 @@ const userDashboardMetaDataApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetShowAllTotalActiveUserMetaDataQuery } =
-  userDashboardMetaDataApi;
+export const { useGetShowAllTotalActiveUserMetaDataQuery } = userMetaDataApi;

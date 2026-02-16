@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useMemo } from "react";
@@ -11,6 +12,8 @@ import {
   useRegisterMutation,
   useVerifyOtpMutation,
 } from "@/Redux/features/auth/authApi";
+import Logo from "@/components/reusable/Logo";
+import RegisterRightSection from "@/components/auth/RegisterRightSection";
 
 export default function SignupPage() {
   const [fullName, setFullName] = useState("");
@@ -88,7 +91,9 @@ export default function SignupPage() {
       };
 
       await register(userInfo).unwrap();
-      toast.success("Registration successful! Please check your email for OTP.");
+      toast.success(
+        "Registration successful! Please check your email for OTP.",
+      );
       setStep("otp");
     } catch (err: any) {
       toast.error(err?.data?.message || "Registration failed");
@@ -106,34 +111,20 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-gray-100">
+    <div className="flex h-screen w-full overflow-hidden bg-[#E5E7EB]">
       {/* Left Section - Signup/OTP Form */}
-      <div className="flex w-full lg:w-1/2 flex-col justify-center px-8 sm:px-12 lg:px-20 bg-white">
+      <div className="flex w-full lg:w-1/2 flex-col justify-center px-8 sm:px-12 lg:px-20 bg-[#E5E7EB]">
         <div
-          className={`w-full max-w-md mx-auto transition-all duration-1000 ${animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
+          className={`w-full max-w-md mx-auto transition-all duration-1000 ${
+            animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          }`}
         >
           {/* Logo */}
-          <div className="flex items-center gap-2 mb-8">
-            <div className="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center">
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                />
-              </svg>
+          <Link href="/" className="flex items-center gap-2 sm:gap-4 pb-8">
+            <div className="p-1.5   rounded-2xl">
+              <Logo />
             </div>
-            <span className="text-lg font-bold text-gray-900">
-              THARI FINANCE
-            </span>
-          </div>
+          </Link>
 
           {step === "register" ? (
             <>
@@ -164,7 +155,7 @@ export default function SignupPage() {
                     placeholder="Enter your Name"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent transition-all text-sm"
+                    className="w-full px-4  border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-900 focus:border-transparent transition-all text-sm"
                     required
                   />
                 </div>
@@ -183,7 +174,7 @@ export default function SignupPage() {
                     placeholder="Enter your Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent transition-all text-sm"
+                    className="w-full px-4  border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-900 focus:border-transparent transition-all text-sm"
                     required
                   />
                 </div>
@@ -202,7 +193,7 @@ export default function SignupPage() {
                     placeholder="Enter your Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent transition-all text-sm"
+                    className="w-full px-4  border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-900 focus:border-transparent transition-all text-sm"
                     required
                   />
                 </div>
@@ -221,7 +212,7 @@ export default function SignupPage() {
                     placeholder="Enter your password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent transition-all text-sm"
+                    className="w-full px-4  border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-900 focus:border-transparent transition-all text-sm"
                     required
                   />
                 </div>
@@ -279,7 +270,8 @@ export default function SignupPage() {
                   Verify Your Email
                 </h1>
                 <p className="text-gray-600 text-sm">
-                  We've sent a code to <span className="font-bold">{email}</span>
+                  We&apos;ve sent a code to{" "}
+                  <span className="font-bold">{email}</span>
                 </p>
               </div>
 
@@ -297,7 +289,7 @@ export default function SignupPage() {
                     placeholder="Enter OTP"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent transition-all text-sm"
+                    className="w-full px-4  border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-900 focus:border-transparent transition-all text-sm"
                     required
                   />
                 </div>
@@ -326,225 +318,7 @@ export default function SignupPage() {
       </div>
 
       {/* Right Section - Financial Chart Visualization */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-blue-950 via-blue-900 to-blue-950">
-        {/* Grid Pattern */}
-        <div className="absolute inset-0 opacity-20">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={`h-${i}`}
-              className="absolute w-full border-t border-blue-400/30"
-              style={{ top: `${i * 5}%` }}
-            ></div>
-          ))}
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={`v-${i}`}
-              className="absolute h-full border-l border-blue-400/30"
-              style={{ left: `${i * 5}%` }}
-            ></div>
-          ))}
-        </div>
-
-        {/* Floating Particles */}
-        {particles.map((particle) => (
-          <div
-            key={particle.id}
-            className="absolute w-1 h-1 bg-blue-300/40 rounded-full animate-pulse"
-            style={{
-              left: `${particle.left}%`,
-              top: `${particle.top}%`,
-              animationDelay: `${particle.delay}s`,
-              animationDuration: `${particle.duration}s`,
-            }}
-          ></div>
-        ))}
-
-        {/* Main Content Container */}
-        <div className="relative z-10 flex flex-col items-center justify-center w-full p-12">
-          {/* Animated Bar Chart */}
-          <div className="absolute bottom-0 left-0 right-0 flex items-end justify-around h-64 px-12">
-            {[
-              55, 48, 62, 45, 58, 70, 52, 65, 58, 72, 48, 68, 55, 75, 62, 70,
-            ].map((height, i) => (
-              <div
-                key={i}
-                className="flex-1 max-w-8 mx-1 bg-gradient-to-t from-blue-500 to-blue-400 rounded-t transition-all duration-1000 opacity-60"
-                style={{
-                  height: animate ? `${height}%` : "0%",
-                  animationDelay: `${i * 0.05}s`,
-                }}
-              ></div>
-            ))}
-          </div>
-
-          {/* Chart Lines and Labels */}
-          <svg
-            className={`relative z-20 w-full max-w-2xl h-80 transition-all duration-1500 ${animate ? "opacity-100 scale-100" : "opacity-0 scale-95"
-              }`}
-            viewBox="0 0 600 300"
-            fill="none"
-          >
-            <defs>
-              <linearGradient
-                id="lineGradient1"
-                x1="0%"
-                y1="0%"
-                x2="100%"
-                y2="0%"
-              >
-                <stop offset="0%" stopColor="#60A5FA" />
-                <stop offset="100%" stopColor="#3B82F6" />
-              </linearGradient>
-              <linearGradient
-                id="lineGradient2"
-                x1="0%"
-                y1="0%"
-                x2="100%"
-                y2="0%"
-              >
-                <stop offset="0%" stopColor="#34D399" />
-                <stop offset="100%" stopColor="#10B981" />
-              </linearGradient>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                <feMerge>
-                  <feMergeNode in="coloredBlur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            </defs>
-
-            {/* Blue Wave Line */}
-            <path
-              d="M 50 180 Q 120 150, 180 160 T 300 140 T 420 130 T 550 120"
-              stroke="url(#lineGradient1)"
-              strokeWidth="3"
-              fill="none"
-              filter="url(#glow)"
-              strokeLinecap="round"
-              className={animate ? "animate-dash" : ""}
-            />
-
-            {/* Green Wave Line */}
-            <path
-              d="M 50 220 Q 120 200, 180 190 T 300 160 T 420 140 T 550 110"
-              stroke="url(#lineGradient2)"
-              strokeWidth="3"
-              fill="none"
-              filter="url(#glow)"
-              strokeLinecap="round"
-              className={animate ? "animate-dash" : ""}
-              style={{ animationDelay: "0.3s" }}
-            />
-
-            {/* Data Points on Blue Line */}
-            {[
-              [50, 180],
-              [180, 160],
-              [300, 140],
-              [420, 130],
-              [550, 120],
-            ].map(([x, y], i) => (
-              <circle
-                key={`blue-${i}`}
-                cx={x}
-                cy={y}
-                r="4"
-                fill="#60A5FA"
-                className={`${animate ? "animate-pulse" : ""}`}
-                style={{ animationDelay: `${i * 0.2}s` }}
-              />
-            ))}
-
-            {/* Data Points on Green Line */}
-            {[
-              [50, 220],
-              [180, 190],
-              [300, 160],
-              [420, 140],
-              [550, 110],
-            ].map(([x, y], i) => (
-              <circle
-                key={`green-${i}`}
-                cx={x}
-                cy={y}
-                r="4"
-                fill="#34D399"
-                className={`${animate ? "animate-pulse" : ""}`}
-                style={{ animationDelay: `${0.3 + i * 0.2}s` }}
-              />
-            ))}
-          </svg>
-
-          {/* Floating Metric Labels */}
-          <div
-            className={`absolute top-24 left-16 transition-all duration-1000 ${animate ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
-              }`}
-          >
-            <div className="bg-blue-500 text-white px-3 py-1 rounded text-xs font-semibold shadow-lg">
-              2330.82
-            </div>
-          </div>
-
-          <div
-            className={`absolute top-32 right-32 transition-all duration-1000 delay-200 ${animate ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
-              }`}
-          >
-            <div className="bg-emerald-500 text-white px-3 py-1 rounded text-xs font-semibold shadow-lg">
-              3158.84
-            </div>
-          </div>
-
-          {/* Percentage Labels */}
-          <div
-            className={`absolute top-44 right-24 transition-all duration-1000 delay-300 ${animate ? "opacity-100" : "opacity-0"
-              }`}
-          >
-            <div className="text-emerald-400 text-sm font-semibold">+12%</div>
-          </div>
-
-          <div
-            className={`absolute top-52 left-32 transition-all duration-1000 delay-400 ${animate ? "opacity-100" : "opacity-0"
-              }`}
-          >
-            <div className="text-blue-400 text-sm font-semibold">+7.1%</div>
-          </div>
-
-          <div
-            className={`absolute bottom-32 left-24 transition-all duration-1000 delay-500 ${animate ? "opacity-100" : "opacity-0"
-              }`}
-          >
-            <div className="text-gray-400 text-sm font-semibold">-3.4%</div>
-          </div>
-
-          <div
-            className={`absolute bottom-36 right-16 transition-all duration-1000 delay-600 ${animate ? "opacity-100" : "opacity-0"
-              }`}
-          >
-            <div className="text-gray-400 text-sm font-semibold">+5.2%</div>
-          </div>
-
-          <div
-            className={`absolute top-36 left-1/2 transform -translate-x-1/2 transition-all duration-1000 delay-700 ${animate ? "opacity-100" : "opacity-0"
-              }`}
-          >
-            <div className="text-gray-500 text-sm font-semibold">-3.9%</div>
-          </div>
-        </div>
-
-        <style jsx>{`
-          @keyframes dash {
-            to {
-              stroke-dashoffset: 0;
-            }
-          }
-          .animate-dash {
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-            animation: dash 2s ease-in-out forwards;
-          }
-        `}</style>
-      </div>
+      <RegisterRightSection />
     </div>
   );
 }

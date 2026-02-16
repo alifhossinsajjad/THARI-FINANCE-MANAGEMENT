@@ -89,7 +89,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-lg border-b border-gray-200">
-      <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 sm:h-20 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 sm:gap-4">
@@ -157,7 +157,7 @@ export default function Navbar() {
                       href={
                         user.role === "admin"
                           ? "/admin/dashboard"
-                          : "/userDashboard/profile"
+                          : "/user/profile"
                       }
                       className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       onClick={() => setProfileDropdownOpen(false)}
@@ -167,7 +167,7 @@ export default function Navbar() {
                     </Link>
 
                     <Link
-                      href="/userDashboard/profile"
+                      href="/user/profile"
                       className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       onClick={() => setProfileDropdownOpen(false)}
                     >
@@ -259,7 +259,7 @@ export default function Navbar() {
                     href={
                       user.role === "admin"
                         ? "/admin/dashboard"
-                        : "/userDashboard/profile"
+                        : "/user/profile"
                     }
                     className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg"
                     onClick={() => setIsOpen(false)}
@@ -269,7 +269,7 @@ export default function Navbar() {
                   </Link>
 
                   <Link
-                    href="/userDashboard/profile"
+                    href="/user/profile"
                     className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg"
                     onClick={() => setIsOpen(false)}
                   >

@@ -13,20 +13,19 @@ const Logo: React.FC<LogoProps> = ({
   className = "",
 }) => {
   return (
-   <div className="flex gap-2 justify-center items-center ">
-    <div>
-         <Image
-      src="/images/Logo2.png"
-      alt="Company Logo"
-      width={width}
-      height={height}
-      className={className}
-      priority
-    />
+    <div className="flex gap-2 justify-center items-center ">
+      <div>
+        <Image
+          src="/images/Logo2.png"
+          alt="Company Logo"
+          width={width}
+          height={height}
+          className={className}
+          priority
+        />
+      </div>
+      <h1 className="text-primary font-medium text-4xl">THARI</h1>
     </div>
-    <h1 className="text-primary font-medium text-4xl">THARI</h1>
-    
-   </div>
   );
 };
 
