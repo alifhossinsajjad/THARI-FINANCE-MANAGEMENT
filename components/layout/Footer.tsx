@@ -44,25 +44,41 @@ const Footer: React.FC<CompanyProps> = ({
               understanding of wealth management, and access Sharia-compliant
               filters for stocks.
             </p>
-                <div className="flex gap-3">
+            <div className="flex gap-3">
               <Link
                 href="https://facebook.com"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white transition-colors duration-200 hover:bg-gray-700"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-300 transition-colors duration-200 hover:bg-gray-700"
               >
-                <Facebook className="h-4 w-4 text-black" />
+                {/* <Facebook className="h-4 w-4 text-black" /> */}
+                <Image
+                  src="/images/user/footer-icon/linkedin-2.png"
+                  alt="THARI Logo"
+                  width={20}
+                  height={20}
+                />
               </Link>
               <Link
                 href="https://twitter.com"
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-black transition-colors duration-200 hover:bg-gray-700"
               >
-                <Twitter className="h-4 w-4 text-black" />
+                <Image
+                  src="/images/user/footer-icon/facebook.png"
+                  alt="THARI Logo"
+                  width={20}
+                  height={20}
+                />
               </Link>
 
               <Link
                 href="https://instagram.com"
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-black transition-colors duration-200 hover:bg-gray-700"
               >
-                <Instagram className="h-4 w-4 text-black" />
+                <Image
+                  src="/images/user/footer-icon/instagram.png"
+                  alt="THARI Logo"
+                  width={20}
+                  height={20}
+                />
               </Link>
             </div>
           </div>
@@ -79,6 +95,9 @@ const Footer: React.FC<CompanyProps> = ({
               <li className="text-sm text-gray-400">thari@halarain.com</li>
             </ul>
           </div>
+
+          {/* Empty column for spacing */}
+          <div className="lg:col-span-1"></div>
 
           {/* Legal Section - Takes 2 columns */}
           <div className="lg:col-span-2">
