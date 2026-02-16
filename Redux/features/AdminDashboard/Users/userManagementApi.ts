@@ -3,9 +3,10 @@ import { baseApi } from "@/Redux/api/baseApi";
 const userManagementApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllUserByAdmin: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: "/users",
         method: "GET",
+        params,
       }),
     }),
   }),
