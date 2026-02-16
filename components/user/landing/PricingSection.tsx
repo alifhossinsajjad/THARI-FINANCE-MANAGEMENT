@@ -5,15 +5,19 @@ import { useGetPricingPlansQuery } from "@/Redux/features/pricing/pricingApi";
 
 import { MoveUpRight } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function PricingSection() {
   const [animate, setAnimate] = useState(false);
 
+  useEffect(() => {
+    setAnimate(true);
+  }, []);
+
   const { data : pricing, isLoading, error } = useGetPricingPlansQuery();
   
-  console.log("Pricing Data:", pricing);
-  console.log("Pricing Error:", error);
+  // console.log("Pricing Data:", pricing);
+  // console.log("Pricing Error:", error);
 
 
   if (isLoading) {
@@ -36,10 +40,10 @@ export default function PricingSection() {
 
       <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-8">
         {/* Section Header */}
-        <div className="flex justify-between">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0">
           <div
             className={` mb-12 transition-all duration-1000 ${
-              animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              animate ? "opacity-100 translate-y-0" : "opacity-100 translate-y-10"
             }`}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
@@ -54,7 +58,7 @@ export default function PricingSection() {
               <div className="flex items-center gap-2 bg-primary text-white py-3 pr-2 pl-8 rounded-full ">
                 <p className="text-lg font-bold">See More</p>
                 <div className="bg-white rounded-4xl p-2">
-                  <MoveUpRight className="h-6 w-6 text-primary" />
+                  <MoveUpRight className="h-5 w-5 md:h-6 md:w-6 text-primary" />
                 </div>
               </div>
             </Link>
@@ -62,11 +66,11 @@ export default function PricingSection() {
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {pricing?.slice(0,3).map((plan, index) => (
             <div
               key={index}
-              className={`transition-all duration-700  ${
+              className={`transition-all duration-700 h-full ${
                 animate
                   ? "opacity-100 translate-y-0"
                   : "opacity-100 translate-y-10"
@@ -74,7 +78,7 @@ export default function PricingSection() {
               style={{ transitionDelay: `${index * 150}ms` }}
             >
               <div
-                className={`relative rounded-2xl p-7 transition-all duration-300 h-125 flex flex-col justify-between ${
+                className={`relative rounded-2xl p-6 md:p-10 transition-all duration-300 h-full min-h-[480px] flex flex-col justify-between ${
                   plan.is_popular
                     ? "bg-primary text-white shadow-2xl border-blue-700"
                     : "bg-[#F3F9FF] text-gray-900 border border-blue-300 hover:border-blue-200 hover:shadow-lg"
@@ -95,7 +99,7 @@ export default function PricingSection() {
                     <div className=" right-6">
                       <span className="inline-block bg-primary text-white border border-[#F2F8FF] px-3 py-1 rounded-lg text-xs font-semibold shadow-md">
                         {/* {plan.is_popular} */}
-                        {'populer'}
+                        {'Most Popular'}
                       </span>
                     </div>
                   )}
@@ -166,7 +170,7 @@ export default function PricingSection() {
 
                 {/* CTA Button */}
                 <GetStartedButton
-                  text='Get Sart'
+                  text='Get Started'
                   href="/auth/register"
                   showArrow={false}
                   borderClass="border  border-blue-200"
