@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
-import { Facebook, Instagram, Twitter } from "lucide-react";
 
 interface CompanyProps {
   width?: number;
@@ -19,7 +18,7 @@ const Footer: React.FC<CompanyProps> = ({
   return (
     <footer className="bg-[#0a0a0a] text-white">
       {/* Main Footer Content */}
-      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
+      <div className="mx-auto max-w-360 px-6 py-16 lg:px-8">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
           {/* Left Section - Logo and Description - Takes 5 columns */}
           <div className="lg:col-span-5 space-y-8">

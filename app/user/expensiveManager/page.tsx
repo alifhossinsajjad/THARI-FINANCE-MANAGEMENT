@@ -89,7 +89,7 @@ export default function AIFinancialTools() {
   const totalNetWorth = assets.reduce((sum, asset) => sum + asset.value, 0);
 
   return (
-    <div className="max-w-7xl mx-auto space-y-10">
+    <div className=" space-y-10">
       {/* Page Header */}
       <section>
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -106,14 +106,16 @@ export default function AIFinancialTools() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center gap-2.5 px-6 py-3 rounded-xl font-semibold text-sm transition-all border shadow-sm border-gray-200 ${activeTab === tab.id
+            className={`flex items-center gap-2.5 px-6 py-3 rounded-xl font-semibold text-sm transition-all border shadow-sm border-gray-200 ${
+              activeTab === tab.id
                 ? "bg-primary text-white  cursor-pointer"
                 : " text-gray-700 cursor-pointer"
-              }`}
+            }`}
           >
             <tab.icon
-              className={`w-4 h-4 ${activeTab === tab.id ? "text-white" : "text-gray-400"
-                }`}
+              className={`w-4 h-4 ${
+                activeTab === tab.id ? "text-white" : "text-gray-400"
+              }`}
             />
             {tab.label}
           </button>
@@ -121,7 +123,7 @@ export default function AIFinancialTools() {
       </div>
 
       {/* Tool Content Container */}
-      <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 min-h-[400px]">
+      <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 min-h-100">
         {activeTab === "manager" && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
             <div>

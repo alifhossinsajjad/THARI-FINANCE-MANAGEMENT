@@ -7,7 +7,7 @@ import {
   Zap,
 } from "lucide-react";
 
-export default function UserDashboard() {
+export default function user() {
   return (
     <div className="mx-auto space-y-10">
       {/* Header Section */}
