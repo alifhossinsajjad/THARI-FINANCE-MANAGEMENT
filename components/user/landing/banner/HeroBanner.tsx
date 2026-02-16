@@ -10,8 +10,9 @@ import { useState } from "react";
 import { useAppDispatch } from "@/Redux/hooks";
 import { useLoginMutation } from "@/Redux/features/auth/authApi";
 import { setUser } from "@/Redux/features/auth/authSlice";
-import { toast } from "sonner";
+
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function HeroBanner() {
   const [email, setEmail] = useState("");
