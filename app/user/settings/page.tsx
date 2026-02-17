@@ -11,7 +11,7 @@ import {
   useChangePasswordMutation,
   useGetMyProfileQuery,
   useUpdateMyProfileMutation,
-} from "@/Redux/features/UserDashboard/user/userApi";
+} from "@/Redux/features/userDashboardServices/userApi";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function SettingPage() {
