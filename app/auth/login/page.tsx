@@ -186,9 +186,9 @@ export default function LoginPage() {
       {/* Right Section - Illustration */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
         {/* Animated Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-teal-400 via-emerald-500 to-cyan-600">
+        <div className="absolute inset-0 bg-linear-to-br from-teal-400 via-emerald-500 to-cyan-600">
           {/* Animated Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+          <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent"></div>
 
           {/* Floating Particles */}
           {particles.map((particle) => (
@@ -231,7 +231,7 @@ export default function LoginPage() {
               {[40, 60, 45, 75, 55, 85, 70, 95].map((height, i) => (
                 <div
                   key={i}
-                  className="w-8 bg-gradient-to-t from-cyan-300 to-teal-200 rounded-t-lg opacity-60 transition-all duration-1000"
+                  className="w-8 bg-linear-to-t from-cyan-300 to-teal-200 rounded-t-lg opacity-60 transition-all duration-1000"
                   style={{
                     height: animate ? `${height}%` : "0%",
                     animationDelay: `${i * 0.1}s`,
