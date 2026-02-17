@@ -113,9 +113,8 @@ const UserTopbar: React.FC = () => {
                   </p>
                 </div>
 
-
                 <Link
-                  href="/user/profile"
+                  href="/user/settings"
                   className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                   onClick={() => setProfileDropdownOpen(false)}
                 >
