@@ -6,8 +6,9 @@ import {
   TrendingUp,
   Zap,
 } from "lucide-react";
+import Link from "next/link";
 
-export default function user() {
+export default function UserDashboardPage() {
   return (
     <div className="mx-auto space-y-10">
       {/* Header Section */}
@@ -105,10 +106,12 @@ export default function user() {
       {/* Quick Links Section */}
       <section>
         <h3 className="text-gray-900 font-bold text-lg mb-6">Quick Links</h3>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             {
               title: "Search Stock",
+              href: "/user/searchStock",
               icon: Search,
               bg: "bg-primary",
               text: "text-white",
@@ -117,6 +120,7 @@ export default function user() {
             },
             {
               title: "Watchlist",
+              href: "/user/watchList",
               icon: Star,
               bg: "bg-white",
               text: "text-gray-800",
@@ -125,6 +129,7 @@ export default function user() {
             },
             {
               title: "AI Finance Tools",
+              href: "/user/expensiveManager",
               icon: Zap,
               bg: "bg-white",
               text: "text-gray-800",
@@ -133,16 +138,18 @@ export default function user() {
             },
             {
               title: "Recommendations",
+              href: "/user/recommendations",
               icon: TrendingUp,
               bg: "bg-white",
               text: "text-gray-800",
               iconBg: "bg-[#10b981]",
               iconColor: "text-white",
             },
-          ].map((link, i) => (
-            <div
-              key={i}
-              className={`group cursor-pointer p-6 rounded-2xl shadow-sm border border-gray-100 transition-all hover:shadow-md ${link.bg}`}
+          ].map((link) => (
+            <Link
+              key={link.title}
+              href={link.href}
+              className={`group block p-6 rounded-2xl shadow-sm border border-gray-100 transition-all hover:shadow-md ${link.bg}`}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
@@ -153,11 +160,12 @@ export default function user() {
                     {link.title}
                   </span>
                 </div>
+
                 <ArrowUpRight
                   className={`w-4 h-4 opacity-50 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 ${link.text}`}
                 />
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>

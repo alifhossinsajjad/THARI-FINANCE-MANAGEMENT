@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import { Search, X } from "lucide-react";
-import { useGetUsBasedStockReportsQuery, useSearchStockBySymbolQuery } from "@/Redux/features/userDashboardServices/UsBasedStockApi";
+import {
+  useGetUsBasedStockReportsQuery,
+  useSearchStockBySymbolQuery,
+} from "@/Redux/features/userDashboardServices/UsBasedStockApi";
 import { StockTable } from "../stock-detail/_components/StockTable";
 
 export default function StockSearchPage() {
@@ -13,15 +16,23 @@ export default function StockSearchPage() {
   const [pageNumber, setPageNumber] = useState(1);
 
   // Fetch paginated list (skip when searching)
-  const { data: listData, isLoading: isLoadingList, error: listError } = useGetUsBasedStockReportsQuery(
+  const {
+    data: listData,
+    isLoading: isLoadingList,
+    error: listError,
+  } = useGetUsBasedStockReportsQuery(
     { limit: 30, nextToken: currentToken },
-    { skip: !!searchSymbol } // Skip this query when searching
+    { skip: !!searchSymbol }, // Skip this query when searching
   );
 
   // Fetch search result (skip when not searching)
-  const { data: searchData, isLoading: isLoadingSearch, error: searchError } = useSearchStockBySymbolQuery(
+  const {
+    data: searchData,
+    isLoading: isLoadingSearch,
+    error: searchError,
+  } = useSearchStockBySymbolQuery(
     searchSymbol || "",
-    { skip: !searchSymbol } // Only run when searchSymbol is set
+    { skip: !searchSymbol }, // Only run when searchSymbol is set
   );
 
   // Determine which data to show
@@ -40,7 +51,8 @@ export default function StockSearchPage() {
   }
 
   // Extract stock items based on mode
-  let stockItems: import("@/Redux/features/userDashboardServices/UsBasedStockApi").IStockReportItem[] = [];
+  let stockItems: import("@/Redux/features/userDashboardServices/UsBasedStockApi").IStockReportItem[] =
+    [];
   let nextToken = null;
 
   if (isSearchMode && searchData) {
@@ -144,4 +156,3 @@ export default function StockSearchPage() {
     </div>
   );
 }
-
