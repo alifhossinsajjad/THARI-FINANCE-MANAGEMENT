@@ -22,9 +22,9 @@ export default function TermsModal({
     setScrolledToBottom(bottom);
   };
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm ">
+    <div className="fixed inset-0 z-50  flex items-center justify-center bg-black/70 backdrop-blur-sm ">
       {/* Modal */}
-      <div className="relative w-screen h-screen overflow-hidden border border-slate-700 shadow-2xl flex bg-[#0b0f16] p-12">
+      <div className="relative w-400 h-[80vh] rounded-lg overflow-hidden border border-slate-700 shadow-2xl flex bg-[#0b0f16] p-4">
         {/* LEFT PANEL */}
         <div className="flex-1 flex flex-col w-360 mx-auto">
           {/* Header */}
@@ -135,7 +135,7 @@ export default function TermsModal({
                 are the property of Thari and are protected by intellectual
                 property laws. Users are prohibited from copying, modifying,
                 distributing, or creating derivative works based on the
-                Platform’s content without permission.
+                Platform&apos;s content without permission.
               </li>
             </ol>
           </div>
@@ -144,19 +144,15 @@ export default function TermsModal({
           <div className="px-8 py-5  border-slate-700 flex items-center gap-4">
             <button
               onClick={onClose}
-              className="px-6 py-2 rounded-full bg-red-600 text-white text-base font-medium hover:bg-red-500 transition"
+              className="px-6 py-2 rounded-full bg-red-600 text-white text-base font-medium hover:bg-red-500 transition cursor-pointer"
             >
               Reject
             </button>
 
             <button
               onClick={onAgree}
-              disabled={!scrolledToBottom}
-              className={`px-6 py-2 rounded-full text-base font-medium transition ${
-                scrolledToBottom
-                  ? "bg-blue-600 hover:bg-blue-500 text-white"
-                  : "bg-blue-900/50 text-blue-300 cursor-not-allowed"
-              }`}
+              // disabled={!scrolledToBottom}
+              className={`px-6 py-2 rounded-full text-base font-medium transition bg-blue-600 hover:bg-blue-500 text-white cursor-pointer`}
             >
               Agree
             </button>
