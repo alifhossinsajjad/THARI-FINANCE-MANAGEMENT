@@ -32,6 +32,7 @@ export default function SettingPage() {
   // Local form state (profile)
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
   // Local form state (password)
   const [currentPassword, setCurrentPassword] = useState("");
@@ -42,13 +43,16 @@ export default function SettingPage() {
   useEffect(() => {
     const profile = (data as any)?.data ?? data; // supports both {data:{...}} and direct {...}
     if (!profile) return;
+
     setName(profile?.name ?? "");
     setEmail(profile?.email ?? "");
+    setPhone(profile?.phone ?? "");
   }, [data]);
 
   const handleSaveProfile = async () => {
     try {
-      const payload = { name, email };
+      // backend accepts only: { name, phone }
+      const payload = { name, phone };
       await updateMyProfile(payload as any).unwrap();
       toast.success("Profile updated");
     } catch (err: any) {
@@ -87,29 +91,67 @@ export default function SettingPage() {
 
   if (isLoading) {
     return (
-      <div className="p-6">
+      <div className="p-6 space-y-8">
+        {/* header */}
         <div className="space-y-2">
-          <div className="h-7 w-44 rounded-lg bg-gray-100" />
-          <div className="h-4 w-64 rounded-lg bg-gray-100" />
+          <div className="h-8 w-56 rounded-lg bg-gray-100" />
+          <div className="h-4 w-80 max-w-full rounded-lg bg-gray-100" />
         </div>
 
-        <div className="mt-8 grid gap-6 max-w-3xl">
+        <div className="grid gap-6">
+          {/* Profile card */}
           <div className="rounded-3xl border border-gray-100 bg-white p-8 shadow-sm">
-            <div className="h-5 w-24 rounded bg-gray-100" />
-            <div className="mt-6 grid gap-4">
-              <div className="h-14 rounded-2xl bg-gray-100" />
-              <div className="h-14 rounded-2xl bg-gray-100" />
-              <div className="h-12 w-40 rounded-2xl bg-gray-100" />
+            <div className="h-5 w-28 rounded bg-gray-100" />
+            <div className="mt-2 h-4 w-64 max-w-full rounded bg-gray-100" />
+
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2.5">
+                <div className="h-3 w-20 rounded bg-gray-100" />
+                <div className="h-12 rounded-2xl bg-gray-100" />
+              </div>
+
+              <div className="space-y-2.5">
+                <div className="h-3 w-20 rounded bg-gray-100" />
+                <div className="h-12 rounded-2xl bg-gray-100" />
+              </div>
+
+              <div className="space-y-2.5 md:col-span-2">
+                <div className="h-3 w-20 rounded bg-gray-100" />
+                <div className="h-12 rounded-2xl bg-gray-100" />
+              </div>
+            </div>
+
+            <div className="mt-6 flex justify-end">
+              <div className="h-12 w-44 rounded-2xl bg-gray-100" />
             </div>
           </div>
 
+          {/* Password card */}
           <div className="rounded-3xl border border-gray-100 bg-white p-8 shadow-sm">
-            <div className="h-5 w-28 rounded bg-gray-100" />
-            <div className="mt-6 grid gap-4">
-              <div className="h-14 rounded-2xl bg-gray-100" />
-              <div className="h-14 rounded-2xl bg-gray-100" />
-              <div className="h-14 rounded-2xl bg-gray-100" />
-              <div className="h-12 w-44 rounded-2xl bg-gray-100" />
+            <div className="h-5 w-32 rounded bg-gray-100" />
+            <div className="mt-2 h-4 w-80 max-w-full rounded bg-gray-100" />
+
+            <div className="mt-6 grid gap-6">
+              <div className="space-y-2.5">
+                <div className="h-3 w-36 rounded bg-gray-100" />
+                <div className="h-12 rounded-2xl bg-gray-100" />
+              </div>
+              <div className="space-y-2.5">
+                <div className="h-3 w-28 rounded bg-gray-100" />
+                <div className="h-12 rounded-2xl bg-gray-100" />
+              </div>
+              <div className="space-y-2.5">
+                <div className="h-3 w-48 rounded bg-gray-100" />
+                <div className="h-12 rounded-2xl bg-gray-100" />
+              </div>
+            </div>
+
+            <div className="mt-6 rounded-2xl border border-gray-100 bg-[#f8f8ff] p-4">
+              <div className="h-4 w-[70%] max-w-full rounded bg-gray-100" />
+            </div>
+
+            <div className="mt-6 flex justify-end">
+              <div className="h-12 w-52 rounded-2xl bg-gray-100" />
             </div>
           </div>
         </div>
@@ -151,7 +193,7 @@ export default function SettingPage() {
     "bg-primary text-white font-bold rounded-2xl shadow-lg shadow-blue-900/20 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed";
 
   return (
-    <div className="p-6 max-w-3xl space-y-10">
+    <div className="p-6 space-y-10">
       {/* Header */}
       <section>
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Settings</h1>
@@ -192,9 +234,21 @@ export default function SettingPage() {
               <Input
                 id="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Your email"
-                type="email"
+                readOnly
+                tabIndex={-1}
+                className={`${inputBase} bg-gray-50 text-gray-500 cursor-not-allowed`}
+              />
+            </div>
+
+            <div className="space-y-2.5 md:col-span-2">
+              <Label htmlFor="phone" className={fieldLabel}>
+                Phone
+              </Label>
+              <Input
+                id="phone"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="+880..."
                 className={inputBase}
               />
             </div>
