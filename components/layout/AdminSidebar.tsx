@@ -22,7 +22,6 @@ import {
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { MenuItem } from "@/types";
-import { FaArrowTrendUp } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { logout } from "@/Redux/features/auth/authSlice";
 import Image from "next/image";
