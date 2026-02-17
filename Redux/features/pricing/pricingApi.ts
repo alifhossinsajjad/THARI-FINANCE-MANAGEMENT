@@ -5,7 +5,7 @@ export const pricingApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getPricingPlans: builder.query<PricingPlan[], void>({
       query: () => "/subscriptions/show-all",
-      providesTags: ["pricing"],
+      providesTags: ["Pricing"],
     }),
   }),
 });
