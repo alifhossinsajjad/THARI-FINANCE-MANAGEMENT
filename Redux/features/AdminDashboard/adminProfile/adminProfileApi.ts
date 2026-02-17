@@ -17,8 +17,19 @@ const adminProfileApi = baseApi.injectEndpoints({
         body: formData,
       }),
     }),
+    // updated the password
+    updateAdminPassword: builder.mutation({
+      query: (data: any) => ({
+        url: "/profile/password",
+        method: "PUT",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useGetAdminProfileInfoQuery, useUpdateAdminProfileMutation } =
-  adminProfileApi;
+export const {
+  useGetAdminProfileInfoQuery,
+  useUpdateAdminProfileMutation,
+  useUpdateAdminPasswordMutation,
+} = adminProfileApi;
