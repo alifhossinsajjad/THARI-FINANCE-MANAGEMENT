@@ -1,13 +1,16 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { User, ShieldCheck, Bell, Mail, Phone, Camera } from "lucide-react";
+import { User, ShieldCheck, Bell, Mail, Phone } from "lucide-react";
 import PersonalInfoTab from "./settingTabComponent/PersonalInfoTab";
 import SecurityTab from "./settingTabComponent/SecurityTab";
 import AdminNotificationsTab from "./settingTabComponent/AdminNotificationsTab";
 import gsap from "gsap";
+import { useGetAdminProfileInfoQuery } from "@/Redux/features/AdminDashboard/adminProfile/adminProfileApi";
 
 export default function ProfileSettings() {
+  const { data } = useGetAdminProfileInfoQuery({});
+  const user = data?.data;
   // 1. Tab System State
   const [activeTab, setActiveTab] = useState("Personal Info");
   const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -63,15 +66,15 @@ export default function ProfileSettings() {
                 className="w-full h-full object-cover"
               />
             ) : (
-              "AU"
+              <span>{user?.name?.charAt(0)}</span>
             )}
           </div>
-          <button
+          {/* <button
             onClick={() => fileInputRef.current?.click()}
             className="absolute bottom-0 right-0 p-1.5 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 transition-colors"
           >
             <Camera size={16} className="text-gray-600" />
-          </button>
+          </button> */}
           <input
             type="file"
             ref={fileInputRef}
@@ -82,14 +85,17 @@ export default function ProfileSettings() {
         </div>
 
         <div className="space-y-1">
-          <h2 className="text-xl font-bold text-gray-900">First name</h2>
-          <p className="text-gray-500 text-sm font-medium">position here</p>
+          <h2 className="text-xl font-bold text-gray-900">
+            {user?.name || "---"}{" "}
+          </h2>
+          <p className="text-gray-500 text-sm font-medium">{user?.role}</p>
           <div className="flex flex-col gap-1 mt-2">
             <div className="flex items-center gap-2 text-gray-500 text-sm">
-              <Mail size={14} /> x@gmail.com
+              <Mail size={14} />
+              {user?.email}
             </div>
             <div className="flex items-center gap-2 text-gray-500 text-sm">
-              <Phone size={14} /> 10177777777777
+              <Phone size={14} /> {user?.phone}
             </div>
           </div>
         </div>
