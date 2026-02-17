@@ -1,6 +1,5 @@
 "use client";
 
-import GetStartedButton from "@/components/reusable/GetStartedButton";
 import { useGetPricingPlansQuery } from "@/Redux/features/pricing/pricingApi";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/Redux/features/auth/authSlice";
@@ -148,7 +147,7 @@ export default function PricingSection() {
               style={{ transitionDelay: `${index * 150}ms` }}
             >
               <div
-                className={`relative rounded-2xl p-6 md:p-10 transition-all duration-300 h-full min-h-[480px] flex flex-col justify-between ${
+                className={`relative rounded-2xl p-6 md:p-10 transition-all duration-300 h-full min-h-120 flex flex-col justify-between ${
                   plan.is_popular
                     ? "bg-primary text-white shadow-2xl border-blue-700"
                     : "bg-[#F3F9FF] text-gray-900 border border-blue-300 hover:border-blue-200 hover:shadow-lg"
@@ -177,7 +176,7 @@ export default function PricingSection() {
 
                 {/* Tagline */}
                 <p
-                  className={`text-xs mb-5 leading-relaxed min-h-[2.5rem] ${
+                  className={`text-xs mb-5 leading-relaxed min-h-10 ${
                     plan.is_popular ? "text-white/90" : "text-gray-600"
                   }`}
                 >

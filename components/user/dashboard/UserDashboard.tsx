@@ -271,7 +271,7 @@ export default function UserDashboardPage() {
                     {Array.isArray(plan?.features) &&
                       plan.features.length > 0 && (
                         <ul className="mt-3 space-y-1">
-                          {plan.features.map((f: string) => (
+                          {plan.features.slice(0, 3).map((f: string) => (
                             <li key={f} className="text-[12px] text-gray-600">
                               • {f}
                             </li>

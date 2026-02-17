@@ -95,7 +95,7 @@ const UserTopbar: React.FC = () => {
                 {user?.email?.charAt(0).toUpperCase() || "U"}
               </div>
               <div className="hidden lg:block text-left">
-                <p className="text-sm font-medium text-gray-700 truncate max-w-[100px]">
+                <p className="text-sm font-medium text-gray-700 truncate max-w-25">
                   {user?.email?.split("@")[0]}
                 </p>
               </div>
