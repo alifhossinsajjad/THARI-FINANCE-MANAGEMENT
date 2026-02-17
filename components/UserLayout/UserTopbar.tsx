@@ -95,7 +95,7 @@ const UserTopbar: React.FC = () => {
                 {user?.email?.charAt(0).toUpperCase() || "U"}
               </div>
               <div className="hidden lg:block text-left">
-                <p className="text-sm font-medium text-gray-700 truncate max-w-[100px]">
+                <p className="text-sm font-medium text-gray-700 truncate max-w-25">
                   {user?.email?.split("@")[0]}
                 </p>
               </div>
@@ -113,9 +113,8 @@ const UserTopbar: React.FC = () => {
                   </p>
                 </div>
 
-
                 <Link
-                  href="/user/profile"
+                  href="/user/settings"
                   className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                   onClick={() => setProfileDropdownOpen(false)}
                 >

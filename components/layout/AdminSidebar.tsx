@@ -22,9 +22,9 @@ import {
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { MenuItem } from "@/types";
-import { FaArrowTrendUp } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { logout } from "@/Redux/features/auth/authSlice";
+import Image from "next/image";
 
 const AdminSidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -114,14 +114,18 @@ const AdminSidebar: React.FC = () => {
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <Link href="/">
-            <div className="flex items-center gap-2 px-4 py-6">
-              <div className="w-10 h-10 bg-white rounded-md flex items-center justify-center">
-                <FaArrowTrendUp className="text-primary " size={24} />
-              </div>
-              <span className="text-xl font-semibold">Thari Finance</span>
-            </div>
-          </Link>
+          <div className=" mx-auto py-4">
+            <Link href="/" className="flex items-center gap-2 pr-6">
+              <Image
+                src="/images/FooterLogo.png"
+                alt="THARI Logo"
+                width={24}
+                height={24}
+                priority
+              />
+              <h1 className="font-semibold text-xl tracking-tight">THARI</h1>
+            </Link>
+          </div>
 
           {/* Menu Items */}
           <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">

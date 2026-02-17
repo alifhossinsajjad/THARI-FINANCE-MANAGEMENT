@@ -1,6 +1,5 @@
 "use client";
 
-import GetStartedButton from "@/components/reusable/GetStartedButton";
 import { useGetPricingPlansQuery } from "@/Redux/features/pricing/pricingApi";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/Redux/features/auth/authSlice";
@@ -14,9 +13,7 @@ export default function PricingSection() {
   const [animate, setAnimate] = useState(false);
   const router = useRouter(); // Use router for navigation
   const user = useSelector(selectCurrentUser); // Get current user
-
-
-
+  const [payingPlanId, setPayingPlanId] = useState<number | null>(null);
 
   useEffect(() => {
     setAnimate(true);
@@ -26,26 +23,56 @@ export default function PricingSection() {
 
   // console.log("Pricing Data:", pricing);
   // console.log("Pricing Error:", error);
-const [processPayment, ] = useProcessPaymentMutation();
+  const [processPayment] = useProcessPaymentMutation();
 
-const handleGetStarted = async (planId: number) => {
-  try {
-    const res = await processPayment({
-      plan_id: planId,
-      platform: "web",
-      callback_url: `${window.location.origin}/payment/payment-success`,
-    }).unwrap();
+  // const handleGetStarted = async (planId: number) => {
+  //   try {
+  //     const res = await processPayment({
+  //       plan_id: planId,
+  //       platform: "web",
+  //       callback_url: `${window.location.origin}/payment/payment-success`,
+  //     }).unwrap();
 
-    console.log("Payment response:", res);
+  //     console.log("Payment response:", res);
 
-    if (res.success && res.checkout_url) {
-      window.location.href = res.checkout_url;  // ✅ redirect
+  //     if (res?.success) {
+  //       router.push("/"); // redirect to home
+  //     }
+  //   } catch (err) {
+  //     console.error("Payment failed:", err);
+  //   }
+  // };
+
+  const handleGetStarted = async (planId: number) => {
+    if (payingPlanId) return;
+    setPayingPlanId(planId);
+
+    try {
+      const res = await processPayment({
+        plan_id: planId,
+        platform: "web",
+        callback_url: `${window.location.origin}/payment/payment-success`,
+      }).unwrap();
+
+      console.log("Payment response:", res);
+
+      if (res?.success && res?.checkout_url) {
+        // ✅ OPEN STRIPE IN NEW TAB so Stripe redirects happen there
+        window.open(res.checkout_url, "_blank", "noopener,noreferrer");
+
+        // ✅ Keep user in your frontend and show pending/success UI
+        router.push(`/payment/payment-success?session_id=${res.session_id}`);
+
+        return;
+      }
+
+      console.error("Missing checkout_url:", res);
+    } catch (err) {
+      console.error("Payment failed:", err);
+    } finally {
+      setPayingPlanId(null);
     }
-  } catch (err) {
-    console.error("Payment failed:", err);
-  }
-};
-
+  };
 
   if (isLoading) {
     return <div className="text-center py-10">Loading...</div>;
@@ -120,7 +147,7 @@ const handleGetStarted = async (planId: number) => {
               style={{ transitionDelay: `${index * 150}ms` }}
             >
               <div
-                className={`relative rounded-2xl p-6 md:p-10 transition-all duration-300 h-full min-h-[480px] flex flex-col justify-between ${
+                className={`relative rounded-2xl p-6 md:p-10 transition-all duration-300 h-full min-h-120 flex flex-col justify-between ${
                   plan.is_popular
                     ? "bg-primary text-white shadow-2xl border-blue-700"
                     : "bg-[#F3F9FF] text-gray-900 border border-blue-300 hover:border-blue-200 hover:shadow-lg"
@@ -149,7 +176,7 @@ const handleGetStarted = async (planId: number) => {
 
                 {/* Tagline */}
                 <p
-                  className={`text-xs mb-5 leading-relaxed min-h-[2.5rem] ${
+                  className={`text-xs mb-5 leading-relaxed min-h-10 ${
                     plan.is_popular ? "text-white/90" : "text-gray-600"
                   }`}
                 >
@@ -212,7 +239,20 @@ const handleGetStarted = async (planId: number) => {
 
                 {/* CTA Button */}
                 {/* Use a div wrapping the button to capture the click since GetStartedButton might be an anchor */}
-                <div
+                <button
+                  type="button"
+                  onClick={() => handleGetStarted(plan.id)}
+                  disabled={payingPlanId === plan.id}
+                  className={`w-full py-3 px-6 rounded-lg font-semibold text-sm transition-all duration-300 ${
+                    plan.is_popular
+                      ? "bg-white text-blue-900 hover:bg-gray-50 shadow-lg"
+                      : "bg-white text-blue-900 hover:bg-blue-50"
+                  } disabled:opacity-60 disabled:cursor-not-allowed`}
+                >
+                  {payingPlanId === plan.id ? "Redirecting..." : "Get Started"}
+                </button>
+
+                {/* <div
                   onClick={(e) => {
                     e.preventDefault();
                     handleGetStarted(plan.id);
@@ -229,7 +269,7 @@ const handleGetStarted = async (planId: number) => {
                         : "bg-white text-blue-900 hover:bg-blue-50"
                     }`}
                   />
-                </div>
+                </div> */}
               </div>
             </div>
           ))}
