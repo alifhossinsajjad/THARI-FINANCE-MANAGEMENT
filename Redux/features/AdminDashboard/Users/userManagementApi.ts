@@ -9,7 +9,16 @@ const userManagementApi = baseApi.injectEndpoints({
         params,
       }),
     }),
+
+    toggleUserBySupperAdmin: builder.mutation({
+      query: ({ id, block }) => ({
+        url: `/admin/users/${id}/toggle-status`,
+        method: "PATCH",
+        body: { block },
+      }),
+    }),
   }),
 });
 
-export const { useGetAllUserByAdminQuery } = userManagementApi;
+export const { useGetAllUserByAdminQuery, useToggleUserBySupperAdminMutation } =
+  userManagementApi;

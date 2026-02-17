@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Eye,
   ChevronsLeft,
@@ -8,33 +8,46 @@ import {
   ChevronRight,
   ChevronsRight,
 } from "lucide-react";
-import SearchInput from "@/components/admin/SearchInput";
+
 import FilterSelect from "@/components/admin/FilterSelect";
 import UserDetailModal from "@/components/admin/modals/UserDetailModal";
 
-import { useGetAllUserByAdminQuery } from "@/Redux/features/AdminDashboard/Users/userManagementApi";
+import {
+  useGetAllUserByAdminQuery,
+  useToggleUserBySupperAdminMutation,
+} from "@/Redux/features/AdminDashboard/Users/userManagementApi";
 import { BeatLoader } from "react-spinners";
+import { toast } from "sonner";
 
 export default function UsersPage(): React.JSX.Element {
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [roleFilter, setRoleFilter] = useState<string>("All");
   const [statusFilter, setStatusFilter] = useState<string>("All");
   const [selectedUser, setSelectedUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [togglingUserId, setTogglingUserId] = useState<number | null>(null);
 
   // data for pagination
   const [page, setPage] = useState(1);
   const pageSize = 10;
 
-  const { data, isLoading, isFetching } = useGetAllUserByAdminQuery({
-    page,
-    per_page: pageSize, // must match backend key
-  });
-  console.log("iam the all data", data);
+  const queryParams = useMemo(() => {
+    return {
+      status: statusFilter === "All" ? "" : statusFilter.toLowerCase(),
+      page,
+      per_page: pageSize,
+    };
+  }, [statusFilter, page, pageSize]);
+  const { data, isLoading, isFetching, refetch } =
+    useGetAllUserByAdminQuery(queryParams);
+
   const allUser = data?.data || [];
   const totalPages = data?.meta?.last_page || 1;
-  const users = data?.data;
-  console.log("hh", users);
+
+  const [toggleUserStatus] = useToggleUserBySupperAdminMutation();
+
+  const handleStatusChange = (value: string) => {
+    setPage(1); // reset page when filter changes
+    setStatusFilter(value);
+  };
 
   const handleViewUser = (user: any): void => {
     setSelectedUser(user);
@@ -44,6 +57,32 @@ export default function UsersPage(): React.JSX.Element {
   const handleCloseModal = (): void => {
     setIsModalOpen(false);
     setSelectedUser(null);
+  };
+
+  const handleToggleStatus = async (user: any) => {
+    try {
+      setTogglingUserId(user.id);
+
+      await toggleUserStatus({
+        id: user.id,
+        block: !user.status,
+      }).unwrap();
+
+      // Refetch to get updated data
+      await refetch();
+
+      // Show success toast
+      toast.success(
+        `User ${!user.status ? "blocked" : "unblocked"} successfully!`,
+      );
+    } catch (err) {
+      console.error("Failed to toggle user", err);
+
+      // Show error toast
+      toast.error("Failed to toggle user status. Please try again.");
+    } finally {
+      setTogglingUserId(null);
+    }
   };
 
   return (
@@ -60,28 +99,14 @@ export default function UsersPage(): React.JSX.Element {
         </div>
 
         {/* Search and Filters */}
-        <div className="flex flex-col lg:flex-row gap-4">
-          <div className="flex-1">
-            <SearchInput
-              value={searchQuery}
-              onChange={setSearchQuery}
-              placeholder="Search by name or email..."
-            />
-          </div>
-          <div className="flex gap-4">
-            <div className="w-full lg:w-48">
-              <FilterSelect
-                value={roleFilter}
-                onChange={setRoleFilter}
-                options={["All", "Elite", "Free"]}
-                placeholder="All"
-              />
-            </div>
+        <div className="flex flex-col lg:flex-row justify-end gap-4">
+          <div className="flex justify-end">
             <div className="w-full lg:w-48">
               <FilterSelect
                 value={statusFilter}
-                onChange={setStatusFilter}
-                options={["All", "Active", "Suspended", "Pending"]}
+                // onChange={setStatusFilter}
+                onChange={handleStatusChange}
+                options={["All", "Active", "Inactive"]}
                 placeholder="All"
               />
             </div>
@@ -90,12 +115,10 @@ export default function UsersPage(): React.JSX.Element {
 
         {/* Table Container */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-          {/* Desktop Table */}
-          {/* Table */}
           <div className="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-4 gap-5">
             <div className="xl:col-span-4 w-full">
               <div className="overflow-x-auto bg-white shadow-sm rounded-t-xl">
-                <table className="min-w-[800px] w-full text-sm">
+                <table className="min-w-[800px] w-full text-sm ">
                   <thead>
                     <tr className="bg-[FFFFFF]">
                       <th className="px-6 py-5 text-left font-semibold text-gray-900 text-base">
@@ -110,17 +133,19 @@ export default function UsersPage(): React.JSX.Element {
                       <th className="px-6 py-5 text-left font-semibold text-gray-900 text-base">
                         Phone
                       </th>
-
-                      <th className="px-6 py-5 text-left font-semibold text-gray-900 text-base">
+                      <th className="px-6 py-5 text-center font-semibold text-gray-900 text-base">
                         Action
                       </th>
                     </tr>
                   </thead>
 
                   <tbody>
-                    {isLoading || isFetching ? (
+                    {isLoading ? (
                       <tr>
-                        <td className="text-center py-8 text-gray-500">
+                        <td
+                          colSpan={5}
+                          className="text-center py-8 text-gray-500"
+                        >
                           <div className="flex justify-center">
                             <BeatLoader color="#484D9B" />
                           </div>
@@ -128,7 +153,10 @@ export default function UsersPage(): React.JSX.Element {
                       </tr>
                     ) : allUser?.length === 0 ? (
                       <tr>
-                        <td className="text-center py-8 text-gray-500">
+                        <td
+                          colSpan={5}
+                          className="text-center py-8 text-gray-500"
+                        >
                           No log data found
                         </td>
                       </tr>
@@ -159,31 +187,45 @@ export default function UsersPage(): React.JSX.Element {
                           </td>
 
                           <td className="px-6 py-4 text-gray-700 whitespace-nowrap">
-                            Phone here
+                            {user?.phone || "---"}
                           </td>
 
-                          <td className="px-6 py-4 text-gray-700 whitespace-nowrap font-semibold">
-                            <div className="flex items-center gap-3">
+                          <td className="px-6 py-4 text-gray-700 whitespace-nowrap font-semibold text-center align-middle">
+                            <div className="flex items-center justify-center gap-3">
                               <button
                                 onClick={() => handleViewUser(user)}
                                 className="text-[#484D9B] hover:bg-[#484D9B] p-2 rounded-full hover:text-white cursor-pointer transition"
+                                disabled={togglingUserId === user.id}
                               >
                                 <Eye className="w-5 h-5" />
                               </button>
-                              <label className="relative inline-flex items-center cursor-pointer">
-                                <input
-                                  type="checkbox"
-                                  checked={user?.isActive}
-                                  // onChange={() => {
-                                  //   const block = user?.isActive ? true : false;
-                                  //   toggleStatus(user?.id, block);
-                                  // }}
-                                  className="sr-only peer"
-                                  // disabled={isToggling}
-                                />
-                                <div className="w-16 h-7 bg-gray-300 rounded-full peer peer-checked:bg-[#484D9B] transition-all duration-200"></div>
-                                <div className="absolute  left-1 top-1 w-5 h-5 bg-white rounded-full transition-all duration-200 peer-checked:translate-x-9 shadow"></div>
-                              </label>
+
+                              {/* <label className="relative inline-flex items-center cursor-pointer">
+//                                 <input
+//                                   type="checkbox"
+//                                   checked={user?.isActive}
+//                                   className="sr-only peer"
+//                                 />
+//                                 <div className="w-16 h-7 bg-gray-300 rounded-full peer-checked:bg-[#484D9B] transition-all duration-200"></div>
+//                                 <div className="absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition-all duration-200 peer-checked:translate-x-9 shadow"></div>
+//                               </label> */}
+
+                              {togglingUserId === user.id ? (
+                                <div className="w-16 flex justify-center">
+                                  <BeatLoader size={6} color="#484D9B" />
+                                </div>
+                              ) : (
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                  <input
+                                    type="checkbox"
+                                    checked={user?.status}
+                                    onChange={() => handleToggleStatus(user)}
+                                    className="sr-only peer"
+                                  />
+                                  <div className="w-16 h-7 bg-gray-300 rounded-full peer-checked:bg-[#484D9B] transition-all duration-200"></div>
+                                  <div className="absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition-all duration-200 peer-checked:translate-x-9 shadow"></div>
+                                </label>
+                              )}
                             </div>
                           </td>
                         </tr>
@@ -195,20 +237,20 @@ export default function UsersPage(): React.JSX.Element {
             </div>
           </div>
 
-          {/* here is the Pagination */}
-          <div className="w-full bg- py-4 rounded-b-lg flex justify-center items-center gap-2 ">
+          {/* Pagination */}
+          <div className="w-full py-4 rounded-b-lg flex justify-center items-center gap-2">
             <button
               onClick={() => setPage(1)}
-              disabled={page === 1}
-              className="text-gray-500 cursor-pointer hover:text-[#484D9B] p-2"
+              disabled={page === 1 || isFetching}
+              className="text-gray-500 cursor-pointer hover:text-[#484D9B] p-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ChevronsLeft size={20} />
             </button>
 
             <button
               onClick={() => page > 1 && setPage(page - 1)}
-              disabled={page === 1}
-              className="text-gray-500 cursor-pointer hover:text-[#484D9B] p-2"
+              disabled={page === 1 || isFetching}
+              className="text-gray-500 cursor-pointer hover:text-[#484D9B] p-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ChevronLeft size={20} />
             </button>
@@ -217,11 +259,12 @@ export default function UsersPage(): React.JSX.Element {
               <button
                 key={p}
                 onClick={() => setPage(p)}
+                disabled={isFetching}
                 className={`w-10 h-10 rounded-full cursor-pointer flex items-center justify-center text-lg font-semibold transition ${
                   page === p
                     ? "bg-[#484D9B] text-white shadow-md"
                     : "text-gray-700 bg-gray-100 hover:bg-gray-200"
-                }`}
+                } disabled:opacity-50 disabled:cursor-not-allowed`}
               >
                 {p}
               </button>
@@ -229,22 +272,20 @@ export default function UsersPage(): React.JSX.Element {
 
             <button
               onClick={() => page < totalPages && setPage(page + 1)}
-              disabled={page === totalPages}
-              className="text-gray-500 cursor-pointer hover:text-[#484D9B] p-2"
+              disabled={page === totalPages || isFetching}
+              className="text-gray-500 cursor-pointer hover:text-[#484D9B] p-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ChevronRight size={20} />
             </button>
 
             <button
               onClick={() => setPage(totalPages)}
-              disabled={page === totalPages}
-              className="text-gray-500 cursor-pointer hover:text-[#484D9B] p-2"
+              disabled={page === totalPages || isFetching}
+              className="text-gray-500 cursor-pointer hover:text-[#484D9B] p-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ChevronsRight size={20} />
             </button>
           </div>
-
-          {/* here is the panination table  */}
         </div>
       </div>
 
