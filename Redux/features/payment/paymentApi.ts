@@ -11,11 +11,8 @@ interface PaymentResponse {
   checkout_url: string;
   session_id: string;
   amount: number;
-  transaction_id : string
+  transaction_id: string;
 }
-
-
-
 
 interface Payment {
   id: number;
@@ -34,8 +31,6 @@ interface GetPaymentsResponse {
   };
 }
 
-
-
 export const paymentApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     processPayment: builder.mutation<PaymentResponse, PaymentRequest>({
@@ -45,7 +40,7 @@ export const paymentApi = baseApi.injectEndpoints({
         body,
       }),
     }),
-     getAllPayments: builder.query<GetPaymentsResponse, void>({
+    getAllPayments: builder.query<GetPaymentsResponse, void>({
       query: () => ({
         url: "/all-payments",
         method: "GET",
@@ -54,7 +49,4 @@ export const paymentApi = baseApi.injectEndpoints({
   }),
 });
 
-export const {
-  useProcessPaymentMutation,
-  useGetAllPaymentsQuery,
-} = paymentApi
+export const { useProcessPaymentMutation, useGetAllPaymentsQuery } = paymentApi;

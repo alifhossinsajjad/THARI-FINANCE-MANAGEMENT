@@ -11,6 +11,7 @@ import {
   Newspaper,
   LayoutDashboard,
   Search,
+  Settings,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -34,6 +35,7 @@ const UserSidebar: React.FC = () => {
     },
     { icon: Package, label: "Recommendations", href: "/user/recommendations" },
     { icon: Newspaper, label: "News", href: "/user/news" },
+    { icon: Settings, label: "Settings", href: "/user/settings" },
   ];
 
   const handleToggle = (): void => {
