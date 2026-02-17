@@ -1,7 +1,10 @@
 "use client";
+import { useCreateAboutContentMutation } from "@/Redux/features/AdminDashboard/adminAboutApi/adminAboutApi";
 import { useState } from "react";
+import { BeatLoader } from "react-spinners";
 
 export default function AdminAboutPage() {
+  const [createAboutContent, { isLoading }] = useCreateAboutContentMutation();
   const [description, setDescription] = useState("");
   const [ourMission, setOurMission] = useState<string[]>([""]);
   const [ourVision, setOurVision] = useState<string[]>([""]);
@@ -21,23 +24,68 @@ export default function AdminAboutPage() {
 
   const addMission = () => setOurMission([...ourMission, ""]);
   const addVision = () => setOurVision([...ourVision, ""]);
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  //   try {
+  //     const formData = new FormData();
+
+  //     // description
+  //     formData.append("description", description);
+
+  //     // send as REAL array (one field)
+  //     formData.append(
+  //       "our_mission",
+  //       JSON.stringify(ourMission.filter((m) => m.trim() !== "")),
+  //     );
+
+  //     formData.append(
+  //       "our_vision",
+  //       JSON.stringify(ourVision.filter((v) => v.trim() !== "")),
+  //     );
+
+  //     // video
+  //     if (video) {
+  //       formData.append("video", video);
+  //     }
+
+  //     const res = await createAboutContent(formData).unwrap();
+  //     console.log("Success:", res);
+  //   } catch (error) {
+  //     console.error("Failed:", error);
+  //   }
+  // };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("description", description);
-    ourMission.forEach((m) => formData.append("our_mission[]", m));
-    ourVision.forEach((v) => formData.append("our_vision[]", v));
-    if (video) formData.append("video", video);
 
-    // Example fetch call
-    fetch("/api/about", {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data))
-      .catch((err) => console.error(err));
+    try {
+      const formData = new FormData();
+
+      formData.append("description", description);
+
+      // ✅ REAL ARRAY (backend will receive array)
+      ourMission
+        .filter((m) => m.trim() !== "")
+        .forEach((m) => {
+          formData.append("our_mission[]", m);
+        });
+
+      ourVision
+        .filter((v) => v.trim() !== "")
+        .forEach((v) => {
+          formData.append("our_vision[]", v);
+        });
+
+      if (video) {
+        formData.append("video", video);
+      }
+
+      const res = await createAboutContent(formData).unwrap();
+      console.log("Success:", res);
+    } catch (error) {
+      console.error("Failed:", error);
+    }
   };
 
   return (
@@ -165,9 +213,16 @@ export default function AdminAboutPage() {
         {/* Submit Button */}
         <button
           type="submit"
-          className="bg-[#00008B] text-white font-bold py-3 px-6 rounded hover:bg-blue-900 transition"
+          disabled={isLoading}
+          className="flex items-center justify-center gap-2 bg-[#00008B] text-white font-bold py-3 px-6 rounded hover:bg-blue-900 transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Submit
+          {isLoading ? (
+            <div className="flex items-center gap-2">
+              <BeatLoader size={8} color="#fff" /> Saving...
+            </div>
+          ) : (
+            "Submit"
+          )}
         </button>
       </form>
     </div>
