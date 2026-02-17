@@ -2,13 +2,19 @@
 
 import GetStartedButton from "@/components/reusable/GetStartedButton";
 import { useGetPricingPlansQuery } from "@/Redux/features/pricing/pricingApi";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/Redux/features/auth/authSlice";
+import { useRouter } from "next/navigation";
+
 
 import { MoveUpRight } from "lucide-react";
-import Link from "next/link";
 import { useState, useEffect } from "react";
+
 
 export default function PricingSection() {
   const [animate, setAnimate] = useState(false);
+  const router = useRouter(); // Use router for navigation
+  const user = useSelector(selectCurrentUser); // Get current user
 
   useEffect(() => {
     setAnimate(true);
@@ -16,21 +22,32 @@ export default function PricingSection() {
 
   const { data: pricing, isLoading, error } = useGetPricingPlansQuery();
 
-  console.log("Pricing Data:", pricing);
-  console.log("Pricing Error:", error);
+  // console.log("Pricing Data:", pricing);
+  // console.log("Pricing Error:", error);
 
+  const handleGetStarted = (planId: number | string) => {
+    if (user) {
+      // User is logged in, proceed to checkout or plan selection logic
+      // For now, let's say it goes to /checkout or /pricing/select/${planId}
+      // router.push(`/checkout?plan=${planId}`);
+      console.log('User is logged in, proceeding with plan:', planId);
+    } else {
+      // User is NOT logged in, redirect to login with return URL
+      router.push(`/auth/login`);
+    }
+  };
 
   if (isLoading) {
     return <div className="text-center py-10">Loading...</div>;
   }
 
+  // Optional: You can keep error handling or show empty state
   if (error) {
-    return <div className="text-center py-10">Failed to load pricing</div>;
+    return <div className="text-center py-10 text-red-500">Unable to load pricing at this time.</div>;
   }
 
-
-
-
+  // Use live data directly
+  const displayPricing = pricing || [];
 
   return (
     <section className="relative py-16 lg:py-20 bg-white overflow-hidden">
@@ -53,20 +70,29 @@ export default function PricingSection() {
             </p>
           </div>
           <div>
-            <Link href={"/pricing"}>
+            <div
+              onClick={() => {
+                 if (user) {
+                   router.push("/pricing");
+                 } else {
+                   router.push("/auth/login?redirect=/pricing");
+                 }
+              }}
+              className="cursor-pointer"
+            >
               <div className="flex items-center gap-2 bg-primary text-white py-3 pr-2 pl-8 rounded-full ">
                 <p className="text-lg font-bold">See More</p>
                 <div className="bg-white rounded-4xl p-2">
                   <MoveUpRight className="h-5 w-5 md:h-6 md:w-6 text-primary" />
                 </div>
               </div>
-            </Link>
+            </div>
           </div>
         </div>
 
         {/* Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {pricing?.slice(0, 3).map((plan, index) => (
+          {displayPricing?.slice(0, 3).map((plan, index) => (
             <div
               key={index}
               className={`transition-all duration-700 h-full ${animate
@@ -159,16 +185,22 @@ export default function PricingSection() {
                 </ul>
 
                 {/* CTA Button */}
-                <GetStartedButton
-                  text='Get Started'
-                  href="/auth/register"
-                  showArrow={false}
-                  borderClass="border  border-blue-200"
-                  bgClass={`w-full py-3 px-6 rounded-lg font-semibold text-sm transition-all duration-300 ${plan.is_popular
-                    ? "bg-white text-blue-900 hover:bg-gray-50 shadow-lg"
-                    : "bg-white text-blue-900  hover:bg-blue-50"
-                    }`}
-                />
+                {/* Use a div wrapping the button to capture the click since GetStartedButton might be an anchor */}
+                <div onClick={(e) => {
+                  e.preventDefault();
+                  handleGetStarted(plan.id);
+                }}>
+                  <GetStartedButton
+                    text='Get Started'
+                    href="#" // Prevent default navigation
+                    showArrow={false}
+                    borderClass="border border-blue-200"
+                    bgClass={`w-full py-3 px-6 rounded-lg font-semibold text-sm transition-all duration-300 cursor-pointer ${plan.is_popular
+                      ? "bg-white text-blue-900 hover:bg-gray-50 shadow-lg"
+                      : "bg-white text-blue-900 hover:bg-blue-50"
+                      }`}
+                  />
+                </div>
               </div>
             </div>
           ))}
