@@ -2,17 +2,19 @@
 
 import { useState } from "react";
 import { Key, Save } from "lucide-react";
+import { useUpdateAdminPasswordMutation } from "@/Redux/features/AdminDashboard/adminProfile/adminProfileApi";
+import { toast } from "sonner";
+import { BeatLoader } from "react-spinners";
 
 export default function SecurityTab() {
+  const [updatePassword, { isLoading }] = useUpdateAdminPasswordMutation();
+
   // Local state for password fields
   const [passwords, setPasswords] = useState({
     current: "",
     new: "",
     confirm: "",
   });
-
-  // Local state for two-factor toggle
-  const [twoFactor, setTwoFactor] = useState(false);
 
   // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,12 +25,24 @@ export default function SecurityTab() {
     }));
   };
 
-  // Example submit handler
-  const handleSave = () => {
-    // Here you can call your API
-    console.log("Password change request:", passwords);
-    console.log("Two-factor enabled:", twoFactor);
-    alert("Settings saved!");
+  // Submit handler
+  const handleSave = async () => {
+    try {
+      const res: any = await updatePassword({
+        current_password: passwords.current,
+        new_password: passwords.new,
+        new_password_confirmation: passwords.confirm,
+      }).unwrap();
+
+      if (res.success) {
+        toast.success(res.message || "Password updated successfully!");
+        setPasswords({ current: "", new: "", confirm: "" });
+      } else {
+        toast.error(res.message || "Failed to update password");
+      }
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Something went wrong!");
+    }
   };
 
   return (
@@ -71,42 +85,22 @@ export default function SecurityTab() {
         </div>
       </div>
 
-      {/* Two-Factor Authentication Section */}
-      <div className="space-y-4">
-        <h3 className="text-xl font-bold text-gray-800">
-          Two-Factor Authentication
-        </h3>
-        <div className="flex items-center justify-between p-6 bg-white border border-gray-200 rounded-xl shadow-sm">
-          <div>
-            <h4 className="text-base font-semibold text-gray-800">
-              Enable Two-Factor Authentication
-            </h4>
-            <p className="text-sm text-gray-500">
-              Add an extra layer of security to your account
-            </p>
-          </div>
-          <button
-            onClick={() => setTwoFactor(!twoFactor)}
-            className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors ${
-              twoFactor ? "bg-blue-900" : "bg-gray-300"
-            }`}
-          >
-            <span
-              className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
-                twoFactor ? "translate-x-6" : "translate-x-1"
-              }`}
-            />
-          </button>
-        </div>
-      </div>
-
       {/* Save Button */}
-      <div className="flex justify-end pt-4">
+      <div className="flex justify-end pt-1">
         <button
           onClick={handleSave}
-          className="flex items-center gap-2 px-6 py-3 bg-blue-900 hover:bg-blue-950 text-white font-semibold rounded-lg shadow-md transition-all active:scale-95"
+          disabled={isLoading}
+          className="flex items-center cursor-pointer gap-2 px-6 py-3 bg-blue-900 hover:bg-blue-950 text-white font-semibold rounded-lg shadow-md transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <Save size={18} /> Save Changes
+          {isLoading ? (
+            <div className="flex items-center gap-2">
+              <BeatLoader size={8} color="#fff" /> Saving...
+            </div>
+          ) : (
+            <>
+              <Save size={18} /> Save Changes
+            </>
+          )}
         </button>
       </div>
     </div>
