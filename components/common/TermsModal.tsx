@@ -11,7 +11,7 @@ export default function TermsModal({
   onClose,
   onAgree,
 }: TermsModalProps) {
-  const [scrolledToBottom, setScrolledToBottom] = useState(false);
+  const [, setScrolledToBottom] = useState(false);
 
   if (!isOpen) return null;
 

@@ -12,7 +12,8 @@ import {
   Bell,
 } from "lucide-react";
 import type { StatCard, QuickLink, Activity } from "@/types";
-import { useGetShowAllTotalActiveUserMetaDataQuery } from "@/Redux/features/AdminDashboard/userMetaData/userMetaDataApi";
+import { useGetShowAllTotalActiveUserMetaDataQuery } from "@/Redux/features/AdminDashboard/userDashboardMetaData/userDashboardMetaDataApi";
+// import { useGetShowAllTotalActiveUserMetaDataQuery } from "@/Redux/features/AdminDashboard/userMetaData/userMetaDataApi";
 
 export default function DashboardPage(): React.JSX.Element {
   const { data } = useGetShowAllTotalActiveUserMetaDataQuery({});

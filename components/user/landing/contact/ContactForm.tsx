@@ -30,10 +30,7 @@ const contactFormSchema = yup.object().shape({
   message: yup.string().required("Message is required"),
 });
 
-const ContactForm: React.FC<ContactProps> = ({
-  width = 702,
-  height = 748,
-}) => {
+const ContactForm: React.FC<ContactProps> = ({ width = 702, height = 748 }) => {
   const [
     sendContact,
     { isLoading, isSuccess, isError, error, reset: resetMutation },
@@ -74,7 +71,6 @@ const ContactForm: React.FC<ContactProps> = ({
     <section className="my-16 md:my-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-          
           {/* LEFT IMAGE */}
           <div className="flex justify-center">
             <Image
@@ -117,7 +113,6 @@ const ContactForm: React.FC<ContactProps> = ({
             )}
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              
               {/* First & Last Name */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
