@@ -9,12 +9,16 @@ import { useAppDispatch } from "@/Redux/hooks";
 import { setUser } from "@/Redux/features/auth/authSlice";
 import { useLoginMutation } from "@/Redux/features/auth/authApi";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import Logo from "@/components/reusable/Logo";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const searchParams = useSearchParams();
+  const redirectPath = searchParams.get("redirect") || "/";
+
   const animate = true;
 
   const [login, { isLoading }] = useLoginMutation();
@@ -62,10 +66,10 @@ export default function LoginPage() {
           setUser({
             user: res.data.user,
             token: res.data.token,
-          })
+          }),
         );
         toast.success("Login successful!");
-        router.push("/");
+        router.push(redirectPath);
       }
     } catch (err: any) {
       console.error(err);
@@ -78,27 +82,16 @@ export default function LoginPage() {
       {/* Left Section - Login Form */}
       <div className="flex w-full lg:w-1/2 flex-col justify-center px-8 sm:px-12 lg:px-20">
         <div
-          className={`w-full max-w-md mx-auto transition-all duration-1000 ${animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
+          className={`w-full max-w-md mx-auto transition-all duration-1000 ${
+            animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          }`}
         >
           {/* Logo */}
           <div className="flex items-center gap-2 mb-12">
-            <div className="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center">
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                />
-              </svg>
-            </div>
-            <span className="text-xl font-bold text-gray-900">THARI</span>
+            <Link href={"/"}>
+              {" "}
+              <Logo />
+            </Link>
           </div>
 
           {/* Welcome Text */}
@@ -249,8 +242,9 @@ export default function LoginPage() {
 
             {/* Growth Arrow */}
             <svg
-              className={`relative z-20 w-full h-64 transition-all duration-2000 ${animate ? "opacity-100 scale-100" : "opacity-0 scale-90"
-                }`}
+              className={`relative z-20 w-full h-64 transition-all duration-2000 ${
+                animate ? "opacity-100 scale-100" : "opacity-0 scale-90"
+              }`}
               viewBox="0 0 400 300"
               fill="none"
             >
@@ -314,20 +308,22 @@ export default function LoginPage() {
 
             {/* Floating Stats */}
             <div
-              className={`absolute top-20 right-8 bg-white/10 backdrop-blur-md rounded-lg p-4 transition-all duration-1000 ${animate
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 translate-x-10"
-                }`}
+              className={`absolute top-20 right-8 bg-white/10 backdrop-blur-md rounded-lg p-4 transition-all duration-1000 ${
+                animate
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-10"
+              }`}
             >
               <div className="text-white text-2xl font-bold">+24.5%</div>
               <div className="text-white/70 text-sm">Growth Rate</div>
             </div>
 
             <div
-              className={`absolute bottom-32 left-8 bg-white/10 backdrop-blur-md rounded-lg p-4 transition-all duration-1000 delay-300 ${animate
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 -translate-x-10"
-                }`}
+              className={`absolute bottom-32 left-8 bg-white/10 backdrop-blur-md rounded-lg p-4 transition-all duration-1000 delay-300 ${
+                animate
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-10"
+              }`}
             >
               <div className="text-white text-2xl font-bold">$125K</div>
               <div className="text-white/70 text-sm">Portfolio Value</div>
