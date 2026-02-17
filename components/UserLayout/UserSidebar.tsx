@@ -10,21 +10,29 @@ import {
   Menu,
   Newspaper,
   LayoutDashboard,
-  Search,
+  Globe,
+  ShieldCheck,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { MenuItem } from "@/types";
+import { useAppDispatch } from "@/Redux/hooks";
+import { logout } from "@/Redux/features/auth/authSlice";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import Image from "next/image";
 
 const UserSidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const pathname = usePathname();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const menuItems: MenuItem[] = [
     { icon: LayoutDashboard, label: "Home", href: "/user" },
-    { icon: Search, label: "Search Stock", href: "/user/searchStock" },
+    { icon: Globe, label: "US Stock", href: "/user/searchStock" },
+    { icon: ShieldCheck, label: "US Compliance Stock", href: "/user/usComplianceStock" },
     { icon: CreditCard, label: "WatchList", href: "/user/watchList" },
 
     {
@@ -46,6 +54,13 @@ const UserSidebar: React.FC = () => {
 
   const handleOverlayClick = (): void => {
     setIsOpen(false);
+  };
+
+  const handleLogout = (): void => {
+    dispatch(logout());
+    handleClose();
+    toast.success("Logged out successfully");
+    router.push("/auth/login");
   };
 
   return (
@@ -76,9 +91,8 @@ const UserSidebar: React.FC = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-58.75 bg-primary text-white z-50 transform transition-transform duration-300 ease-in-out ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0`}
+        className={`fixed top-0 left-0 h-full w-58.75 bg-primary text-white z-50 transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"
+          } lg:translate-x-0`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
@@ -105,11 +119,10 @@ const UserSidebar: React.FC = () => {
                   key={`${item.href}-${index}`}
                   href={item.href}
                   onClick={handleClose}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                    isActive
-                      ? "bg-white/10 text-white"
-                      : "text-white/70 hover:bg-white/5 hover:text-white"
-                  }`}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive
+                    ? "bg-white/10 text-white"
+                    : "text-white/70 hover:bg-white/5 hover:text-white"
+                    }`}
                 >
                   <Icon size={20} />
                   <span>{item.label}</span>
@@ -152,8 +165,8 @@ const UserSidebar: React.FC = () => {
           {/* Logout */}
           <div className="px-3 py-6 border-t border-white/10">
             <button
-              className="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white transition-colors"
-              onClick={() => console.log("Logout clicked")}
+              className="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white transition-colors cursor-pointer"
+              onClick={handleLogout}
               type="button"
             >
               <LogOut size={20} />

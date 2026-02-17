@@ -1,5 +1,6 @@
 import UserSidebar from "@/components/UserLayout/UserSidebar";
 import UserTopbar from "@/components/UserLayout/UserTopbar";
+import { SearchProvider } from "@/contexts/SearchContext";
 
 export default function AdminLayout({
   children,
@@ -7,12 +8,14 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gray-50 font-['Inter']">
-      <UserSidebar />
-      <div className="lg:ml-58.75 min-h-screen flex flex-col">
-        <UserTopbar />
-        <main className="flex-1 p-4 lg:p-8">{children}</main>
+    <SearchProvider>
+      <div className="min-h-screen bg-gray-50 font-['Inter']">
+        <UserSidebar />
+        <div className="lg:ml-58.75 min-h-screen flex flex-col">
+          <UserTopbar />
+          <main className="flex-1 p-4 lg:p-8">{children}</main>
+        </div>
       </div>
-    </div>
+    </SearchProvider>
   );
 }
