@@ -12,6 +12,8 @@ import {
   LayoutDashboard,
   Globe,
   ShieldCheck,
+  Briefcase,
+  Languages,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -33,6 +35,8 @@ const UserSidebar: React.FC = () => {
     { icon: LayoutDashboard, label: "Home", href: "/user" },
     { icon: Globe, label: "US Stock", href: "/user/searchStock" },
     { icon: ShieldCheck, label: "US Compliance Stock", href: "/user/usComplianceStock" },
+    { icon: Briefcase, label: "ETF Reports", href: "/user/etf-reports" },
+    { icon: Languages, label: "International Stocks", href: "/user/international-stocks" },
     { icon: CreditCard, label: "WatchList", href: "/user/watchList" },
 
     {
