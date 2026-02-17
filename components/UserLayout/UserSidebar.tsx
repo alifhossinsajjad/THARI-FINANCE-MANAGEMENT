@@ -13,6 +13,8 @@ import {
   Globe,
   ShieldCheck,
   Settings,
+  Briefcase,
+  Languages,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -38,6 +40,8 @@ const UserSidebar: React.FC = () => {
       label: "US Compliance Stock",
       href: "/user/usComplianceStock",
     },
+    { icon: Briefcase, label: "ETF Reports", href: "/user/etf-reports" },
+    { icon: Languages, label: "International Stocks", href: "/user/international-stocks" },
     { icon: CreditCard, label: "WatchList", href: "/user/watchList" },
 
     {
@@ -97,9 +101,8 @@ const UserSidebar: React.FC = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-58.75 bg-primary text-white z-50 transform transition-transform duration-300 ease-in-out ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0`}
+        className={`fixed top-0 left-0 h-full w-58.75 bg-primary text-white z-50 transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"
+          } lg:translate-x-0`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
@@ -126,11 +129,10 @@ const UserSidebar: React.FC = () => {
                   key={`${item.href}-${index}`}
                   href={item.href}
                   onClick={handleClose}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                    isActive
-                      ? "bg-white/10 text-white"
-                      : "text-white/70 hover:bg-white/5 hover:text-white"
-                  }`}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive
+                    ? "bg-white/10 text-white"
+                    : "text-white/70 hover:bg-white/5 hover:text-white"
+                    }`}
                 >
                   <Icon size={20} />
                   <span>{item.label}</span>
