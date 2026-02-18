@@ -19,13 +19,6 @@ import {
 import { useState } from "react";
 import { useGetPricingPlansQuery } from "@/Redux/features/pricing/pricingApi";
 
-
-
-
-
-
-
-
 export default function UserDashboardPage() {
   const [openSubInfo, setOpenSubInfo] = useState(false);
   // 1) profile
@@ -49,7 +42,8 @@ export default function UserDashboardPage() {
     skip: !planId, // don't call until we have an id
   });
 
-  const plan = (planRes as any)?.plan ?? planRes?.plan;
+  // const plan = (planRes as any)?.plan ?? planRes?.plan;
+  const plan = (planRes as any)?.plan ?? (planRes as any);
 
   const showSubscriptionSkeleton =
     isProfileLoading || (Boolean(planId) && isPlanLoading);
