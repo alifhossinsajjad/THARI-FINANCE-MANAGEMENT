@@ -73,11 +73,11 @@ const UserSidebar: React.FC = () => {
       label: "International Stocks",
       href: "/user/international-stocks",
     },
-    { icon: CreditCard, label: "WatchList", href: "/user/watchList" },
+    { icon: CreditCard, label: "Watch List", href: "/user/watchList" },
 
     {
       icon: TrendingUp,
-      label: "Expense manager",
+      label: "Expense Manager",
       href: "/user/expensiveManager",
     },
     { icon: Package, label: "Recommendations", href: "/user/recommendations" },
