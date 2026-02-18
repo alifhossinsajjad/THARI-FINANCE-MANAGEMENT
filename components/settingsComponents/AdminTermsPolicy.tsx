@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Save } from "lucide-react";
+import { toast } from "sonner";
 
 export default function AdminTermsPolicy() {
   // State for testing purposes to keep data workable
@@ -22,7 +23,7 @@ export default function AdminTermsPolicy() {
   // Temporary Save Function for testing
   const handleUpdate = () => {
     console.log("Saving Terms & Privacy to state:", policyData);
-    alert("Terms & Privacy updated locally! Check console for data.");
+    toast.success("Terms & Privacy updated locally! Check console for data.");
   };
 
   return (

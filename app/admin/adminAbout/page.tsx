@@ -89,7 +89,7 @@ export default function AdminAboutPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6 bg-gray-100 text-gray-900 rounded-lg shadow-lg">
+    <div className="max-w-8xl mx-auto p-6 bg-gray-100 text-gray-900 rounded-lg shadow-lg">
       <h1 className="text-2xl font-bold mb-6" style={{ color: "#00008B" }}>
         Admin About Page
       </h1>
