@@ -15,6 +15,10 @@ import {
   Settings,
   Briefcase,
   Languages,
+  ChevronDown,
+  ArrowDownLeft,
+  ArrowUpRight,
+  Landmark,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -31,6 +35,29 @@ const UserSidebar: React.FC = () => {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const expenseBase = "/user/expensiveManager";
+  const isExpenseRoute =
+    pathname === expenseBase || pathname.startsWith(expenseBase + "/");
+
+  const [expenseOpen, setExpenseOpen] = useState<boolean>(isExpenseRoute);
+
+  const expenseChildren: MenuItem[] = [
+    {
+      icon: ArrowDownLeft,
+      label: "Income",
+      href: "/user/expensiveManager/income",
+    },
+    {
+      icon: ArrowUpRight,
+      label: "Expense",
+      href: "/user/expensiveManager/expense",
+    },
+    {
+      icon: Landmark,
+      label: "Loan",
+      href: "/user/expensiveManager/loan",
+    },
+  ];
 
   const menuItems: MenuItem[] = [
     { icon: LayoutDashboard, label: "Home", href: "/user" },
@@ -41,7 +68,11 @@ const UserSidebar: React.FC = () => {
       href: "/user/usComplianceStock",
     },
     { icon: Briefcase, label: "ETF Reports", href: "/user/etf-reports" },
-    { icon: Languages, label: "International Stocks", href: "/user/international-stocks" },
+    {
+      icon: Languages,
+      label: "International Stocks",
+      href: "/user/international-stocks",
+    },
     { icon: CreditCard, label: "WatchList", href: "/user/watchList" },
 
     {
@@ -56,6 +87,11 @@ const UserSidebar: React.FC = () => {
 
   const handleToggle = (): void => {
     setIsOpen(!isOpen);
+  };
+  const handleExpenseToggle = (e: React.MouseEvent) => {
+    e.preventDefault(); // prevent Link navigation
+    e.stopPropagation();
+    setExpenseOpen((p) => !p);
   };
 
   const handleClose = (): void => {
@@ -101,8 +137,9 @@ const UserSidebar: React.FC = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-58.75 bg-primary text-white z-50 transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"
-          } lg:translate-x-0`}
+        className={`fixed top-0 left-0 h-full w-58.75 bg-primary text-white z-50 transform transition-transform duration-300 ease-in-out ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
@@ -122,17 +159,90 @@ const UserSidebar: React.FC = () => {
           {/* Menu Items */}
           <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
             {menuItems.map((item: MenuItem, index: number) => {
+              // Expense manager special group
+              if (item.href === "/user/expensiveManager") {
+                const Icon = item.icon;
+
+                return (
+                  <div key={`${item.href}-${index}`} className="space-y-1">
+                    {/* Parent row: label navigates, chevron toggles */}
+                    <Link
+                      href={item.href}
+                      onClick={handleClose}
+                      className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                        isExpenseRoute
+                          ? "bg-white/10 text-white"
+                          : "text-white/70 hover:bg-white/5 hover:text-white"
+                      }`}
+                    >
+                      <span className="flex items-center gap-3">
+                        <Icon size={20} />
+                        <span>{item.label}</span>
+                      </span>
+
+                      <button
+                        type="button"
+                        onClick={handleExpenseToggle}
+                        aria-label={
+                          expenseOpen
+                            ? "Collapse Expense manager"
+                            : "Expand Expense manager"
+                        }
+                        className="p-1 rounded-md hover:bg-white/10"
+                      >
+                        <ChevronDown
+                          size={18}
+                          className={`transition-transform ${expenseOpen ? "rotate-180" : ""}`}
+                        />
+                      </button>
+                    </Link>
+
+                    {/* Children */}
+                    {expenseOpen && (
+                      <div className="ml-3 pl-3 border-l border-white/10 space-y-1">
+                        {expenseChildren.map((child) => {
+                          const ChildIcon = child.icon;
+                          const childActive =
+                            pathname === child.href ||
+                            pathname.startsWith(child.href + "/");
+
+                          return (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              onClick={handleClose}
+                              className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
+                                childActive
+                                  ? "bg-white/10 text-white"
+                                  : "text-white/70 hover:bg-white/5 hover:text-white"
+                              }`}
+                            >
+                              <ChildIcon size={18} />
+                              <span>{child.label}</span>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              // Default items
               const Icon = item.icon;
-              const isActive: boolean = pathname === item.href;
+              const isActive =
+                pathname === item.href || pathname.startsWith(item.href + "/");
+
               return (
                 <Link
                   key={`${item.href}-${index}`}
                   href={item.href}
                   onClick={handleClose}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive
-                    ? "bg-white/10 text-white"
-                    : "text-white/70 hover:bg-white/5 hover:text-white"
-                    }`}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    isActive
+                      ? "bg-white/10 text-white"
+                      : "text-white/70 hover:bg-white/5 hover:text-white"
+                  }`}
                 >
                   <Icon size={20} />
                   <span>{item.label}</span>
