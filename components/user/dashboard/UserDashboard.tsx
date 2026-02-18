@@ -15,8 +15,16 @@ import {
   useGetMyProfileQuery,
   // ✅ use your actual hook name for: GET /subscriptions/show/:id
 } from "@/Redux/features/userDashboardServices/userApi";
-import { useGetSubscriptionShowQuery } from "@/Redux/features/pricing/pricingApi";
+
 import { useState } from "react";
+import { useGetPricingPlansQuery } from "@/Redux/features/pricing/pricingApi";
+
+
+
+
+
+
+
 
 export default function UserDashboardPage() {
   const [openSubInfo, setOpenSubInfo] = useState(false);
@@ -37,7 +45,7 @@ export default function UserDashboardPage() {
     data: planRes,
     isLoading: isPlanLoading,
     isError: isPlanError,
-  } = useGetSubscriptionShowQuery(planId as any, {
+  } = useGetPricingPlansQuery(planId as any, {
     skip: !planId, // don't call until we have an id
   });
 

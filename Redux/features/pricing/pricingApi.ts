@@ -12,14 +12,39 @@ export const pricingApi = baseApi.injectEndpoints({
       query: () => "/subscriptions/show-all",
       providesTags: ["Pricing"],
     }),
-
-    // ✅ Fix typing here
-    getSubscriptionShow: builder.query<SubscriptionResponse, number>({
-      query: (id) => `/subscriptions/show/${id}`,
+    getSubscribtionShow: builder.query<SubscriptionResponse, number>({
+      query: (id) => `/subscriptions/${id}`,
       providesTags: ["Pricing"],
+    }),
+
+    //Delete
+
+    deleteSubscription: builder.mutation<{ message: string }, number>({
+      query: (id) => ({
+        url: `/subscriptions/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Pricing"],
+    }),
+
+    //update
+
+    updateSubscription: builder.mutation<
+      { message: string; plan: PricingPlan },
+      { id: number; data: Partial<PricingPlan> }
+    >({
+      query: ({ id, data }) => ({
+        url: `/subscriptions/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["Pricing"],
     }),
   }),
 });
 
-export const { useGetPricingPlansQuery, useGetSubscriptionShowQuery } =
-  pricingApi;
+export const {
+  useGetPricingPlansQuery,
+  useDeleteSubscriptionMutation,
+  useUpdateSubscriptionMutation,
+} = pricingApi;

@@ -16,8 +16,9 @@ import {
   useGetAllUserByAdminQuery,
   useToggleUserBySupperAdminMutation,
 } from "@/Redux/features/AdminDashboard/Users/userManagementApi";
-import { BeatLoader } from "react-spinners";
+
 import { toast } from "sonner";
+import { BeatLoader } from "react-spinners";
 
 export default function UsersPage(): React.JSX.Element {
   const [statusFilter, setStatusFilter] = useState<string>("All");

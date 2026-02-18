@@ -6,18 +6,13 @@ import {
   LogOut,
   Users,
   CreditCard,
-  TrendingUp,
-  Package,
-  Bitcoin,
-  Newspaper,
-  Shield,
-  Bell,
   MessageSquare,
   BarChart3,
   Boxes,
   Settings,
   User,
   Menu,
+  MessageCircle,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -25,6 +20,7 @@ import type { MenuItem } from "@/types";
 import { useDispatch } from "react-redux";
 import { logout } from "@/Redux/features/auth/authSlice";
 import Image from "next/image";
+
 
 const AdminSidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -35,18 +31,23 @@ const AdminSidebar: React.FC = () => {
     { icon: Users, label: "Users", href: "/admin/users" },
     { icon: CreditCard, label: "Subscriptions", href: "/admin/subscriptions" },
 
-    { icon: TrendingUp, label: "Stocks", href: "/admin/stocks" },
-    { icon: Package, label: "Commodities", href: "/admin/commodities" },
-    { icon: Bitcoin, label: "Crypto", href: "/admin/crypto" },
-    { icon: Newspaper, label: "News", href: "/admin/news" },
-    { icon: Shield, label: "Sharia Compliance", href: "/admin/compliance" },
-    { icon: Bell, label: "Notifications", href: "/admin/notifications" },
+    // { icon: TrendingUp, label: "Stocks", href: "/admin/stocks" },
+    // { icon: Package, label: "Commodities", href: "/admin/commodities" },
+    // { icon: Bitcoin, label: "Crypto", href: "/admin/crypto" },
+    // { icon: Newspaper, label: "News", href: "/admin/news" },
+    // { icon: Shield, label: "Sharia Compliance", href: "/admin/compliance" },
+    // { icon: Bell, label: "Notifications", href: "/admin/notifications" },
     {
       icon: MessageSquare,
       label: "Communications",
       href: "/admin/communications",
     },
-    { icon: BarChart3, label: "Reports", href: "/admin/reports" },
+    {
+      icon: MessageCircle,
+      label: "Contact",
+      href: "/admin/contact",
+    },
+    // { icon: BarChart3, label: "Reports", href: "/admin/reports" },
     { icon: Boxes, label: "About", href: "/admin/adminAbout" },
     { icon: Settings, label: "Settings", href: "/admin/settings" },
     { icon: User, label: "Profile", href: "/admin/profile" },
