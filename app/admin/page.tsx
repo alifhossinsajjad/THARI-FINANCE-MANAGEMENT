@@ -13,40 +13,42 @@ import {
 } from "lucide-react";
 import type { StatCard, QuickLink, Activity } from "@/types";
 import { useGetShowAllTotalActiveUserMetaDataQuery } from "@/Redux/features/AdminDashboard/userDashboardMetaData/userDashboardMetaDataApi";
+import { useRouter } from "next/navigation";
 // import { useGetShowAllTotalActiveUserMetaDataQuery } from "@/Redux/features/AdminDashboard/userMetaData/userMetaDataApi";
 
 export default function DashboardPage(): React.JSX.Element {
   const { data } = useGetShowAllTotalActiveUserMetaDataQuery({});
   console.log("iam the meta data for admin dashboard", data);
+  const router = useRouter();
 
-  const stats: StatCard[] = [
+  const stats = [
     {
       label: "Total Users",
-      value: "12,543",
+      value: data?.data?.users?.total_users,
       change: "+12.5%",
       isPositive: true,
       iconBg: "#2B7FFF",
       icon: Users,
     },
     {
-      label: "Elite Users",
-      value: "2,847",
+      label: "Active Users",
+      value: data?.data?.users?.active_users,
       change: "+8.2%",
       isPositive: true,
       iconBg: "#AD46FF",
       icon: Users,
     },
     {
-      label: "Active Subscriptions",
-      value: "3,124",
+      label: "Total Plans",
+      value: data?.data?.plans?.total_plans,
       change: "+5.4%",
       isPositive: true,
       iconBg: "#00C950",
       icon: CreditCard,
     },
     {
-      label: "New Messages",
-      value: "147",
+      label: "Active Plans",
+      value: data?.data?.plans?.active_plans,
       change: "-3.1%",
       isPositive: false,
       iconBg: "#F54900",
@@ -54,13 +56,43 @@ export default function DashboardPage(): React.JSX.Element {
     },
   ];
 
-  const quickLinks: QuickLink[] = [
-    { label: "Manage Users", icon: Users, iconBg: "#2B7FFF" },
-    { label: "Manage Stocks", icon: TrendingUp, iconBg: "#00C950" },
-    { label: "Manage Crypto", icon: Bitcoin, iconBg: "#F0B100" },
-    { label: "Manage Commodities", icon: Package, iconBg: "#AD46FF" },
-    { label: "Publish News", icon: Newspaper, iconBg: "#615FFF" },
-    { label: "Send Notifications", icon: Bell, iconBg: "#FB2C36" },
+  const quickLinks = [
+    {
+      label: "Manage Users",
+      icon: Users,
+      iconBg: "#2B7FFF",
+      href: "/admin/users",
+    },
+    {
+      label: "Manage Stocks",
+      icon: TrendingUp,
+      iconBg: "#00C950",
+      href: "/admin/stocks",
+    },
+    {
+      label: "Manage Crypto",
+      icon: Bitcoin,
+      iconBg: "#F0B100",
+      href: "/admin/crypto",
+    },
+    {
+      label: "Manage Commodities",
+      icon: Package,
+      iconBg: "#AD46FF",
+      href: "/admin/commodities",
+    },
+    {
+      label: "Publish News",
+      icon: Newspaper,
+      iconBg: "#615FFF",
+      href: "/admin/news",
+    },
+    {
+      label: "Send Notifications",
+      icon: Bell,
+      iconBg: "#FB2C36",
+      href: "/admin/notifications",
+    },
   ];
 
   const activities: Activity[] = [
@@ -120,13 +152,13 @@ export default function DashboardPage(): React.JSX.Element {
                   {stat.value}
                 </div>
                 <div className="flex items-center gap-1 text-sm">
-                  <span
+                  {/* <span
                     className={
                       stat.isPositive ? "text-green-600" : "text-red-600"
                     }
                   >
                     {stat.isPositive ? "↗" : "↘"} {stat.change}
-                  </span>
+                  </span> */}
                 </div>
               </div>
             </div>
@@ -138,14 +170,14 @@ export default function DashboardPage(): React.JSX.Element {
       <div>
         <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Links</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {quickLinks.map((link: QuickLink, index: number) => {
+          {quickLinks.map((link, index: number) => {
             const Icon = link.icon;
             return (
               <button
                 key={`link-${index}`}
                 className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow text-left flex items-center gap-4"
                 type="button"
-                onClick={() => console.log(`Clicked: ${link.label}`)}
+                onClick={() => router.push(link.href)}
               >
                 <div
                   className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
