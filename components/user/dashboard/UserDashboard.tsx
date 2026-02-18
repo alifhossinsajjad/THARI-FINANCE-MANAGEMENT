@@ -19,13 +19,6 @@ import {
 import { useState } from "react";
 import { useGetPricingPlansQuery } from "@/Redux/features/pricing/pricingApi";
 
-
-
-
-
-
-
-
 export default function UserDashboardPage() {
   const [openSubInfo, setOpenSubInfo] = useState(false);
   // 1) profile
