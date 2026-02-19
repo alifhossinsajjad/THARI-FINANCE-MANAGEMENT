@@ -8,7 +8,7 @@ import {
   TrendingUp,
   Package,
   Menu,
-  Newspaper,
+
   LayoutDashboard,
   Globe,
   ShieldCheck,
@@ -19,7 +19,7 @@ import {
   ArrowDownLeft,
   ArrowUpRight,
   Landmark,
-  Map,
+
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -28,6 +28,7 @@ import { useAppDispatch } from "@/Redux/hooks";
 import { logout } from "@/Redux/features/auth/authSlice";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+
 import Image from "next/image";
 
 
@@ -75,20 +76,21 @@ const UserSidebar: React.FC = () => {
       label: "International Stocks",
       href: "/user/international-stocks",
     },
-    {
-      icon: Map,
-      label: "Regional Stocks Info",
-      href: "/user/regional-stocks",
-    },
+
     { icon: CreditCard, label: "Watch List", href: "/user/watchList" },
 
     {
       icon: TrendingUp,
-      label: "Expense Manager",
+      label: "Financial Manager",
       href: "/user/expensiveManager",
     },
-    { icon: Package, label: "Recommendations", href: "/user/recommendations" },
-    { icon: Newspaper, label: "News", href: "/user/news" },
+    {
+      icon: Package,
+      label: "Our Analysis",
+      href: "/user/ourAnalysis",
+    },
+    // { icon: Package, label: "Our Analysis", href: "/user/recommendations" },
+    // { icon: Newspaper, label: "News", href: "/user/news" },
     { icon: Settings, label: "Settings", href: "/user/settings" },
   ];
 
@@ -252,6 +254,37 @@ const UserSidebar: React.FC = () => {
                 </Link>
               );
             })}
+
+            {/* <div className="mt-12 space-y-3">
+              <div className="flex justify-between items-center">
+                <h1 className="text-xl text-white/70">AAPL</h1>
+                <button className="flex gap-2 items-center rounded-md px-2 py-1 bg-[#1010A2]">
+                  <FaArrowTrendUp />
+                  <p>+1.61%</p>
+                </button>
+              </div>
+              <div className="flex justify-between items-center">
+                <h1 className="text-xl text-white/70">MSFT</h1>
+                <button className="flex gap-2 items-center rounded-md px-2 py-1 bg-[#1010A2]">
+                  <FaArrowTrendUp />
+                  <p>+3.57%</p>
+                </button>
+              </div>
+              <div className="flex justify-between items-center">
+                <h1 className="text-xl text-white/70">TSLA</h1>
+                <button className="flex gap-2 items-center rounded-md px-2 py-1 bg-[#1010A2]">
+                  <FaArrowTrendUp />
+                  <p>+5.28%</p>
+                </button>
+              </div>
+              <div className="flex justify-between items-center">
+                <h1 className="text-xl text-white/70">NVDA</h1>
+                <button className="flex gap-2 items-center rounded-md px-2 py-1 bg-[#1010A2]">
+                  <FaArrowTrendUp />
+                  <p> +17.79%</p>
+                </button>
+              </div>
+            </div> */}
           </nav>
 
           {/* Logout */}
