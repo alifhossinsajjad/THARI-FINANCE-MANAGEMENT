@@ -17,8 +17,8 @@ import {
   ArrowDownLeft,
   ArrowUpRight,
   Landmark,
-  CheckCircle,
-  LineChart,
+  MessageSquare,
+
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -90,8 +90,13 @@ const UserSidebar: React.FC = () => {
     },
     {
       icon: Package,
-      label: "Our Analysis",
-      href: "/user/ourAnalysis",
+      label: "Recomendation",
+      href: "/user/recomendetion",
+    },
+     {
+      icon: MessageSquare,
+      label: "Communications",
+      href: "/admin/communications",
     },
     // { icon: Package, label: "Our Analysis", href: "/user/recommendations" },
     // { icon: Newspaper, label: "News", href: "/user/news" },
