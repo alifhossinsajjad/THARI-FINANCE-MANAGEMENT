@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useGetRegionsQuery, useGetRegionalReportsQuery } from "@/Redux/features/userDashboardServices/regionBaseApi";
 import { useSearch } from "@/contexts/SearchContext";
-import { RegionalStockTable } from "./_components/RegionalStockTable";
+import { RegionalStockTable } from "../stock-detail/_components/RegionalStockTable";
 import { ChevronDown } from "lucide-react";
 
 export default function RegionalStocksPage() {

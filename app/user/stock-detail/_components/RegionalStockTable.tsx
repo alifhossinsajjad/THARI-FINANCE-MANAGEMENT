@@ -2,6 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { IRegionalReportItem } from "@/Redux/features/userDashboardServices/regionBaseApi";
+import { useAddToWishlistMutation } from "@/Redux/features/userDashboardServices/wishlistApi";
+import { Heart } from "lucide-react";
+import { toast } from "sonner";
 
 interface RegionalStockTableProps {
     data: IRegionalReportItem[];
@@ -23,6 +26,7 @@ export const RegionalStockTable = ({
     pageNumber,
 }: RegionalStockTableProps) => {
     const router = useRouter();
+    const [addToWishlist, { isLoading: isAdding }] = useAddToWishlistMutation();
 
     // Format date to readable format
     const formatDate = (dateString: string) => {
@@ -38,6 +42,16 @@ export const RegionalStockTable = ({
     // Navigate to stock detail page
     const handleRowClick = (symbol: string) => {
         router.push(`/user/stock-detail/${symbol}`);
+    };
+
+    const handleAddToWishlist = async (e: React.MouseEvent, symbol: string) => {
+        e.stopPropagation(); // Prevent row click
+        try {
+            await addToWishlist(symbol).unwrap();
+            toast.success(`${symbol} added to watchlist`);
+        } catch (error: any) {
+            toast.error(error?.data?.message || "Failed to add to watchlist");
+        }
     };
 
     const getStatusColor = (status: string) => {
@@ -77,6 +91,9 @@ export const RegionalStockTable = ({
                             </th>
                             <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                                 Report Date
+                            </th>
+                            <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                Action
                             </th>
                         </tr>
                     </thead>
@@ -130,8 +147,8 @@ export const RegionalStockTable = ({
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <span
                                             className={`text-xs font-medium ${stock.businessScreen === "COMPLIANT"
-                                                    ? "text-green-600"
-                                                    : "text-red-600"
+                                                ? "text-green-600"
+                                                : "text-red-600"
                                                 }`}
                                         >
                                             {stock.businessScreen}
@@ -140,8 +157,8 @@ export const RegionalStockTable = ({
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <span
                                             className={`text-xs font-medium ${stock.financialScreen === "COMPLIANT"
-                                                    ? "text-green-600"
-                                                    : "text-red-600"
+                                                ? "text-green-600"
+                                                : "text-red-600"
                                                 }`}
                                         >
                                             {stock.financialScreen}
@@ -151,6 +168,16 @@ export const RegionalStockTable = ({
                                         <span className="text-slate-600 text-sm">
                                             {formatDate(stock.reportDate)}
                                         </span>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-right">
+                                        <button
+                                            onClick={(e) => handleAddToWishlist(e, stock.symbol)}
+                                            disabled={isAdding}
+                                            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all active:scale-95 disabled:opacity-50"
+                                            title="Add to Watchlist"
+                                        >
+                                            <Heart size={18} />
+                                        </button>
                                     </td>
                                 </tr>
                             ))

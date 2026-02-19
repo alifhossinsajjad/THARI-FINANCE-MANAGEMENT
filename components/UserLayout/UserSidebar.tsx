@@ -28,14 +28,15 @@ import { useAppDispatch } from "@/Redux/hooks";
 import { logout } from "@/Redux/features/auth/authSlice";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { FaArrowTrendUp } from "react-icons/fa6";
 import Image from "next/image";
+
 
 const UserSidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const router = useRouter();
+
   const expenseBase = "/user/expensiveManager";
   const isExpenseRoute =
     pathname === expenseBase || pathname.startsWith(expenseBase + "/");
@@ -251,37 +252,6 @@ const UserSidebar: React.FC = () => {
                 </Link>
               );
             })}
-
-            <div className="mt-12 space-y-3">
-              <div className="flex justify-between items-center">
-                <h1 className="text-xl text-white/70">AAPL</h1>
-                <button className="flex gap-2 items-center rounded-md px-2 py-1 bg-[#1010A2]">
-                  <FaArrowTrendUp />
-                  <p>+1.61%</p>
-                </button>
-              </div>
-              <div className="flex justify-between items-center">
-                <h1 className="text-xl text-white/70">MSFT</h1>
-                <button className="flex gap-2 items-center rounded-md px-2 py-1 bg-[#1010A2]">
-                  <FaArrowTrendUp />
-                  <p>+3.57%</p>
-                </button>
-              </div>
-              <div className="flex justify-between items-center">
-                <h1 className="text-xl text-white/70">TSLA</h1>
-                <button className="flex gap-2 items-center rounded-md px-2 py-1 bg-[#1010A2]">
-                  <FaArrowTrendUp />
-                  <p>+5.28%</p>
-                </button>
-              </div>
-              <div className="flex justify-between items-center">
-                <h1 className="text-xl text-white/70">NVDA</h1>
-                <button className="flex gap-2 items-center rounded-md px-2 py-1 bg-[#1010A2]">
-                  <FaArrowTrendUp />
-                  <p> +17.79%</p>
-                </button>
-              </div>
-            </div>
           </nav>
 
           {/* Logout */}
