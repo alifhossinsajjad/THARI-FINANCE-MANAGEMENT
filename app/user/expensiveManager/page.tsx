@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Calculator,
   LayoutDashboard,
@@ -10,11 +10,42 @@ import {
   Trash2,
   Plus,
 } from "lucide-react";
+import { useGetFinancialManagerQuery } from "@/Redux/features/userDashboardServices/expenseManager/expenseManagerApi";
 
 export default function AIFinancialTools() {
   const [activeTab, setActiveTab] = useState("manager");
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [showResults, setShowResults] = useState(false);
+
+  // manager (date range)
+  const [fromDate, setFromDate] = useState("2026-01-08");
+  const [toDate, setToDate] = useState("2026-03-28");
+
+  const {
+    data: managerData,
+    isFetching: managerLoading,
+    isError: managerError,
+    refetch: refetchManager,
+  } = useGetFinancialManagerQuery(
+    { from_date: fromDate, to_date: toDate },
+    { skip: activeTab !== "manager" },
+  );
+
+  const managerRows = useMemo(() => {
+    const incomes = managerData?.incomes ?? [];
+    const expenses = managerData?.expenses ?? [];
+    const loans = managerData?.loans ?? [];
+    const maxLen = Math.max(incomes.length, expenses.length, loans.length);
+
+    return Array.from({ length: maxLen }, (_, i) => ({
+      income: incomes[i],
+      expense: expenses[i],
+      loan: loans[i],
+    }));
+  }, [managerData]);
+
+  // existing states (loan + wealth)
+  const [isAnalyzing, setIsAnalyzing] = useState(false); // kept (unused in manager now)
+  const [showResults, setShowResults] = useState(false); // kept (unused in manager now)
+
   const [loanAmount, setLoanAmount] = useState(5000);
   const [duration, setDuration] = useState(4);
   const [interestRate, setInterestRate] = useState(0);
@@ -42,7 +73,6 @@ export default function AIFinancialTools() {
 
   const handleAnalyze = () => {
     setIsAnalyzing(true);
-    // Simulate AI analysis delay
     setTimeout(() => {
       setIsAnalyzing(false);
       setShowResults(true);
@@ -55,11 +85,8 @@ export default function AIFinancialTools() {
     const n = duration;
 
     let emi = 0;
-    if (r === 0) {
-      emi = P / n;
-    } else {
-      emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
-    }
+    if (r === 0) emi = P / n;
+    else emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
 
     setLoanResult({
       monthly: emi.toFixed(2),
@@ -124,87 +151,210 @@ export default function AIFinancialTools() {
 
       {/* Tool Content Container */}
       <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 min-h-100">
+        {/* ===================== MANAGER (REPLACED) ===================== */}
         {activeTab === "manager" && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
-            <div>
-              <h3 className="text-gray-800 font-bold mb-6">
-                Smart Financial Planning
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="space-y-2.5">
-                  <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">
-                    Monthly Income ($)
-                  </label>
-                  <div className="relative group">
-                    <input
-                      type="number"
-                      defaultValue={5000}
-                      className="w-full bg-[#fcfcfc] border border-gray-100 rounded-2xl p-4 text-gray-800 font-bold focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all"
-                    />
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-1">
-                      <button className="text-gray-400 ">
-                        <ChevronUp className="w-4 h-4" />
-                      </button>
-                      <button className="text-gray-400 ">
-                        <ChevronDown className="w-4 h-4" />
-                      </button>
+            {/* Date range inputs */}
+            <div className="rounded-2xl border border-gray-100 bg-white">
+              <div className="p-5">
+                <h3 className="text-gray-800 font-bold mb-4">
+                  Financial Manager
+                </h3>
+
+                <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                  <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 md:max-w-130">
+                    <div className="space-y-2">
+                      <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">
+                        From date
+                      </label>
+                      <input
+                        type="date"
+                        value={fromDate}
+                        onChange={(e) => setFromDate(e.target.value)}
+                        className="w-full bg-[#fcfcfc] border border-gray-100 rounded-2xl p-4 text-gray-800 font-bold focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">
+                        To date
+                      </label>
+                      <input
+                        type="date"
+                        value={toDate}
+                        onChange={(e) => setToDate(e.target.value)}
+                        className="w-full bg-[#fcfcfc] border border-gray-100 rounded-2xl p-4 text-gray-800 font-bold focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all"
+                      />
                     </div>
                   </div>
+
+                  <button
+                    onClick={() => refetchManager()}
+                    disabled={managerLoading}
+                    className="bg-primary  disabled:bg-blue-300 text-white font-bold py-4 px-8 rounded-2xl transition-all shadow-lg shadow-blue-900/20 active:scale-95 text-sm cursor-pointer"
+                  >
+                    {managerLoading ? "Loading..." : "Fetch"}
+                  </button>
                 </div>
 
-                <div className="space-y-2.5">
-                  <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">
-                    Monthly Expenses ($)
-                  </label>
-                  <div className="relative group">
-                    <input
-                      type="number"
-                      defaultValue={3000}
-                      className="w-full bg-[#fcfcfc] border border-gray-100 rounded-2xl p-4 text-gray-800 font-bold focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all"
-                    />
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-1">
-                      <button className="text-gray-400 hover:text-gray-600">
-                        <ChevronUp className="w-4 h-4" />
-                      </button>
-                      <button className="text-gray-400 hover:text-gray-600">
-                        <ChevronDown className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-2.5">
-                  <label className="text-gray-500 text-xs font-bold uppercase tracking-wider">
-                    Monthly Loans ($)
-                  </label>
-                  <div className="relative group">
-                    <input
-                      type="number"
-                      defaultValue={500}
-                      className="w-full bg-[#fcfcfc] border border-gray-100 rounded-2xl p-4 text-gray-800 font-bold focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all"
-                    />
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-1">
-                      <button className="text-gray-400 ">
-                        <ChevronUp className="w-4 h-4" />
-                      </button>
-                      <button className="text-gray-400 ">
-                        <ChevronDown className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                {managerError && (
+                  <p className="mt-4 text-sm text-red-600">
+                    Failed to load manager data.
+                  </p>
+                )}
               </div>
             </div>
 
+            {/* 4 stat cards */}
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+              <StatCard
+                label="Total income"
+                value={managerData?.totalIncome ?? "--"}
+                suffix="$"
+              />
+              <StatCard
+                label="Total expense"
+                value={managerData?.totalExpense ?? "--"}
+                suffix="$"
+              />
+              <StatCard
+                label="Total loan"
+                value={managerData?.totalLoan ?? "--"}
+                suffix="$"
+              />
+              <StatCard
+                label="Net balance"
+                value={
+                  typeof managerData?.netBalance === "number"
+                    ? String(managerData.netBalance)
+                    : "--"
+                }
+                suffix="$"
+                tone={
+                  managerData?.balanceStatus === "negative" ? "danger" : "good"
+                }
+              />
+            </div>
+
+            {/* 3-column table (Income / Expense / Loan) */}
+            <div className="rounded-2xl border border-gray-100 bg-white overflow-hidden">
+              <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+                <h3 className="text-gray-800 font-bold">
+                  Income / Expense / Loan
+                </h3>
+                <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
+                  Range: {fromDate} → {toDate}
+                </span>
+              </div>
+
+              <div className="w-full overflow-auto">
+                <table className="w-full min-w-230 text-left">
+                  <thead className="bg-[#fcfcfc]">
+                    {/* Group headers */}
+                    <tr className="text-sm font-bold uppercase tracking-wider">
+                      <th
+                        className="px-5 py-3 border-b border-gray-100"
+                        colSpan={2}
+                      >
+                        Income
+                      </th>
+                      <th
+                        className="px-5 py-3 border-b border-gray-100"
+                        colSpan={2}
+                      >
+                        Expense
+                      </th>
+                      <th
+                        className="px-5 py-3 border-b border-gray-100"
+                        colSpan={2}
+                      >
+                        Loan
+                      </th>
+                    </tr>
+
+                    {/* Sub headers */}
+                    <tr className="text-xs font-bold uppercase tracking-wider text-gray-400">
+                      <th className="px-5 py-3 border-b border-gray-100">
+                        Amount
+                      </th>
+                      <th className="px-5 py-3 border-b border-gray-100">
+                        Date
+                      </th>
+
+                      <th className="px-5 py-3 border-b border-gray-100">
+                        Amount
+                      </th>
+                      <th className="px-5 py-3 border-b border-gray-100">
+                        Date
+                      </th>
+
+                      <th className="px-5 py-3 border-b border-gray-100">
+                        Amount
+                      </th>
+                      <th className="px-5 py-3 border-b border-gray-100">
+                        Start date
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {managerRows.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan={6}
+                          className="px-5 py-8 text-center text-sm text-gray-500"
+                        >
+                          {managerLoading
+                            ? "Loading..."
+                            : "No data found for this range."}
+                        </td>
+                      </tr>
+                    ) : (
+                      managerRows.map((r, idx) => (
+                        <tr
+                          key={idx}
+                          className="text-sm text-gray-700 border-b border-gray-100 last:border-b-0"
+                        >
+                          <td className="px-5 py-3 font-semibold">
+                            {r.income?.amount ?? "--"}
+                          </td>
+                          <td className="px-5 py-3 text-gray-500">
+                            {r.income?.date ?? "--"}
+                          </td>
+
+                          <td className="px-5 py-3 font-semibold">
+                            {r.expense?.amount ?? "--"}
+                          </td>
+                          <td className="px-5 py-3 text-gray-500">
+                            {r.expense?.date ?? "--"}
+                          </td>
+
+                          <td className="px-5 py-3 font-semibold">
+                            {r.loan?.amount ?? "--"}
+                          </td>
+                          <td className="px-5 py-3 text-gray-500">
+                            {r.loan?.start_date ?? "--"}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* AI Insights */}
             <button
               onClick={handleAnalyze}
               disabled={isAnalyzing}
-              className="bg-primary  disabled:bg-blue-300 text-white font-bold py-4 px-10 rounded-2xl transition-all shadow-lg shadow-blue-900/20 active:scale-95 text-sm cursor-pointer"
+              className="bg-primary disabled:bg-blue-300 text-white font-bold py-4 px-10 rounded-2xl transition-all shadow-lg shadow-blue-900/20 active:scale-95 text-sm cursor-pointer"
             >
-              {isAnalyzing ? "Analyzing..." : "Analyze With AI"}
+              {" "}
+              {isAnalyzing ? "Analyzing..." : "Analyze With AI"}{" "}
             </button>
           </div>
         )}
+        {/* =================== /MANAGER (REPLACED) =================== */}
 
         {activeTab === "loan" && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
@@ -444,6 +594,7 @@ export default function AIFinancialTools() {
         )}
       </div>
 
+      {/* Keep your old result box logic as-is */}
       {showResults && activeTab === "manager" && (
         <div className="bg-[#f8f8ff] rounded-3xl p-8 border border-[#e5e7eb] shadow-sm animate-in fade-in slide-in-from-top-4 duration-700">
           <h3 className="text-gray-800 font-bold mb-8">Analysis Results</h3>
@@ -488,6 +639,41 @@ export default function AIFinancialTools() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+/* ================= Helpers ================= */
+
+function StatCard({
+  label,
+  value,
+  suffix,
+  tone = "default",
+}: {
+  label: string;
+  value: string;
+  suffix?: string;
+  tone?: "default" | "good" | "danger";
+}) {
+  const toneClass =
+    tone === "danger"
+      ? "ring-1 ring-red-100"
+      : tone === "good"
+        ? "ring-1 ring-green-100"
+        : "ring-1 ring-gray-100";
+
+  return (
+    <div className={`rounded-2xl bg-white p-5 ${toneClass} text-center`}>
+      <p className="text-gray-500 text-xs font-bold uppercase tracking-wider">
+        {label}
+      </p>
+      <p className="mt-2 text-2xl font-black text-gray-800 flex items-center justify-center gap-1">
+        {value}
+        {suffix ? (
+          <span className="text-gray-400 text-base"> {suffix}</span>
+        ) : null}
+      </p>
     </div>
   );
 }
