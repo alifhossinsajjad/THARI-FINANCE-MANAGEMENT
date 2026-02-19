@@ -8,10 +8,8 @@ import {
   TrendingUp,
   Package,
   Menu,
-  Newspaper,
   LayoutDashboard,
   Globe,
-  ShieldCheck,
   Settings,
   Briefcase,
   Languages,
@@ -19,6 +17,10 @@ import {
   ArrowDownLeft,
   ArrowUpRight,
   Landmark,
+  MessageSquare,
+  LineChart,
+  CheckCircle,
+
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -27,7 +29,7 @@ import { useAppDispatch } from "@/Redux/hooks";
 import { logout } from "@/Redux/features/auth/authSlice";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { FaArrowTrendUp } from "react-icons/fa6";
+
 import Image from "next/image";
 
 const UserSidebar: React.FC = () => {
@@ -35,6 +37,7 @@ const UserSidebar: React.FC = () => {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const router = useRouter();
+
   const expenseBase = "/user/expensiveManager";
   const isExpenseRoute =
     pathname === expenseBase || pathname.startsWith(expenseBase + "/");
@@ -61,27 +64,44 @@ const UserSidebar: React.FC = () => {
 
   const menuItems: MenuItem[] = [
     { icon: LayoutDashboard, label: "Home", href: "/user" },
-    { icon: Globe, label: "US Stock", href: "/user/searchStock" },
+    { icon: Globe, label: "Search Stock", href: "/user/searchStock" },
     {
-      icon: ShieldCheck,
+      icon: LineChart,
+      label: "Rating US Market",
+      href: "/user/ratingUsMarket",
+    },
+    {
+      icon: CheckCircle,
       label: "US Compliance Stock",
       href: "/user/usComplianceStock",
     },
+
     { icon: Briefcase, label: "ETF Reports", href: "/user/etf-reports" },
     {
       icon: Languages,
       label: "International Stocks",
       href: "/user/international-stocks",
     },
+
     { icon: CreditCard, label: "Watch List", href: "/user/watchList" },
 
     {
       icon: TrendingUp,
-      label: "Expense Manager",
+      label: "Financial Manager",
       href: "/user/expensiveManager",
     },
-    { icon: Package, label: "Recommendations", href: "/user/recommendations" },
-    { icon: Newspaper, label: "News", href: "/user/news" },
+    {
+      icon: Package,
+      label: "Our Analysis",
+      href: "/user/recomendetion",
+    },
+     {
+      icon: MessageSquare,
+      label: "Communications",
+      href: "/user/communication",
+    },
+    // { icon: Package, label: "Our Analysis", href: "/user/recommendations" },
+    // { icon: Newspaper, label: "News", href: "/user/news" },
     { icon: Settings, label: "Settings", href: "/user/settings" },
   ];
 
@@ -250,7 +270,7 @@ const UserSidebar: React.FC = () => {
               );
             })}
 
-            <div className="mt-12 space-y-3">
+            {/* <div className="mt-12 space-y-3">
               <div className="flex justify-between items-center">
                 <h1 className="text-xl text-white/70">AAPL</h1>
                 <button className="flex gap-2 items-center rounded-md px-2 py-1 bg-[#1010A2]">
@@ -279,7 +299,7 @@ const UserSidebar: React.FC = () => {
                   <p> +17.79%</p>
                 </button>
               </div>
-            </div>
+            </div> */}
           </nav>
 
           {/* Logout */}

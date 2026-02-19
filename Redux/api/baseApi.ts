@@ -27,5 +27,10 @@ export const baseApi = createApi({
     "Expense",
     "Loan",
     "Wealth",
+    "Analyses",
+    "Chat",
+    "Manager",
+    "Wishlist",
+    "Zoya"
   ],
 });

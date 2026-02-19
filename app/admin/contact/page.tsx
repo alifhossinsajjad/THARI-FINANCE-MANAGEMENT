@@ -8,6 +8,7 @@ const ContactPage = () => {
   const [selectedMessage, setSelectedMessage] = useState<Contact | null>(null);
 
   const { data, isLoading, isError } = useGetContactMessageQuery(page);
+  console.log(data)
 
   if (isLoading) return <p className="text-center py-10">Loading...</p>;
   if (isError) return <p className="text-center py-10 text-red-500">Error loading data</p>;
