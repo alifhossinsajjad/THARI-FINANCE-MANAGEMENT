@@ -2,7 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { IStockReportItem } from "@/Redux/features/userDashboardServices/UsBasedStockApi";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Heart } from "lucide-react";
+import { useAddToWishlistMutation, useGetWishlistQuery } from "@/Redux/features/userDashboardServices/wishlistApi";
+import { toast } from "sonner";
 
 interface StockTableProps {
   data: IStockReportItem[];
@@ -24,9 +26,26 @@ export const StockTable = ({
   pageNumber,
 }: StockTableProps) => {
   const router = useRouter();
+  const [addToWishlist, { isLoading: isAdding }] = useAddToWishlistMutation();
+  const { data: wishlistRes } = useGetWishlistQuery();
+  const wishlist = wishlistRes?.data || [];
+
+  const isInWishlist = (symbol: string) => {
+    return Array.isArray(wishlist) && wishlist.some((item: any) => item.stock_symbol === symbol);
+  };
 
   const handleRowClick = (symbol: string) => {
     router.push(`/user/stock-detail/${symbol}`);
+  };
+
+  const handleAddToWishlist = async (e: React.MouseEvent, symbol: string) => {
+    e.stopPropagation(); // Prevent row click
+    try {
+      await addToWishlist(symbol).unwrap();
+      toast.success(`${symbol} added to watchlist`);
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Failed to add to watchlist");
+    }
   };
 
   return (
@@ -46,6 +65,9 @@ export const StockTable = ({
               </th>
               <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                 Shariah Status
+              </th>
+              <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                Action
               </th>
             </tr>
           </thead>
@@ -91,16 +113,31 @@ export const StockTable = ({
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
-                      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
-                        stock.status === "COMPLIANT"
-                          ? "bg-emerald-100 text-emerald-800"
-                          : "bg-red-100 text-red-800"
-                      }`}
+                      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${stock.status === "COMPLIANT"
+                        ? "bg-emerald-100 text-emerald-800"
+                        : "bg-red-100 text-red-800"
+                        }`}
                     >
                       {stock.status === "COMPLIANT"
                         ? "✓ Halal (Compliant)"
                         : "✗ Haram (Non-Compliant)"}
                     </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right">
+                    <button
+                      onClick={(e) => handleAddToWishlist(e, stock.symbol)}
+                      disabled={isAdding || isInWishlist(stock.symbol)}
+                      className={`p-2 rounded-full transition-all active:scale-95 disabled:opacity-50 ${isInWishlist(stock.symbol)
+                          ? "text-red-500 bg-red-50"
+                          : "text-slate-400 hover:text-red-500 hover:bg-red-50"
+                        }`}
+                      title={isInWishlist(stock.symbol) ? "In Watchlist" : "Add to Watchlist"}
+                    >
+                      <Heart
+                        size={18}
+                        fill={isInWishlist(stock.symbol) ? "currentColor" : "none"}
+                      />
+                    </button>
                   </td>
                 </tr>
               ))

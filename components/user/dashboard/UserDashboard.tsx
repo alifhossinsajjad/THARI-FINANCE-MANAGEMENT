@@ -13,7 +13,7 @@ import {
 
 import {
   useGetMyProfileQuery,
-  // ✅ use your actual hook name for: GET /subscriptions/show/:id
+  //  use your actual hook name for: GET /subscriptions/show/:id
 } from "@/Redux/features/userDashboardServices/userApi";
 
 import { useState } from "react";
@@ -50,9 +50,8 @@ export default function UserDashboardPage() {
 
   const durationLabel =
     plan?.duration_value && plan?.duration_type
-      ? `${plan.duration_value} ${plan.duration_type}${
-          plan.duration_value > 1 ? "s" : ""
-        }`
+      ? `${plan.duration_value} ${plan.duration_type}${plan.duration_value > 1 ? "s" : ""
+      }`
       : "—";
   return (
     <div className="mx-auto space-y-10">
@@ -92,27 +91,24 @@ export default function UserDashboardPage() {
             </div>
 
             <div
-              className={`p-1 rounded-xl border ${
-                isSubscriptionActive
+              className={`p-1 rounded-xl border ${isSubscriptionActive
                   ? "bg-[#eefcf5] border-green-100"
                   : "bg-[#fff5f5] border-red-100"
-              }`}
+                }`}
             >
               <button
                 type="button"
                 onClick={() => setOpenSubInfo(true)}
                 disabled={showSubscriptionSkeleton}
-                className={`p-2 rounded-xl border transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed ${
-                  isSubscriptionActive
+                className={`p-2 rounded-xl border transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed ${isSubscriptionActive
                     ? "bg-[#eefcf5] border-green-100 hover:bg-[#e7fbf2]"
                     : "bg-[#fff5f5] border-red-100 hover:bg-[#ffefef]"
-                }`}
+                  }`}
                 aria-label="View subscription info"
               >
                 <Calendar
-                  className={`w-5 h-5 ${
-                    isSubscriptionActive ? "text-[#22c55e]" : "text-[#ff5a5a]"
-                  }`}
+                  className={`w-5 h-5 ${isSubscriptionActive ? "text-[#22c55e]" : "text-[#ff5a5a]"
+                    }`}
                 />
               </button>
             </div>
@@ -159,11 +155,10 @@ export default function UserDashboardPage() {
                       Status
                     </span>
                     <span
-                      className={`text-xs font-bold uppercase tracking-wider ${
-                        isSubscriptionActive
+                      className={`text-xs font-bold uppercase tracking-wider ${isSubscriptionActive
                           ? "text-[#16a34a]"
                           : "text-[#ff5a5a]"
-                      }`}
+                        }`}
                     >
                       {isSubscriptionActive ? "Active" : "Inactive"}
                     </span>
