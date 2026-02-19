@@ -17,7 +17,7 @@ export default function AIFinancialTools() {
 
   // manager (date range)
   const [fromDate, setFromDate] = useState("2026-01-08");
-  const [toDate, setToDate] = useState("2026-03-28");
+  const [toDate, setToDate] = useState(new Date().toISOString().split("T")[0]);
 
   const {
     data: managerData,
