@@ -13,7 +13,6 @@ import {
   Menu,
   MessageCircle,
   LucideIcon,
-  TrendingUp,
   ArrowDownLeft,
   ArrowUpRight,
   Landmark,
@@ -27,7 +26,7 @@ import Image from "next/image";
 
 export type MenuItem = {
   label: string;
-  href?: string; // ✅ optional now (parents can be toggle-only)
+  href?: string;
   icon: LucideIcon;
   children?: MenuItem[];
 };
@@ -51,28 +50,21 @@ const AdminSidebar: React.FC = () => {
     { icon: Users, label: "Users", href: "/admin/users" },
     { icon: CreditCard, label: "Subscriptions", href: "/admin/subscriptions" },
 
-    // ✅ parent has NO href (toggle only)
+    { icon: ArrowDownLeft, label: "Stock", href: "/admin/stock" },
     {
-      icon: TrendingUp,
-      label: "ETFSY",
-      children: [
-        { icon: ArrowDownLeft, label: "Stock", href: "/admin/etfsy/stock" },
-        {
-          icon: ArrowUpRight,
-          label: "Rating US Market",
-          href: "/admin/etfsy/ratingUsMarket",
-        },
-        {
-          icon: Landmark,
-          label: "Compliant US Market",
-          href: "/admin/etfsy/compliantUsMarket",
-        },
-        {
-          icon: Landmark,
-          label: "ETFSY Report",
-          href: "/admin/etfsy/etfsyReport",
-        },
-      ],
+      icon: ArrowUpRight,
+      label: "Rating US Market",
+      href: "/admin/ratingUsMarket",
+    },
+    {
+      icon: Landmark,
+      label: "Compliant US Market",
+      href: "/admin/compliantUsMarket",
+    },
+    {
+      icon: Landmark,
+      label: "ETFSY Report",
+      href: "/admin/etfsyReport",
     },
 
     {

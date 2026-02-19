@@ -8,10 +8,8 @@ import {
   TrendingUp,
   Package,
   Menu,
-
   LayoutDashboard,
   Globe,
-  ShieldCheck,
   Settings,
   Briefcase,
   Languages,
@@ -19,7 +17,8 @@ import {
   ArrowDownLeft,
   ArrowUpRight,
   Landmark,
-
+  CheckCircle,
+  LineChart,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -30,7 +29,6 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import Image from "next/image";
-
 
 const UserSidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -64,12 +62,18 @@ const UserSidebar: React.FC = () => {
 
   const menuItems: MenuItem[] = [
     { icon: LayoutDashboard, label: "Home", href: "/user" },
-    { icon: Globe, label: "US Stock", href: "/user/searchStock" },
+    { icon: Globe, label: "Search Stock", href: "/user/searchStock" },
     {
-      icon: ShieldCheck,
+      icon: LineChart,
+      label: "Rating US Market",
+      href: "/user/ratingUsMarket",
+    },
+    {
+      icon: CheckCircle,
       label: "US Compliance Stock",
       href: "/user/usComplianceStock",
     },
+
     { icon: Briefcase, label: "ETF Reports", href: "/user/etf-reports" },
     {
       icon: Languages,
@@ -146,8 +150,9 @@ const UserSidebar: React.FC = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-58.75 bg-primary text-white z-50 transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"
-          } lg:translate-x-0`}
+        className={`fixed top-0 left-0 h-full w-58.75 bg-primary text-white z-50 transform transition-transform duration-300 ease-in-out ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
@@ -177,10 +182,11 @@ const UserSidebar: React.FC = () => {
                     <Link
                       href={item.href}
                       onClick={handleClose}
-                      className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${isExpenseRoute
-                        ? "bg-white/10 text-white"
-                        : "text-white/70 hover:bg-white/5 hover:text-white"
-                        }`}
+                      className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                        isExpenseRoute
+                          ? "bg-white/10 text-white"
+                          : "text-white/70 hover:bg-white/5 hover:text-white"
+                      }`}
                     >
                       <span className="flex items-center gap-3">
                         <Icon size={20} />
@@ -218,10 +224,11 @@ const UserSidebar: React.FC = () => {
                               key={child.href}
                               href={child.href}
                               onClick={handleClose}
-                              className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${childActive
-                                ? "bg-white/10 text-white"
-                                : "text-white/70 hover:bg-white/5 hover:text-white"
-                                }`}
+                              className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
+                                childActive
+                                  ? "bg-white/10 text-white"
+                                  : "text-white/70 hover:bg-white/5 hover:text-white"
+                              }`}
                             >
                               <ChildIcon size={18} />
                               <span>{child.label}</span>
@@ -244,10 +251,11 @@ const UserSidebar: React.FC = () => {
                   key={`${item.href}-${index}`}
                   href={item.href}
                   onClick={handleClose}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive
-                    ? "bg-white/10 text-white"
-                    : "text-white/70 hover:bg-white/5 hover:text-white"
-                    }`}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    isActive
+                      ? "bg-white/10 text-white"
+                      : "text-white/70 hover:bg-white/5 hover:text-white"
+                  }`}
                 >
                   <Icon size={20} />
                   <span>{item.label}</span>
