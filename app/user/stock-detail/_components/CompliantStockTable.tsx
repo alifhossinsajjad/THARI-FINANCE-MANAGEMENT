@@ -2,6 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { ICompliantStockItem } from "@/Redux/features/userDashboardServices/usComplianceStockApi";
+import { useAddToWishlistMutation, useGetWishlistQuery } from "@/Redux/features/userDashboardServices/wishlistApi";
+import { Heart } from "lucide-react";
+import { toast } from "sonner";
 
 interface CompliantStockTableProps {
   data: ICompliantStockItem[];
@@ -23,6 +26,13 @@ export const CompliantStockTable = ({
   pageNumber,
 }: CompliantStockTableProps) => {
   const router = useRouter();
+  const [addToWishlist, { isLoading: isAdding }] = useAddToWishlistMutation();
+  const { data: wishlistRes } = useGetWishlistQuery();
+  const wishlist = wishlistRes?.data || [];
+
+  const isInWishlist = (symbol: string) => {
+    return Array.isArray(wishlist) && wishlist.some((item: any) => item.stock_symbol === symbol);
+  };
 
   // Format date to readable format
   const formatDate = (dateString: string) => {
@@ -37,6 +47,16 @@ export const CompliantStockTable = ({
   // Navigate to stock detail page
   const handleRowClick = (symbol: string) => {
     router.push(`/user/stock-detail/${symbol}`);
+  };
+
+  const handleAddToWishlist = async (e: React.MouseEvent, symbol: string) => {
+    e.stopPropagation(); // Prevent row click
+    try {
+      await addToWishlist(symbol).unwrap();
+      toast.success(`${symbol} added to watchlist`);
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Failed to add to watchlist");
+    }
   };
 
   return (
@@ -56,6 +76,9 @@ export const CompliantStockTable = ({
               </th>
               <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                 Report Date
+              </th>
+              <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                Action
               </th>
             </tr>
           </thead>
@@ -103,6 +126,22 @@ export const CompliantStockTable = ({
                     <span className="text-slate-600 text-sm">
                       {formatDate(stock.reportDate)}
                     </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right">
+                    <button
+                      onClick={(e) => handleAddToWishlist(e, stock.symbol)}
+                      disabled={isAdding || isInWishlist(stock.symbol)}
+                      className={`p-2 rounded-full transition-all active:scale-95 disabled:opacity-50 ${isInWishlist(stock.symbol)
+                          ? "text-red-500 bg-red-50"
+                          : "text-slate-400 hover:text-red-500 hover:bg-red-50"
+                        }`}
+                      title={isInWishlist(stock.symbol) ? "In Watchlist" : "Add to Watchlist"}
+                    >
+                      <Heart
+                        size={18}
+                        fill={isInWishlist(stock.symbol) ? "currentColor" : "none"}
+                      />
+                    </button>
                   </td>
                 </tr>
               ))

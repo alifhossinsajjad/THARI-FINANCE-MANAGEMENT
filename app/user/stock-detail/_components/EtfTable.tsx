@@ -1,6 +1,9 @@
 "use client";
 
 import { IEtfReportItem } from "@/Redux/features/userDashboardServices/etfApi";
+import { useAddToWishlistMutation, useGetWishlistQuery } from "@/Redux/features/userDashboardServices/wishlistApi";
+import { Heart } from "lucide-react";
+import { toast } from "sonner";
 
 interface EtfTableProps {
     data: IEtfReportItem[];
@@ -21,6 +24,13 @@ export const EtfTable = ({
     hasPrevPage,
     pageNumber,
 }: EtfTableProps) => {
+    const [addToWishlist, { isLoading: isAdding }] = useAddToWishlistMutation();
+    const { data: wishlistRes } = useGetWishlistQuery();
+    const wishlist = wishlistRes?.data || [];
+
+    const isInWishlist = (symbol: string) => {
+        return Array.isArray(wishlist) && wishlist.some((item: any) => item.stock_symbol === symbol);
+    };
 
     // Format date to readable format
     const formatDate = (dateString: string) => {
@@ -30,6 +40,16 @@ export const EtfTable = ({
             month: "short",
             day: "numeric",
         });
+    };
+
+    const handleAddToWishlist = async (e: React.MouseEvent, symbol: string) => {
+        e.stopPropagation(); // Prevent potential row click if added later
+        try {
+            await addToWishlist(symbol).unwrap();
+            toast.success(`${symbol} added to watchlist`);
+        } catch (error: any) {
+            toast.error(error?.data?.message || "Failed to add to watchlist");
+        }
     };
 
     return (
@@ -50,12 +70,15 @@ export const EtfTable = ({
                             <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                                 Report Date
                             </th>
+                            <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                Action
+                            </th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-200">
                         {isLoading ? (
                             <tr>
-                                <td colSpan={4} className="px-6 py-8 text-center">
+                                <td colSpan={5} className="px-6 py-8 text-center">
                                     <div className="flex justify-center">
                                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                                     </div>
@@ -63,7 +86,7 @@ export const EtfTable = ({
                             </tr>
                         ) : data.length === 0 ? (
                             <tr>
-                                <td colSpan={4} className="px-6 py-8 text-center text-slate-500">
+                                <td colSpan={5} className="px-6 py-8 text-center text-slate-500">
                                     No ETF reports found.
                                 </td>
                             </tr>
@@ -93,6 +116,22 @@ export const EtfTable = ({
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <span className="text-slate-600 text-sm">{formatDate(etf.reportDate)}</span>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-right">
+                                        <button
+                                            onClick={(e) => handleAddToWishlist(e, etf.symbol)}
+                                            disabled={isAdding || isInWishlist(etf.symbol)}
+                                            className={`p-2 rounded-full transition-all active:scale-95 disabled:opacity-50 ${isInWishlist(etf.symbol)
+                                                    ? "text-red-500 bg-red-50"
+                                                    : "text-slate-400 hover:text-red-500 hover:bg-red-50"
+                                                }`}
+                                            title={isInWishlist(etf.symbol) ? "In Watchlist" : "Add to Watchlist"}
+                                        >
+                                            <Heart
+                                                size={18}
+                                                fill={isInWishlist(etf.symbol) ? "currentColor" : "none"}
+                                            />
+                                        </button>
                                     </td>
                                 </tr>
                             ))
