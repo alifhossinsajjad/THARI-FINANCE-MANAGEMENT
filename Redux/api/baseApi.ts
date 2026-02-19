@@ -30,6 +30,7 @@ export const baseApi = createApi({
     "Analyses",
     "Chat",
     "Manager",
-    "Wishlist"
+    "Wishlist",
+    "Zoya"
   ],
 });

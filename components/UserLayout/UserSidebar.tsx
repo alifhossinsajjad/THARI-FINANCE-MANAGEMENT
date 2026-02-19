@@ -18,6 +18,8 @@ import {
   ArrowUpRight,
   Landmark,
   MessageSquare,
+  LineChart,
+  CheckCircle,
 
 } from "lucide-react";
 import Link from "next/link";
