@@ -164,7 +164,7 @@ export default function Navbar() {
                     </Link>
 
                     <Link
-                      href="/user/profile"
+                      href="/user/settings"
                       className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       onClick={() => setProfileDropdownOpen(false)}
                     >
@@ -256,7 +256,7 @@ export default function Navbar() {
                     href={
                       user.role === "admin"
                         ? "/admin/dashboard"
-                        : "/user/profile"
+                        : "/user/settings"
                     }
                     className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg"
                     onClick={() => setIsOpen(false)}
@@ -266,7 +266,7 @@ export default function Navbar() {
                   </Link>
 
                   <Link
-                    href="/user/profile"
+                    href="/user/settings"
                     className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg"
                     onClick={() => setIsOpen(false)}
                   >
