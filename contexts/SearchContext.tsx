@@ -29,6 +29,7 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
         setIsSearching,
       }}
     >
+      {/* {children} */}
       {children}
     </SearchContext.Provider>
   );
