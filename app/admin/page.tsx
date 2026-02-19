@@ -14,8 +14,6 @@ import {
 import type { StatCard, Activity } from "@/types";
 import { useGetShowAllTotalActiveUserMetaDataQuery } from "@/Redux/features/AdminDashboard/userDashboardMetaData/userDashboardMetaDataApi";
 import { useRouter } from "next/navigation";
-// import { useGetShowAllTotalActiveUserMetaDataQuery } from "@/Redux/features/AdminDashboard/userMetaData/userMetaDataApi";
-
 export default function DashboardPage(): React.JSX.Element {
   const { data } = useGetShowAllTotalActiveUserMetaDataQuery({});
   console.log("iam the meta data for admin dashboard", data);

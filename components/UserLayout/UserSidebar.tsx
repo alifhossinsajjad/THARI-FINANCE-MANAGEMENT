@@ -87,13 +87,13 @@ const UserSidebar: React.FC = () => {
     },
     {
       icon: Package,
-      label: "Recomendation",
+      label: "Our Analysis",
       href: "/user/recomendetion",
     },
      {
       icon: MessageSquare,
       label: "Communications",
-      href: "/admin/communications",
+      href: "/user/communication",
     },
     // { icon: Package, label: "Our Analysis", href: "/user/recommendations" },
     // { icon: Newspaper, label: "News", href: "/user/news" },
