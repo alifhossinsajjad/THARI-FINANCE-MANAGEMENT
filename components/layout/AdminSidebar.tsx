@@ -12,6 +12,7 @@ import {
   User,
   Menu,
   MessageCircle,
+  Package,
 
 } from "lucide-react";
 import Link from "next/link";
@@ -29,6 +30,11 @@ const AdminSidebar: React.FC = () => {
     { icon: BarChart3, label: "Dashboard", href: "/admin" },
     { icon: Users, label: "Users", href: "/admin/users" },
     { icon: CreditCard, label: "Subscriptions", href: "/admin/subscriptions" },
+    {
+      icon: Package,
+      label: "Our Analysis",
+      href: "/admin/ourAnalysis",
+    },
 
     // { icon: TrendingUp, label: "Stocks", href: "/admin/stocks" },
     // { icon: Package, label: "Commodities", href: "/admin/commodities" },
