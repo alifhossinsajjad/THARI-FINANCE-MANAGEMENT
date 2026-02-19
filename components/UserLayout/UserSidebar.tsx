@@ -77,11 +77,11 @@ const UserSidebar: React.FC = () => {
 
     {
       icon: TrendingUp,
-      label: "Expense Manager",
+      label: "Financial Manager",
       href: "/user/expensiveManager",
     },
-    { icon: Package, label: "Recommendations", href: "/user/recommendations" },
-    { icon: Newspaper, label: "News", href: "/user/news" },
+    { icon: Package, label: "Our Analysis", href: "/user/recommendations" },
+    // { icon: Newspaper, label: "News", href: "/user/news" },
     { icon: Settings, label: "Settings", href: "/user/settings" },
   ];
 

@@ -49,7 +49,7 @@ const AdminSidebar: React.FC = () => {
     },
     // { icon: BarChart3, label: "Reports", href: "/admin/reports" },
     { icon: Boxes, label: "About", href: "/admin/adminAbout" },
-    { icon: Settings, label: "Settings", href: "/admin/settings" },
+    // { icon: Settings, label: "Settings", href: "/admin/settings" },
     { icon: User, label: "Profile", href: "/admin/profile" },
   ];
 
