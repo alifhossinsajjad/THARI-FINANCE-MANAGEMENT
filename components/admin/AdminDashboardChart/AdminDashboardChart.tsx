@@ -10,10 +10,11 @@ type Props = {
 };
 
 function AdminDashboardChart({ totalRevenue = 0, monthlyRevenue = 0 }: Props) {
+  const remaining = totalRevenue - monthlyRevenue;
   const data = [
     ["Revenue Type", "Amount"],
-    ["Monthly Revenue", monthlyRevenue],
-    ["Remaining Revenue", totalRevenue - monthlyRevenue],
+    ["Monthly Revenue", monthlyRevenue || 2],
+    ["Remaining Revenue", remaining || 1],
   ];
 
   const options = {
