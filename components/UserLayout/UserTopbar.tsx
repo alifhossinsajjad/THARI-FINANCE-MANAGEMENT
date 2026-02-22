@@ -16,7 +16,6 @@ const UserTopbar: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectCurrentUser);
-  const authState = useAppSelector((state) => state.auth);
   const router = useRouter();
 
 

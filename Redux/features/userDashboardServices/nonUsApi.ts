@@ -29,7 +29,7 @@ export interface ISearchNonUsStockParams {
 
 const nonUsApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        searchNonUsStock: builder.query<IAdvancedComplianceReport, ISearchNonUsStockParams>({
+        searchNonUsStock: builder.query<IAdvancedComplianceReport | null, ISearchNonUsStockParams>({
             query: ({ symbol, methodology = "AAOIFI" }) => ({
                 url: `/zoya/international-report?symbol=${symbol.toUpperCase()}&methodology=${methodology}`,
                 method: "GET",
