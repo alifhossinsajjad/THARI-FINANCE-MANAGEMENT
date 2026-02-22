@@ -16,6 +16,9 @@ import Logo from "@/components/reusable/Logo";
 import RegisterRightSection from "@/components/auth/RegisterRightSection";
 import TermsModal from "@/components/common/TermsModal";
 
+// ✅ add
+import { Eye, EyeOff } from "lucide-react";
+
 export default function SignupPage() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -24,6 +27,10 @@ export default function SignupPage() {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [otp, setOtp] = useState("");
   const [step, setStep] = useState<"register" | "otp">("register");
+
+  // ✅ add
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [register, { isLoading: isRegisterLoading }] = useRegisterMutation();
   const [verifyOtp, { isLoading: isVerifyLoading }] = useVerifyOtpMutation();
@@ -83,7 +90,7 @@ export default function SignupPage() {
         >
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 sm:gap-4 pb-8">
-            <div className="p-1.5   rounded-2xl">
+            <div className="p-1.5 rounded-2xl">
               <Logo />
             </div>
           </Link>
@@ -117,7 +124,7 @@ export default function SignupPage() {
                     placeholder="Enter your Name"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className="w-full px-4  border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-900 focus:border-transparent transition-all text-sm"
+                    className="w-full px-4 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-900 focus:border-transparent transition-all text-sm"
                     required
                   />
                 </div>
@@ -136,12 +143,12 @@ export default function SignupPage() {
                     placeholder="Enter your Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4  border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-900 focus:border-transparent transition-all text-sm"
+                    className="w-full px-4 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-900 focus:border-transparent transition-all text-sm"
                     required
                   />
                 </div>
 
-                {/* Password Input */}
+                {/* Password Input (with toggle) */}
                 <div>
                   <Label
                     htmlFor="password"
@@ -149,18 +156,37 @@ export default function SignupPage() {
                   >
                     Password
                   </Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="Enter your Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4  border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-900 focus:border-transparent transition-all text-sm"
-                    required
-                  />
+
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full px-4 pr-12 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-900 focus:border-transparent transition-all text-sm"
+                      required
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((v) => !v)}
+                      className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
+                      aria-pressed={showPassword}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
                 </div>
 
-                {/* Confirm Password Input */}
+                {/* Confirm Password Input (with toggle) */}
                 <div>
                   <Label
                     htmlFor="confirmPassword"
@@ -168,15 +194,36 @@ export default function SignupPage() {
                   >
                     Confirm Password
                   </Label>
-                  <Input
-                    id="confirmPassword"
-                    type="password"
-                    placeholder="Enter your password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full px-4  border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-900 focus:border-transparent transition-all text-sm"
-                    required
-                  />
+
+                  <div className="relative">
+                    <Input
+                      id="confirmPassword"
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder="Enter your password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className="w-full px-4 pr-12 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-900 focus:border-transparent transition-all text-sm"
+                      required
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword((v) => !v)}
+                      className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                      aria-label={
+                        showConfirmPassword
+                          ? "Hide confirm password"
+                          : "Show confirm password"
+                      }
+                      aria-pressed={showConfirmPassword}
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
                 </div>
 
                 {/* Terms & Conditions */}
@@ -193,7 +240,6 @@ export default function SignupPage() {
                     className="ml-2 text-sm text-gray-700 cursor-pointer"
                   >
                     I agree to the{" "}
-                    {/* Changed from <a href="#"> to button-like link */}
                     <button
                       type="button"
                       onClick={(e) => {
@@ -210,8 +256,8 @@ export default function SignupPage() {
                         e.preventDefault();
                         setShowTermsModal(true);
                       }}
-                      // href="#"
                       className="text-blue-900 hover:underline cursor-pointer"
+                      type="button"
                     >
                       Privacy Policy
                     </button>
@@ -266,7 +312,7 @@ export default function SignupPage() {
                     placeholder="Enter OTP"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
-                    className="w-full px-4  border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-900 focus:border-transparent transition-all text-sm"
+                    className="w-full px-4 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-900 focus:border-transparent transition-all text-sm"
                     required
                   />
                 </div>
@@ -284,6 +330,7 @@ export default function SignupPage() {
                   <button
                     onClick={() => setStep("register")}
                     className="text-blue-900 font-semibold hover:underline"
+                    type="button"
                   >
                     Change email
                   </button>
@@ -300,7 +347,7 @@ export default function SignupPage() {
         isOpen={showTermsModal}
         onClose={() => setShowTermsModal(false)}
         onAgree={() => {
-          setAgreedToTerms(true); // auto-check the box
+          setAgreedToTerms(true);
           setShowTermsModal(false);
           toast.success("Terms accepted");
         }}
