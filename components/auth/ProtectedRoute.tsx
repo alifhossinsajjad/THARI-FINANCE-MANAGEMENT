@@ -39,9 +39,7 @@ const ProtectedRoute = ({ children, allowedRoles, redirectTo }: Props) => {
 
     // Logged in but wrong role -> go somewhere safe
     if (!isRoleAllowed) {
-      router.replace(
-        redirectTo ?? (userRole === "admin" ? "/admin" : "/user"), // adjust your default dashboards
-      );
+      router.replace(redirectTo ?? (userRole === "admin" ? "/admin" : "/user"));
     }
   }, [isMounted, user, isRoleAllowed, router, pathname, redirectTo, userRole]);
 
