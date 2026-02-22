@@ -47,11 +47,14 @@ const etfApi = baseApi.injectEndpoints({
                     method: "GET",
                 };
             },
-            transformResponse: (response: IEtfApiResponse) => {
-                const funds = response.data.basicCompliance.funds;
+            transformResponse: (response: any) => {
+                if (response?.errors && response.errors.length > 0) {
+                    return { items: [], nextToken: null };
+                }
+                const funds = response?.data?.basicCompliance?.funds;
                 return {
-                    items: funds.items,
-                    nextToken: funds.nextToken,
+                    items: funds?.items || [],
+                    nextToken: funds?.nextToken || null,
                 };
             },
         }),

@@ -32,8 +32,12 @@ const advancedStockApi = baseApi.injectEndpoints({
         url: `/zoya/advanced-report`,
         params: { symbol },
       }),
-      transformResponse: (response: IAdvancedReportResponse) =>
-        response.data.advancedCompliance.report,
+      transformResponse: (response: any) => {
+        if (response?.errors && response.errors.length > 0) {
+          return null;
+        }
+        return response?.data?.advancedCompliance?.report || null;
+      },
     }),
   }),
 });

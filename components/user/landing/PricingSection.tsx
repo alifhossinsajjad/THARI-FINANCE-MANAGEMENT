@@ -36,7 +36,7 @@ export default function PricingSection() {
       console.log("Payment response:", res);
 
       if (res.success && res.checkout_url) {
-        window.location.href = res.checkout_url; // ✅ redirect
+        window.location.href = res.checkout_url;
       }
     } catch (err) {
       console.error("Payment failed:", err);
@@ -69,11 +69,10 @@ export default function PricingSection() {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0">
           <div
-            className={` mb-12 transition-all duration-1000 ${
-              animate
+            className={` mb-12 transition-all duration-1000 ${animate
                 ? "opacity-100 translate-y-0"
                 : "opacity-100 translate-y-10"
-            }`}
+              }`}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
               Simple, Transparent Pricing
@@ -108,26 +107,23 @@ export default function PricingSection() {
           {displayPricing?.slice(0, 3).map((plan, index) => (
             <div
               key={index}
-              className={`transition-all duration-700 h-full ${
-                animate
+              className={`transition-all duration-700 h-full ${animate
                   ? "opacity-100 translate-y-0"
                   : "opacity-100 translate-y-10"
-              } ${plan.is_popular ? "" : ""}`}
+                } ${plan.is_popular ? "" : ""}`}
               style={{ transitionDelay: `${index * 150}ms` }}
             >
               <div
-                className={`relative rounded-2xl p-6 md:p-10 transition-all duration-300 h-full min-h-[480px] flex flex-col justify-between ${
-                  plan.is_popular
+                className={`relative rounded-2xl p-6 md:p-10 transition-all duration-300 h-full min-h-[480px] flex flex-col justify-between ${plan.is_popular
                     ? "bg-primary text-white shadow-2xl border-blue-700"
                     : "bg-[#F3F9FF] text-gray-900 border border-blue-300 hover:border-blue-200 hover:shadow-lg"
-                }`}
+                  }`}
               >
                 <div className="flex justify-between">
                   {/* Plan Name */}
                   <h3
-                    className={`text-lg font-bold mb-2 ${
-                      plan.is_popular ? "text-white" : "text-gray-900"
-                    }`}
+                    className={`text-lg font-bold mb-2 ${plan.is_popular ? "text-white" : "text-gray-900"
+                      }`}
                   >
                     {plan.title}
                   </h3>
@@ -145,9 +141,8 @@ export default function PricingSection() {
 
                 {/* Tagline */}
                 <p
-                  className={`text-xs mb-5 leading-relaxed min-h-[2.5rem] ${
-                    plan.is_popular ? "text-white/90" : "text-gray-600"
-                  }`}
+                  className={`text-xs mb-5 leading-relaxed min-h-[2.5rem] ${plan.is_popular ? "text-white/90" : "text-gray-600"
+                    }`}
                 >
                   {plan.description}
                 </p>
@@ -156,16 +151,14 @@ export default function PricingSection() {
                 <div className="mb-6">
                   <div className="flex items-baseline">
                     <span
-                      className={`text-4xl font-bold ${
-                        plan.is_popular ? "text-white" : "text-gray-900"
-                      }`}
+                      className={`text-4xl font-bold ${plan.is_popular ? "text-white" : "text-gray-900"
+                        }`}
                     >
                       ${plan.price}
                     </span>
                     <span
-                      className={`ml-1 text-sm ${
-                        plan.is_popular ? "text-white/80" : "text-gray-600"
-                      }`}
+                      className={`ml-1 text-sm ${plan.is_popular ? "text-white/80" : "text-gray-600"
+                        }`}
                     >
                       {plan.duration_type}
                     </span>
@@ -177,14 +170,12 @@ export default function PricingSection() {
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start gap-2.5">
                       <div
-                        className={`mt-0.5 shrink-0 w-4 h-4 rounded-full flex items-center justify-center ${
-                          plan.is_popular ? "bg-white/20" : "bg-gray-900"
-                        }`}
+                        className={`mt-0.5 shrink-0 w-4 h-4 rounded-full flex items-center justify-center ${plan.is_popular ? "bg-white/20" : "bg-gray-900"
+                          }`}
                       >
                         <svg
-                          className={`w-2.5 h-2.5 ${
-                            plan.is_popular ? "text-white" : "text-white"
-                          }`}
+                          className={`w-2.5 h-2.5 ${plan.is_popular ? "text-white" : "text-white"
+                            }`}
                           fill="currentColor"
                           viewBox="0 0 20 20"
                         >
@@ -196,9 +187,8 @@ export default function PricingSection() {
                         </svg>
                       </div>
                       <span
-                        className={`text-xs leading-relaxed ${
-                          plan.is_popular ? "text-white/90" : "text-gray-700"
-                        }`}
+                        className={`text-xs leading-relaxed ${plan.is_popular ? "text-white/90" : "text-gray-700"
+                          }`}
                       >
                         {feature}
                       </span>
@@ -219,11 +209,10 @@ export default function PricingSection() {
                     href="#" // Prevent default navigation
                     showArrow={false}
                     borderClass="border border-blue-200"
-                    bgClass={`w-full py-3 px-6 rounded-lg font-semibold text-sm transition-all duration-300 cursor-pointer ${
-                      plan.is_popular
+                    bgClass={`w-full py-3 px-6 rounded-lg font-semibold text-sm transition-all duration-300 cursor-pointer ${plan.is_popular
                         ? "bg-white text-blue-900 hover:bg-gray-50 shadow-lg"
                         : "bg-white text-blue-900 hover:bg-blue-50"
-                    }`}
+                      }`}
                   />
                 </div>
               </div>

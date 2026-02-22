@@ -47,6 +47,9 @@ const regionBaseApi = baseApi.injectEndpoints({
                 url: "/zoya/regions",
                 method: "GET",
             }),
+            transformResponse: (response: any) => {
+                return response;
+            }
         }),
         getRegionalReports: builder.query<IRegionalReportsResponse, IRegionalReportsParams>({
             query: ({ region, methodology = "AAOIFI", limit, nextToken }) => {
@@ -61,6 +64,9 @@ const regionBaseApi = baseApi.injectEndpoints({
                     method: "GET",
                 };
             },
+            transformResponse: (response: any) => {
+                return response;
+            }
         }),
     }),
 });

@@ -4,10 +4,13 @@ import { useState, useEffect } from "react";
 import { useGetEtfReportsQuery } from "@/Redux/features/userDashboardServices/etfApi";
 import { useSearch } from "@/contexts/SearchContext";
 import { EtfTable } from "../stock-detail/_components/EtfTable";
+import { ProfessionalError } from "@/components/shared/ProfessionalError";
+import { useRouter } from "next/navigation";
 
 export default function EtfReportsPage() {
     const [pageNumber, setPageNumber] = useState(1);
     const { searchQuery } = useSearch();
+    const router = useRouter();
     const itemsPerPage = 20;
 
     const { data, isLoading, error } = useGetEtfReportsQuery();
@@ -19,10 +22,12 @@ export default function EtfReportsPage() {
 
     if (error) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="text-red-500 font-bold text-lg">
-                    Error loading ETF reports: {JSON.stringify(error)}
-                </div>
+            <div className="p-8">
+                <ProfessionalError
+                    error={error}
+                    onBack={() => router.back()}
+                    title="ETF Reports Error"
+                />
             </div>
         );
     }

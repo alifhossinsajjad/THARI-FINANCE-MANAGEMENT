@@ -5,6 +5,8 @@ import { useGetRegionsQuery, useGetRegionalReportsQuery } from "@/Redux/features
 import { useSearch } from "@/contexts/SearchContext";
 import { RegionalStockTable } from "../stock-detail/_components/RegionalStockTable";
 import { ChevronDown } from "lucide-react";
+import { ProfessionalError } from "@/components/shared/ProfessionalError";
+import { useRouter } from "next/navigation";
 
 export default function RegionalStocksPage() {
     const [selectedRegion, setSelectedRegion] = useState<string>("GB");
@@ -13,6 +15,7 @@ export default function RegionalStocksPage() {
     const [currentToken, setCurrentToken] = useState<string | null>(null);
     const [pageNumber, setPageNumber] = useState(1);
     const { searchQuery } = useSearch();
+    const router = useRouter();
 
     const { data: regionsData, isLoading: isLoadingRegions } = useGetRegionsQuery();
 
@@ -38,10 +41,12 @@ export default function RegionalStocksPage() {
 
     if (error) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="text-red-500 font-bold text-lg">
-                    Error loading regional stocks: {JSON.stringify(error)}
-                </div>
+            <div className="p-8">
+                <ProfessionalError
+                    error={error}
+                    onBack={() => router.back()}
+                    title="Regional Data Error"
+                />
             </div>
         );
     }
