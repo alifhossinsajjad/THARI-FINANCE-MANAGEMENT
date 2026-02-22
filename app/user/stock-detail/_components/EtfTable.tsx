@@ -2,7 +2,7 @@
 
 import { IEtfReportItem } from "@/Redux/features/userDashboardServices/etfApi";
 import { useAddToWishlistMutation, useGetWishlistQuery } from "@/Redux/features/userDashboardServices/wishlistApi";
-import { Heart } from "lucide-react";
+import { Bookmark } from "lucide-react";
 import { toast } from "sonner";
 
 interface EtfTableProps {
@@ -71,7 +71,7 @@ export const EtfTable = ({
                                 Report Date
                             </th>
                             <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                                Action
+                                Watchlist
                             </th>
                         </tr>
                     </thead>
@@ -122,12 +122,12 @@ export const EtfTable = ({
                                             onClick={(e) => handleAddToWishlist(e, etf.symbol)}
                                             disabled={isAdding || isInWishlist(etf.symbol)}
                                             className={`p-2 rounded-full transition-all active:scale-95 disabled:opacity-50 ${isInWishlist(etf.symbol)
-                                                    ? "text-red-500 bg-red-50"
-                                                    : "text-slate-400 hover:text-red-500 hover:bg-red-50"
+                                                ? "text-red-500 bg-red-50"
+                                                : "text-slate-400 hover:text-red-500 hover:bg-red-50"
                                                 }`}
                                             title={isInWishlist(etf.symbol) ? "In Watchlist" : "Add to Watchlist"}
                                         >
-                                            <Heart
+                                            <Bookmark
                                                 size={18}
                                                 fill={isInWishlist(etf.symbol) ? "currentColor" : "none"}
                                             />
