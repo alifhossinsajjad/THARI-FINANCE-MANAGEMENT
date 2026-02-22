@@ -127,7 +127,7 @@ export default function DashboardPage(): React.JSX.Element {
             })}
       </div>
 
-      {/* Quick Links */}
+      {/* Revenue Chart */}
       <div>
         <AdminDashboardChart
           totalRevenue={data?.data?.revenue?.total_revenue ?? 0}
