@@ -10,9 +10,9 @@ import {
   Menu,
   LayoutDashboard,
   Globe,
-  Settings,
+  // Settings,
   Briefcase,
-  Languages,
+  // Languages,
   ChevronDown,
   ArrowDownLeft,
   ArrowUpRight,
@@ -20,7 +20,7 @@ import {
   MessageSquare,
   LineChart,
   CheckCircle,
-
+  User,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -72,37 +72,37 @@ const UserSidebar: React.FC = () => {
     },
     {
       icon: CheckCircle,
-      label: "US Compliance Stock",
+      label: "US Compliance Stocks",
       href: "/user/usComplianceStock",
     },
 
     { icon: Briefcase, label: "ETF Reports", href: "/user/etf-reports" },
-    {
-      icon: Languages,
-      label: "International Stocks",
-      href: "/user/international-stocks",
-    },
-
-    { icon: CreditCard, label: "Watch List", href: "/user/watchList" },
+    // {
+    //   icon: Languages,
+    //   label: "International Stocks",
+    //   href: "/user/international-stocks",
+    // },
 
     {
       icon: TrendingUp,
-      label: "Financial Manager",
+      label: "Financial Management",
       href: "/user/expensiveManager",
     },
+    { icon: CreditCard, label: "Watch List", href: "/user/watchList" },
+
     {
       icon: Package,
-      label: "Our Analysis",
+      label: "Recommendation",
       href: "/user/recomendetion",
     },
-     {
+    {
       icon: MessageSquare,
       label: "Communications",
       href: "/user/communication",
     },
     // { icon: Package, label: "Our Analysis", href: "/user/recommendations" },
     // { icon: Newspaper, label: "News", href: "/user/news" },
-    { icon: Settings, label: "Settings", href: "/user/settings" },
+    { icon: User, label: "Profile Settings", href: "/user/settings" },
   ];
 
   const handleToggle = (): void => {

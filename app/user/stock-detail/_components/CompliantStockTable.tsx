@@ -9,6 +9,9 @@ import {
 import { Bookmark } from "lucide-react";
 import { toast } from "sonner";
 
+import { useAppSelector } from "@/Redux/hooks";
+import { selectCurrentUser } from "@/Redux/features/auth/authSlice";
+
 interface CompliantStockTableProps {
   data: ICompliantStockItem[];
   isLoading: boolean;
@@ -29,18 +32,26 @@ export const CompliantStockTable = ({
   pageNumber,
 }: CompliantStockTableProps) => {
   const router = useRouter();
+
+  const user = useAppSelector(selectCurrentUser);
+  const isUserRole = user?.role === "user";
+
   const [addToWishlist, { isLoading: isAdding }] = useAddToWishlistMutation();
-  const { data: wishlistRes } = useGetWishlistQuery();
+
+  // ✅ Skip unless role=user
+  const { data: wishlistRes } = useGetWishlistQuery(undefined, {
+    skip: !isUserRole,
+  });
   const wishlist = wishlistRes?.data || [];
 
   const isInWishlist = (symbol: string) => {
+    if (!isUserRole) return false;
     return (
       Array.isArray(wishlist) &&
       wishlist.some((item: any) => item.stock_symbol === symbol)
     );
   };
 
-  // Format date to readable format
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -50,13 +61,19 @@ export const CompliantStockTable = ({
     });
   };
 
-  // Navigate to stock detail page
   const handleRowClick = (symbol: string) => {
     router.push(`/user/stock-detail/${symbol}`);
   };
 
   const handleAddToWishlist = async (e: React.MouseEvent, symbol: string) => {
-    e.stopPropagation(); // Prevent row click
+    e.stopPropagation();
+
+    // ✅ Guard: non-user cannot interact
+    if (!isUserRole) {
+      toast.error("Watchlist is only available for users.");
+      return;
+    }
+
     try {
       await addToWishlist(symbol).unwrap();
       toast.success(`${symbol} added to watch list`);
@@ -83,15 +100,23 @@ export const CompliantStockTable = ({
               <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                 Report Date
               </th>
-              <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                Watchlist
-              </th>
+
+              {/* ✅ Only for role=user */}
+              {isUserRole && (
+                <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                  Watchlist
+                </th>
+              )}
             </tr>
           </thead>
+
           <tbody className="divide-y divide-slate-200">
             {isLoading ? (
               <tr>
-                <td colSpan={4} className="px-6 py-8 text-center">
+                <td
+                  colSpan={isUserRole ? 5 : 4}
+                  className="px-6 py-8 text-center"
+                >
                   <div className="flex justify-center">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                   </div>
@@ -100,7 +125,7 @@ export const CompliantStockTable = ({
             ) : data.length === 0 ? (
               <tr>
                 <td
-                  colSpan={4}
+                  colSpan={isUserRole ? 5 : 4}
                   className="px-6 py-8 text-center text-slate-500"
                 >
                   No compliant stocks found.
@@ -118,43 +143,51 @@ export const CompliantStockTable = ({
                       {stock.symbol}
                     </span>
                   </td>
+
                   <td className="px-6 py-4">
                     <span className="text-slate-600 line-clamp-1">
                       {stock.name}
                     </span>
                   </td>
+
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="text-slate-500 text-sm">
                       {stock.exchange}
                     </span>
                   </td>
+
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="text-slate-600 text-sm">
                       {formatDate(stock.reportDate)}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right">
-                    <button
-                      onClick={(e) => handleAddToWishlist(e, stock.symbol)}
-                      disabled={isAdding || isInWishlist(stock.symbol)}
-                      className={`p-2 rounded-full transition-all active:scale-95 disabled:opacity-50 ${isInWishlist(stock.symbol)
-                        ? "text-red-500 bg-red-50"
-                        : "text-slate-400 hover:text-red-500 hover:bg-red-50"
+
+                  {/* ✅ Only render button for role=user */}
+                  {isUserRole && (
+                    <td className="px-6 py-4 whitespace-nowrap text-right">
+                      <button
+                        onClick={(e) => handleAddToWishlist(e, stock.symbol)}
+                        disabled={isAdding || isInWishlist(stock.symbol)}
+                        className={`p-2 rounded-full transition-all active:scale-95 disabled:opacity-50 ${
+                          isInWishlist(stock.symbol)
+                            ? "text-red-500 bg-red-50"
+                            : "text-slate-400 hover:text-red-500 hover:bg-red-50"
                         }`}
-                      title={
-                        isInWishlist(stock.symbol)
-                          ? "In Watchlist"
-                          : "Add to Watchlist"
-                      }
-                    >
-                      <Bookmark
-                        size={18}
-                        fill={
-                          isInWishlist(stock.symbol) ? "currentColor" : "none"
+                        title={
+                          isInWishlist(stock.symbol)
+                            ? "In Watchlist"
+                            : "Add to Watchlist"
                         }
-                      />
-                    </button>
-                  </td>
+                      >
+                        <Bookmark
+                          size={18}
+                          fill={
+                            isInWishlist(stock.symbol) ? "currentColor" : "none"
+                          }
+                        />
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))
             )}
@@ -162,7 +195,6 @@ export const CompliantStockTable = ({
         </table>
       </div>
 
-      {/* Pagination Controls */}
       <div className="px-6 py-4 border-t border-slate-200 flex items-center justify-between">
         <div className="text-sm text-slate-600 font-medium">
           Showing{" "}
@@ -175,6 +207,7 @@ export const CompliantStockTable = ({
           </span>{" "}
           entries
         </div>
+
         <div className="flex items-center gap-3">
           <span className="text-sm text-slate-500">Page {pageNumber}</span>
           <div className="flex gap-2">
