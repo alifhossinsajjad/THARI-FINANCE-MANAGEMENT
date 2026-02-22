@@ -20,10 +20,10 @@ export default function SettingPage() {
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  // ✅ Fetch profile
+  //  Fetch profile
   const { data, isLoading, isError, refetch } = useGetMyProfileQuery(undefined);
 
-  // ✅ Mutations
+  //  Mutations
   const [updateMyProfile, { isLoading: isUpdating }] =
     useUpdateMyProfileMutation();
   const [changePassword, { isLoading: isChangingPass }] =

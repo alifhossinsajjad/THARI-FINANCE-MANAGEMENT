@@ -7,6 +7,7 @@ import { useGetPricingPlansQuery } from "@/Redux/features/pricing/pricingApi";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
 import { useEffect, useState } from "react";
+import { useProcessPaymentMutation } from "@/Redux/features/payment/paymentApi";
 
 export default function PricingPage() {
   const [animate, setAnimate] = useState(false);
@@ -19,6 +20,26 @@ export default function PricingPage() {
 
   // console.log("Pricing Data:", pricing);
   // console.log("Pricing Error:", error);
+    const [processPayment] = useProcessPaymentMutation();
+  
+    const handleGetStarted = async (planId: number) => {
+      try {
+        const res = await processPayment({
+          plan_id: planId,
+          platform: "web",
+          callback_url: `${window.location.origin}/payment/payment-success`,
+        }).unwrap();
+  
+        console.log("Payment response:", res);
+  
+        if (res.success && res.checkout_url) {
+          window.location.href = res.checkout_url; // ✅ redirect
+        }
+      } catch (err) {
+        console.error("Payment failed:", err);
+      }
+    };
+  
 
   if (isLoading) {
     return <div className="text-center py-10">Loading...</div>;
@@ -139,17 +160,24 @@ export default function PricingPage() {
                   </ul>
 
                   {/* CTA Button */}
+                  <div
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleGetStarted(plan.id);
+                  }}
+                >
                   <GetStartedButton
                     text="Get Started"
-                    href="/auth/register"
+                    href="#" // Prevent default navigation
                     showArrow={false}
-                    borderClass="border  border-blue-200"
-                    bgClass={`w-full py-3 px-6 rounded-lg font-semibold text-sm transition-all duration-300 ${
+                    borderClass="border border-blue-200"
+                    bgClass={`w-full py-3 px-6 rounded-lg font-semibold text-sm transition-all duration-300 cursor-pointer ${
                       plan.is_popular
                         ? "bg-white text-blue-900 hover:bg-gray-50 shadow-lg"
-                        : "bg-white text-blue-900  hover:bg-blue-50"
+                        : "bg-white text-blue-900 hover:bg-blue-50"
                     }`}
                   />
+                </div>
                 </div>
               </div>
             ))}

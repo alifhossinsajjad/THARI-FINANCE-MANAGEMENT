@@ -2,6 +2,7 @@
 import { useCreateAboutContentMutation } from "@/Redux/features/AdminDashboard/adminAboutApi/adminAboutApi";
 import { useState } from "react";
 import { BeatLoader } from "react-spinners";
+import { toast } from "sonner";
 
 export default function AdminAboutPage() {
   const [createAboutContent, { isLoading }] = useCreateAboutContentMutation();
@@ -64,7 +65,7 @@ export default function AdminAboutPage() {
 
       formData.append("description", description);
 
-      // ✅ REAL ARRAY (backend will receive array)
+      //  REAL ARRAY (backend will receive array)
       ourMission
         .filter((m) => m.trim() !== "")
         .forEach((m) => {
@@ -82,14 +83,30 @@ export default function AdminAboutPage() {
       }
 
       const res = await createAboutContent(formData).unwrap();
-      console.log("Success:", res);
-    } catch (error) {
+
+      // 🔥 Show toast based on backend response
+      if (res?.success) {
+        toast.success(res.message || "Saved successfully");
+        // 🧹 CLEAR ALL FORM INPUTS AFTER SUCCESS
+        setDescription("");
+        setOurMission([""]); // reset to one empty input
+        setOurVision([""]); // reset to one empty input
+        setVideo(null);
+      } else {
+        toast.error(res?.message || "Something went wrong");
+      }
+    } catch (error: any) {
+      // RTK Query error handling (important)
+      const errorMessage =
+        error?.data?.message || error?.message || "Failed to save about page";
+
+      toast.error(errorMessage);
       console.error("Failed:", error);
     }
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6 bg-gray-100 text-gray-900 rounded-lg shadow-lg">
+    <div className="max-w-8xl mx-auto p-6 bg-gray-100 text-gray-900 rounded-lg shadow-lg">
       <h1 className="text-2xl font-bold mb-6" style={{ color: "#00008B" }}>
         Admin About Page
       </h1>
