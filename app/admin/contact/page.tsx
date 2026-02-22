@@ -13,7 +13,12 @@ const ContactPage = () => {
   const { data, isLoading, isError } = useGetContactMessageQuery(page);
   console.log(data);
 
-  if (isLoading) return <p className="text-center py-10">Loading...</p>;
+  if (isLoading)
+    return (
+      <div className="flex justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
   if (isError)
     return <p className="text-center py-10 text-red-500">Error loading data</p>;
 

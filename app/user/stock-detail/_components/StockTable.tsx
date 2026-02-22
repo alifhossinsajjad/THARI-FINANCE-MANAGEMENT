@@ -109,7 +109,7 @@ export const StockTable = ({
                   className="px-6 py-8 text-center"
                 >
                   <div className="flex justify-center">
-                    <p>Loading</p>
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                   </div>
                 </td>
               </tr>
