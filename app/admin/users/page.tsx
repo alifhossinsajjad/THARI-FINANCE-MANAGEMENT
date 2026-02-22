@@ -92,7 +92,7 @@ export default function UsersPage(): React.JSX.Element {
         {/* Header */}
         <div>
           <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
-            Users t
+            Users
           </h1>
           <p className="text-sm text-gray-500 mt-1">
             Manage and view all registered users.
@@ -119,7 +119,7 @@ export default function UsersPage(): React.JSX.Element {
           <div className="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-4 gap-5">
             <div className="xl:col-span-4 w-full">
               <div className="overflow-x-auto bg-white shadow-sm rounded-t-xl">
-                <table className="min-w-[800px] w-full text-sm ">
+                <table className="min-w-200 w-full text-sm ">
                   <thead>
                     <tr className="bg-[FFFFFF]">
                       <th className="px-6 py-5 text-left font-semibold text-gray-900 text-base">

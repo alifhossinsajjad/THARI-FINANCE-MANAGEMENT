@@ -32,9 +32,19 @@ export type MenuItem = {
   children?: MenuItem[];
 };
 
+const normalize = (p: string) => (p.length > 1 ? p.replace(/\/+$/, "") : p);
+
 const isRouteActive = (pathname: string, href?: string) => {
   if (!href) return false;
-  return pathname === href || pathname.startsWith(href + "/");
+
+  const p = normalize(pathname);
+  const h = normalize(href);
+
+  // Dashboard should be exact only
+  if (h === "/admin") return p === "/admin";
+
+  // Others can be exact or nested
+  return p === h || p.startsWith(h + "/");
 };
 
 const isAnyChildActive = (pathname: string, children?: MenuItem[]) => {
