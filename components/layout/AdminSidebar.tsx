@@ -18,7 +18,6 @@ import {
   ArrowUpRight,
   Landmark,
   ChevronDown,
-
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -51,12 +50,8 @@ const AdminSidebar: React.FC = () => {
     { icon: BarChart3, label: "Dashboard", href: "/admin" },
     { icon: Users, label: "Users", href: "/admin/users" },
     { icon: CreditCard, label: "Subscriptions", href: "/admin/subscriptions" },
-    {
-      icon: Package,
-      label: "Our Analysis",
-      href: "/admin/ourAnalysis",
-    },
 
+    { icon: Boxes, label: "About", href: "/admin/adminAbout" },
     { icon: ArrowDownLeft, label: "Stock", href: "/admin/stock" },
     {
       icon: ArrowUpRight,
@@ -79,8 +74,12 @@ const AdminSidebar: React.FC = () => {
       label: "Communications",
       href: "/admin/communications",
     },
+    {
+      icon: Package,
+      label: "Our Analysis",
+      href: "/admin/ourAnalysis",
+    },
     { icon: MessageCircle, label: "Contact", href: "/admin/contact" },
-    { icon: Boxes, label: "About", href: "/admin/adminAbout" },
     { icon: User, label: "Profile", href: "/admin/profile" },
   ];
 
