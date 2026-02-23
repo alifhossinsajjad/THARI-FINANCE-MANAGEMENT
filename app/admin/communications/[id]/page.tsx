@@ -18,17 +18,23 @@
 "use client";
 
 import { useGetSingleAllMessageQuery } from "@/Redux/features/AdminDashboard/Communications/adminCommunicationsApi";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
-import { Send } from "lucide-react";
+import { ArrowLeft, Send } from "lucide-react";
 import { useAdminReplayMessageMutation } from "@/Redux/features/AdminDashboard/Communications/adminCommunicationsApi";
 import { toast } from "sonner";
+import { useSelector } from "react-redux";
+
+import { selectCurrentUser } from "@/Redux/features/auth/authSlice";
 
 export default function UserMessagesPage() {
+  const router = useRouter();
+  const user = useSelector(selectCurrentUser);
+  console.log(user);
   const params = useParams();
   const userId = params.id;
 
-  const { data, isLoading } = useGetSingleAllMessageQuery(userId);
+  const { data, isLoading, refetch } = useGetSingleAllMessageQuery(userId);
   const messages = data?.data || [];
 
   const [reply, setReply] = useState("");
@@ -52,6 +58,7 @@ export default function UserMessagesPage() {
       else toast.error(res.message || "Failed to send message");
 
       setReply(""); // clear input
+      refetch();
     } catch (err: any) {
       toast.error(err?.data?.message || "Something went wrong");
     }
@@ -61,6 +68,14 @@ export default function UserMessagesPage() {
 
   return (
     <div className="flex flex-col h-full max-h-[80vh] border rounded-lg bg-white shadow-md p-4">
+      <div className="pb-3">
+        <h2>
+          <ArrowLeft
+            className="cursor-pointer"
+            onClick={() => router.back()} // <--- go back
+          />
+        </h2>
+      </div>
       {/* Messages list */}
       <div className="flex-1 overflow-y-auto mb-4 space-y-2">
         {messages.map((msg: any) => {
@@ -97,6 +112,12 @@ export default function UserMessagesPage() {
           type="text"
           value={reply}
           onChange={(e) => setReply(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault(); // optional but recommended
+              handleSendReply();
+            }
+          }}
           placeholder="Write your reply..."
           className="flex-1 border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
         />

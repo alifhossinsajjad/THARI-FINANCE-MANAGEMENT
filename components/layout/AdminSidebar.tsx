@@ -8,7 +8,6 @@ import {
   CreditCard,
   MessageSquare,
   BarChart3,
-  Boxes,
   User,
   Menu,
   MessageCircle,
@@ -18,7 +17,6 @@ import {
   ArrowUpRight,
   Landmark,
   ChevronDown,
-
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -80,7 +78,7 @@ const AdminSidebar: React.FC = () => {
       href: "/admin/communications",
     },
     { icon: MessageCircle, label: "Contact", href: "/admin/contact" },
-    { icon: Boxes, label: "About", href: "/admin/adminAbout" },
+    // { icon: Boxes, label: "About", href: "/admin/adminAbout" },
     { icon: User, label: "Profile", href: "/admin/profile" },
   ];
 

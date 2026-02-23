@@ -5,8 +5,12 @@ import { Mail, Send } from "lucide-react";
 import { useGetAdminAllMessageQuery } from "@/Redux/features/AdminDashboard/Communications/adminCommunicationsApi";
 
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/Redux/features/auth/authSlice";
 
 export default function CommunicationsPage() {
+  const user = useSelector(selectCurrentUser);
+  console.log("iam the user from message page", user);
   const router = useRouter();
   const { data } = useGetAdminAllMessageQuery({});
   console.log("here is message", data);

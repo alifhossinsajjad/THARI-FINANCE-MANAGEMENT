@@ -31,7 +31,7 @@ export default function DashboardPage(): React.JSX.Element {
       icon: Users,
     },
     {
-      label: "Active Users",
+      label: "Inactive Users",
       value: data?.data?.users?.inactive_users,
       change: "+8.2%",
       isPositive: true,
