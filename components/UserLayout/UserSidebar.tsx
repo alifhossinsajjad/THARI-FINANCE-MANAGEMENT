@@ -123,6 +123,8 @@ const UserSidebar: React.FC = () => {
 
   const handleLogout = (): void => {
     dispatch(logout());
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
     handleClose();
     toast.success("Logged out successfully");
     router.push("/auth/login");

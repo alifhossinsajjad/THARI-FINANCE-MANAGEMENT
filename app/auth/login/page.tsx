@@ -65,6 +65,8 @@ export default function LoginPage() {
       const res = await login(userInfo).unwrap();
 
       if (res.success) {
+        localStorage.setItem("accessToken", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
         dispatch(
           setUser({
             user: res.data.user,
