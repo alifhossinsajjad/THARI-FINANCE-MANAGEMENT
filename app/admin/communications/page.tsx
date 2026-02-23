@@ -22,6 +22,8 @@ function MessageSkeleton() {
 }
 
 export default function CommunicationsPage() {
+  const user = useSelector(selectCurrentUser);
+  console.log("iam the user from message page", user);
   const router = useRouter();
   const { data, isLoading, isError } = useGetAdminAllMessageQuery({});
 

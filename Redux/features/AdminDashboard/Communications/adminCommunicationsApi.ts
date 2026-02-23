@@ -30,6 +30,20 @@ const adminCommunicationsApi = baseApi.injectEndpoints({
         Array.isArray(response) ? response : response?.data || [],
       providesTags: ["Chat"],
     }),
+    // get message notification
+    getAllMessageNotification: builder.query({
+      query: () => ({
+        url: `/admin/message-notifications`,
+        method: "GET",
+      }),
+    }),
+    // Create new job
+    markNotificationRead: builder.mutation({
+      query: (id: number) => ({
+        url: `/admin/message-notifications/read/${id}`,
+        method: "POST",
+      }),
+    }),
   }),
 });
 
@@ -37,4 +51,6 @@ export const {
   useAdminReplayMessageMutation,
   useGetAdminAllMessageQuery,
   useGetSingleAllMessageQuery,
+  useGetAllMessageNotificationQuery,
+  useMarkNotificationReadMutation,
 } = adminCommunicationsApi;

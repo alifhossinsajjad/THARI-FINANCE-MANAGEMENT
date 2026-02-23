@@ -25,6 +25,9 @@ import { toast } from "sonner";
 import { format } from "date-fns";
 
 export default function UserMessagesPage() {
+  const router = useRouter();
+  const user = useSelector(selectCurrentUser);
+  console.log(user);
   const params = useParams();
   const router = useRouter();
   const userId = params.id;

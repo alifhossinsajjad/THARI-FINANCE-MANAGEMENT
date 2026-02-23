@@ -8,9 +8,9 @@ import {
   CreditCard,
   MessageSquare,
   BarChart3,
-  Boxes,
   User,
   Menu,
+  Boxes,
   MessageCircle,
   Package,
   LucideIcon,
@@ -90,7 +90,8 @@ const AdminSidebar: React.FC = () => {
       href: "/admin/communications",
     },
     { icon: MessageCircle, label: "Contact", href: "/admin/contact" },
-    { icon: User, label: "Profile Settings", href: "/admin/profile" },
+    // { icon: Boxes, label: "About", href: "/admin/adminAbout" },
+    { icon: User, label: "Profile", href: "/admin/profile" },
   ];
 
   // ✅ stable key for groups even without href
