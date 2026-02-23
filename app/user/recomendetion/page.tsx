@@ -2,26 +2,20 @@
 
 import {
   AnalysisItem,
-
   useGetAnalysesQuery,
-
 } from "@/Redux/features/userDashboardServices/ourAnalysis/ourAnalysis";
 
 import { useState } from "react";
 import { FiEye } from "react-icons/fi";
 
-
 export default function AnalysisPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchSymbol, setSearchSymbol] = useState("");
-  
-
 
   const [showViewModal, setShowViewModal] = useState<AnalysisItem | null>(null);
 
   // RTK Query hooks
   const { data, isLoading } = useGetAnalysesQuery(currentPage);
-
 
   // Filtered data by search
   const filteredData = data?.data.filter((item) =>
@@ -39,7 +33,6 @@ export default function AnalysisPage() {
             Expert stock picks curated for halal investors
           </p>
         </div>
-      
       </div>
 
       {/* Search Field */}
@@ -127,7 +120,6 @@ export default function AnalysisPage() {
                         className="cursor-pointer text-gray-600 hover:text-blue-600 transition-colors"
                         onClick={() => setShowViewModal(item)}
                       />
-                  
                     </div>
                   </td>
                 </tr>
@@ -162,12 +154,10 @@ export default function AnalysisPage() {
         </div>
       )}
 
-    
-
       {/* View Modal */}
       {showViewModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-          <div className="bg-white rounded-xl w-[400px] shadow-xl overflow-hidden">
+          <div className="bg-white rounded-xl w-100 shadow-xl overflow-hidden">
             {/* Simple header */}
             <div className="px-6 py-4 border-b border-gray-100">
               <h2 className="text-lg font-semibold text-gray-900">
@@ -238,10 +228,6 @@ export default function AnalysisPage() {
           </div>
         </div>
       )}
-
-     
     </div>
   );
 }
-
-

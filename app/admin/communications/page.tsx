@@ -8,11 +8,40 @@ import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/Redux/features/auth/authSlice";
 
+function MessageSkeleton() {
+  return (
+    <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
+      <div className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 animate-pulse">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="h-5 w-5 rounded bg-gray-200" />
+            <div className="space-y-2">
+              <div className="h-4 w-32 bg-gray-200 rounded" />
+              <div className="h-4 w-64 bg-gray-200 rounded" />
+            </div>
+          </div>
+
+          <div className="h-4 w-5/6 bg-gray-200 rounded" />
+          <div className="h-4 w-2/3 bg-gray-200 rounded mt-2" />
+
+          <div className="h-3 w-24 bg-gray-200 rounded mt-4" />
+        </div>
+
+        <div className="shrink-0">
+          <div className="h-10 w-40 bg-gray-200 rounded-lg" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function CommunicationsPage() {
   const user = useSelector(selectCurrentUser);
   console.log("iam the user from message page", user);
   const router = useRouter();
-  const { data } = useGetAdminAllMessageQuery({});
+  const { data, isLoading, isFetching, isError } = useGetAdminAllMessageQuery(
+    {},
+  );
   console.log("here is message", data);
 
   const messages = data?.data || [];
@@ -31,6 +60,7 @@ export default function CommunicationsPage() {
   const handleGoToMessages = (id: number | string) => {
     router.push(`/admin/communications/${id}`);
   };
+  const loading = isLoading || isFetching;
 
   return (
     <div className="space-y-6">
@@ -46,7 +76,17 @@ export default function CommunicationsPage() {
 
       {/* Messages List */}
       <div className="space-y-4">
-        {messages.length === 0 ? (
+        {loading ? (
+          <>
+            <MessageSkeleton />
+            <MessageSkeleton />
+            <MessageSkeleton />
+          </>
+        ) : isError ? (
+          <div className="bg-white rounded-xl p-8 text-center text-gray-500 border border-gray-200">
+            Failed to load messages. Please try again.
+          </div>
+        ) : messages.length === 0 ? (
           <div className="bg-white rounded-xl p-8 text-center text-gray-500 border border-gray-200">
             No messages found matching your filters.
           </div>
@@ -54,7 +94,7 @@ export default function CommunicationsPage() {
           messages.map((msg: any) => (
             <div
               key={msg.id}
-              className={`bg-white rounded-xl shadow-sm  overflow-hidden hover:shadow-md transition-shadow`}
+              className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow"
             >
               <div className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                 {/* Left: Sender + Content */}

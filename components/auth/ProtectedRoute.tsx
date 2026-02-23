@@ -2,32 +2,50 @@
 
 import { useAppSelector } from "@/Redux/hooks";
 import { selectCurrentUser } from "@/Redux/features/auth/authSlice";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+type Role = "admin" | "user"; // adjust to your backend roles
+type Props = {
+  children: React.ReactNode;
+  allowedRoles?: Role[]; // if omitted => just auth protection
+  redirectTo?: string; // optional override
+};
+
+const ProtectedRoute = ({ children, allowedRoles, redirectTo }: Props) => {
   const user = useAppSelector(selectCurrentUser);
   const router = useRouter();
+  const pathname = usePathname();
   const [isMounted, setIsMounted] = useState(false);
 
+  useEffect(() => setIsMounted(true), []);
+
+  const userRole = user?.role as Role | undefined;
+
+  const isRoleAllowed = useMemo(() => {
+    if (!allowedRoles || allowedRoles.length === 0) return true;
+    if (!userRole) return false;
+    return allowedRoles.includes(userRole);
+  }, [allowedRoles, userRole]);
+
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
+    if (!isMounted) return;
 
-useEffect(() => {
-  if (isMounted && !user) {
-    const currentPath = window.location.pathname;
-    router.push(`/auth/login?redirect=${currentPath}`);
-  }
-}, [user, router, isMounted]);
+    // Not logged in -> login with redirect
+    if (!user) {
+      router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
+      return;
+    }
 
-  if (!isMounted) {
-    return null; // or a loading spinner
-  }
+    // Logged in but wrong role -> go somewhere safe
+    if (!isRoleAllowed) {
+      router.replace(redirectTo ?? (userRole === "admin" ? "/admin" : "/user"));
+    }
+  }, [isMounted, user, isRoleAllowed, router, pathname, redirectTo, userRole]);
 
-  if (!user) {
-    return null; // Prevent flashing content before redirect
-  }
+  if (!isMounted) return null;
+  if (!user) return null;
+  if (!isRoleAllowed) return null;
 
   return <>{children}</>;
 };

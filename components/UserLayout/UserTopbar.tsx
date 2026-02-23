@@ -18,6 +18,7 @@ const UserTopbar: React.FC = () => {
   const user = useAppSelector(selectCurrentUser);
   const router = useRouter();
 
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (

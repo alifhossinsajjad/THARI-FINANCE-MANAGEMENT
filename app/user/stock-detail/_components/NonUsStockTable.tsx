@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { IAdvancedComplianceReport } from "@/Redux/features/userDashboardServices/nonUsApi";
 import { useAddToWishlistMutation, useGetWishlistQuery } from "@/Redux/features/userDashboardServices/wishlistApi";
-import { Heart } from "lucide-react";
+import { Bookmark } from "lucide-react";
 import { toast } from "sonner";
 
 interface NonUsStockTableProps {
@@ -88,7 +88,7 @@ export const NonUsStockTable = ({
                                 Report Date
                             </th>
                             <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                                Action
+                                Watchlist
                             </th>
                         </tr>
                     </thead>
@@ -146,12 +146,12 @@ export const NonUsStockTable = ({
                                             onClick={(e) => handleAddToWishlist(e, stock.symbol)}
                                             disabled={isAdding || isInWishlist(stock.symbol)}
                                             className={`p-2 rounded-full transition-all active:scale-95 disabled:opacity-50 ${isInWishlist(stock.symbol)
-                                                    ? "text-red-500 bg-red-50"
-                                                    : "text-slate-400 hover:text-red-500 hover:bg-red-50"
+                                                ? "text-red-500 bg-red-50"
+                                                : "text-slate-400 hover:text-red-500 hover:bg-red-50"
                                                 }`}
                                             title={isInWishlist(stock.symbol) ? "In Watchlist" : "Add to Watchlist"}
                                         >
-                                            <Heart
+                                            <Bookmark
                                                 size={18}
                                                 fill={isInWishlist(stock.symbol) ? "currentColor" : "none"}
                                             />

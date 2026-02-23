@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Search, X } from "lucide-react";
-import { useSearchNonUsStockQuery } from "@/Redux/features/userDashboardServices/nonUsApi";
+import { useSearchNonUsStockQuery, IAdvancedComplianceReport } from "@/Redux/features/userDashboardServices/nonUsApi";
 import { NonUsStockTable } from "../stock-detail/_components/NonUsStockTable";
 
 export default function InternationalStockSearchPage() {
@@ -25,7 +25,7 @@ export default function InternationalStockSearchPage() {
         setSearchQuery("");
     };
 
-    const report = data?.data?.advancedCompliance?.report;
+    const report = data as IAdvancedComplianceReport | null;
     const stockItems = report ? [report] : [];
 
     return (

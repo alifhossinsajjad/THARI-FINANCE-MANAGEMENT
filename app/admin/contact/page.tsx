@@ -1,6 +1,9 @@
 "use client";
 
-import { Contact, useGetContactMessageQuery } from "@/Redux/features/AdminDashboard/adminContact/contactApi";
+import {
+  Contact,
+  useGetContactMessageQuery,
+} from "@/Redux/features/AdminDashboard/adminContact/contactApi";
 import { useState } from "react";
 
 const ContactPage = () => {
@@ -8,10 +11,16 @@ const ContactPage = () => {
   const [selectedMessage, setSelectedMessage] = useState<Contact | null>(null);
 
   const { data, isLoading, isError } = useGetContactMessageQuery(page);
-  console.log(data)
+  console.log(data);
 
-  if (isLoading) return <p className="text-center py-10">Loading...</p>;
-  if (isError) return <p className="text-center py-10 text-red-500">Error loading data</p>;
+  if (isLoading)
+    return (
+      <div className="flex justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  if (isError)
+    return <p className="text-center py-10 text-red-500">Error loading data</p>;
 
   return (
     <div className="p-6">

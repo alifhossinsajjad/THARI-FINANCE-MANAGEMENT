@@ -29,11 +29,17 @@ export interface ISearchNonUsStockParams {
 
 const nonUsApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        searchNonUsStock: builder.query<INonUsStockResponse, ISearchNonUsStockParams>({
+        searchNonUsStock: builder.query<IAdvancedComplianceReport | null, ISearchNonUsStockParams>({
             query: ({ symbol, methodology = "AAOIFI" }) => ({
                 url: `/zoya/international-report?symbol=${symbol.toUpperCase()}&methodology=${methodology}`,
                 method: "GET",
             }),
+            transformResponse: (response: any) => {
+                if (response?.errors && response.errors.length > 0) {
+                    return null;
+                }
+                return response?.data?.advancedCompliance?.report || null;
+            }
         }),
     }),
 });

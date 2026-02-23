@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   X,
   LogOut,
@@ -10,9 +10,7 @@ import {
   Menu,
   LayoutDashboard,
   Globe,
-  Settings,
   Briefcase,
-  Languages,
   ChevronDown,
   ArrowDownLeft,
   ArrowUpRight,
@@ -20,17 +18,31 @@ import {
   MessageSquare,
   LineChart,
   CheckCircle,
-
+  User,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import type { MenuItem } from "@/types";
 import { useAppDispatch } from "@/Redux/hooks";
 import { logout } from "@/Redux/features/auth/authSlice";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-
 import Image from "next/image";
+
+/** ===== route helpers (fix "Home always active") ===== */
+const normalize = (p: string) => (p.length > 1 ? p.replace(/\/+$/, "") : p);
+
+const isActiveRoute = (pathname: string, href?: string) => {
+  if (!href) return false;
+
+  const p = normalize(pathname);
+  const h = normalize(href);
+
+  // Home should be exact only
+  if (h === "/user") return p === "/user";
+
+  // Others: exact or nested
+  return p === h || p.startsWith(h + "/");
+};
 
 const UserSidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -39,10 +51,13 @@ const UserSidebar: React.FC = () => {
   const router = useRouter();
 
   const expenseBase = "/user/expensiveManager";
-  const isExpenseRoute =
-    pathname === expenseBase || pathname.startsWith(expenseBase + "/");
+  const isExpenseRoute = isActiveRoute(pathname, expenseBase);
 
+  // keep dropdown open when inside expense routes
   const [expenseOpen, setExpenseOpen] = useState<boolean>(isExpenseRoute);
+  useEffect(() => {
+    if (isExpenseRoute) setExpenseOpen(true);
+  }, [isExpenseRoute]);
 
   const expenseChildren: MenuItem[] = [
     {
@@ -72,55 +87,39 @@ const UserSidebar: React.FC = () => {
     },
     {
       icon: CheckCircle,
-      label: "US Compliance Stock",
+      label: "US Compliance Stocks",
       href: "/user/usComplianceStock",
     },
-
     { icon: Briefcase, label: "ETF Reports", href: "/user/etf-reports" },
     {
-      icon: Languages,
-      label: "International Stocks",
-      href: "/user/international-stocks",
-    },
-
-    { icon: CreditCard, label: "Watch List", href: "/user/watchList" },
-
-    {
       icon: TrendingUp,
-      label: "Financial Manager",
+      label: "Financial Management",
       href: "/user/expensiveManager",
     },
+    { icon: CreditCard, label: "Watch List", href: "/user/watchList" },
     {
       icon: Package,
-      label: "Our Analysis",
+      label: "Recommendation",
       href: "/user/recomendetion",
     },
-     {
+    {
       icon: MessageSquare,
       label: "Communications",
       href: "/user/communication",
     },
-    // { icon: Package, label: "Our Analysis", href: "/user/recommendations" },
-    // { icon: Newspaper, label: "News", href: "/user/news" },
-    { icon: Settings, label: "Settings", href: "/user/settings" },
+    { icon: User, label: "Profile Settings", href: "/user/settings" },
   ];
 
-  const handleToggle = (): void => {
-    setIsOpen(!isOpen);
-  };
+  const handleToggle = (): void => setIsOpen((p) => !p);
+
   const handleExpenseToggle = (e: React.MouseEvent) => {
     e.preventDefault(); // prevent Link navigation
     e.stopPropagation();
     setExpenseOpen((p) => !p);
   };
 
-  const handleClose = (): void => {
-    setIsOpen(false);
-  };
-
-  const handleOverlayClick = (): void => {
-    setIsOpen(false);
-  };
+  const handleClose = (): void => setIsOpen(false);
+  const handleOverlayClick = (): void => setIsOpen(false);
 
   const handleLogout = (): void => {
     dispatch(logout());
@@ -136,6 +135,7 @@ const UserSidebar: React.FC = () => {
         onClick={handleToggle}
         className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white shadow-lg"
         aria-label={isOpen ? "Close menu" : "Open menu"}
+        type="button"
       >
         {isOpen ? (
           <X size={24} className="text-gray-900" />
@@ -163,7 +163,7 @@ const UserSidebar: React.FC = () => {
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className=" mx-auto py-4">
+          <div className="mx-auto py-4">
             <Link href="/" className="flex items-center gap-2 pr-6">
               <Image
                 src="/images/FooterLogo.png"
@@ -180,7 +180,7 @@ const UserSidebar: React.FC = () => {
           <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
             {menuItems.map((item: MenuItem, index: number) => {
               // Expense manager special group
-              if (item.href === "/user/expensiveManager") {
+              if (item.href === expenseBase) {
                 const Icon = item.icon;
 
                 return (
@@ -212,7 +212,9 @@ const UserSidebar: React.FC = () => {
                       >
                         <ChevronDown
                           size={18}
-                          className={`transition-transform ${expenseOpen ? "rotate-180" : ""}`}
+                          className={`transition-transform ${
+                            expenseOpen ? "rotate-180" : ""
+                          }`}
                         />
                       </button>
                     </Link>
@@ -222,9 +224,10 @@ const UserSidebar: React.FC = () => {
                       <div className="ml-3 pl-3 border-l border-white/10 space-y-1">
                         {expenseChildren.map((child) => {
                           const ChildIcon = child.icon;
-                          const childActive =
-                            pathname === child.href ||
-                            pathname.startsWith(child.href + "/");
+                          const childActive = isActiveRoute(
+                            pathname,
+                            child.href,
+                          );
 
                           return (
                             <Link
@@ -250,8 +253,7 @@ const UserSidebar: React.FC = () => {
 
               // Default items
               const Icon = item.icon;
-              const isActive =
-                pathname === item.href || pathname.startsWith(item.href + "/");
+              const isActive = isActiveRoute(pathname, item.href);
 
               return (
                 <Link
@@ -269,37 +271,6 @@ const UserSidebar: React.FC = () => {
                 </Link>
               );
             })}
-
-            {/* <div className="mt-12 space-y-3">
-              <div className="flex justify-between items-center">
-                <h1 className="text-xl text-white/70">AAPL</h1>
-                <button className="flex gap-2 items-center rounded-md px-2 py-1 bg-[#1010A2]">
-                  <FaArrowTrendUp />
-                  <p>+1.61%</p>
-                </button>
-              </div>
-              <div className="flex justify-between items-center">
-                <h1 className="text-xl text-white/70">MSFT</h1>
-                <button className="flex gap-2 items-center rounded-md px-2 py-1 bg-[#1010A2]">
-                  <FaArrowTrendUp />
-                  <p>+3.57%</p>
-                </button>
-              </div>
-              <div className="flex justify-between items-center">
-                <h1 className="text-xl text-white/70">TSLA</h1>
-                <button className="flex gap-2 items-center rounded-md px-2 py-1 bg-[#1010A2]">
-                  <FaArrowTrendUp />
-                  <p>+5.28%</p>
-                </button>
-              </div>
-              <div className="flex justify-between items-center">
-                <h1 className="text-xl text-white/70">NVDA</h1>
-                <button className="flex gap-2 items-center rounded-md px-2 py-1 bg-[#1010A2]">
-                  <FaArrowTrendUp />
-                  <p> +17.79%</p>
-                </button>
-              </div>
-            </div> */}
           </nav>
 
           {/* Logout */}

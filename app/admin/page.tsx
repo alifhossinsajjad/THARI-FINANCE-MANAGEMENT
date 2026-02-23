@@ -93,7 +93,6 @@ export default function DashboardPage(): React.JSX.Element {
       </div>
 
       {/* Stats Grid */}
-      {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
         {isLoading || isFetching
           ? Array.from({ length: 4 }).map((_, index) => (
@@ -107,7 +106,7 @@ export default function DashboardPage(): React.JSX.Element {
                   className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100"
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <span className="text-sm font-medium text-gray-600">
+                    <span className="text-sm font-medium text-gray-600 uppercase">
                       {stat.label}
                     </span>
                     <div
@@ -128,7 +127,7 @@ export default function DashboardPage(): React.JSX.Element {
             })}
       </div>
 
-      {/* Quick Links */}
+      {/* Revenue Chart */}
       <div>
         <AdminDashboardChart
           totalRevenue={data?.data?.revenue?.total_revenue ?? 0}

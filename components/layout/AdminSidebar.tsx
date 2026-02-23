@@ -10,6 +10,7 @@ import {
   BarChart3,
   User,
   Menu,
+  Boxes,
   MessageCircle,
   Package,
   LucideIcon,
@@ -31,9 +32,19 @@ export type MenuItem = {
   children?: MenuItem[];
 };
 
+const normalize = (p: string) => (p.length > 1 ? p.replace(/\/+$/, "") : p);
+
 const isRouteActive = (pathname: string, href?: string) => {
   if (!href) return false;
-  return pathname === href || pathname.startsWith(href + "/");
+
+  const p = normalize(pathname);
+  const h = normalize(href);
+
+  // Dashboard should be exact only
+  if (h === "/admin") return p === "/admin";
+
+  // Others can be exact or nested
+  return p === h || p.startsWith(h + "/");
 };
 
 const isAnyChildActive = (pathname: string, children?: MenuItem[]) => {
@@ -49,13 +60,9 @@ const AdminSidebar: React.FC = () => {
     { icon: BarChart3, label: "Dashboard", href: "/admin" },
     { icon: Users, label: "Users", href: "/admin/users" },
     { icon: CreditCard, label: "Subscriptions", href: "/admin/subscriptions" },
-    {
-      icon: Package,
-      label: "Our Analysis",
-      href: "/admin/ourAnalysis",
-    },
 
-    { icon: ArrowDownLeft, label: "Stock", href: "/admin/stock" },
+    { icon: Boxes, label: "About", href: "/admin/adminAbout" },
+    { icon: ArrowDownLeft, label: "Search Stock", href: "/admin/stock" },
     {
       icon: ArrowUpRight,
       label: "Rating US Market",
@@ -63,15 +70,20 @@ const AdminSidebar: React.FC = () => {
     },
     {
       icon: Landmark,
-      label: "Compliant US Market",
+      label: "US Compliance Stocks",
       href: "/admin/compliantUsMarket",
     },
     {
       icon: Landmark,
-      label: "ETFSY Report",
+      label: "ETF Report",
       href: "/admin/etfsyReport",
     },
 
+    {
+      icon: Package,
+      label: "Our Analysis",
+      href: "/admin/ourAnalysis",
+    },
     {
       icon: MessageSquare,
       label: "Communications",
