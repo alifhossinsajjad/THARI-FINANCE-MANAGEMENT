@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { User, ShieldCheck, Bell, Mail, Phone } from "lucide-react";
+import { User, ShieldCheck, Mail, Phone } from "lucide-react";
 import PersonalInfoTab from "./settingTabComponent/PersonalInfoTab";
 import SecurityTab from "./settingTabComponent/SecurityTab";
 import AdminNotificationsTab from "./settingTabComponent/AdminNotificationsTab";
@@ -10,6 +10,7 @@ import { useGetAdminProfileInfoQuery } from "@/Redux/features/AdminDashboard/adm
 
 export default function ProfileSettings() {
   const { data } = useGetAdminProfileInfoQuery({});
+  console.log(data);
   const user = data?.data;
   // 1. Tab System State
   const [activeTab, setActiveTab] = useState("Personal Info");
@@ -30,7 +31,7 @@ export default function ProfileSettings() {
   const tabs = [
     { name: "Personal Info", icon: <User size={18} /> },
     { name: "Security", icon: <ShieldCheck size={18} /> },
-    { name: "Notifications", icon: <Bell size={18} /> },
+    // { name: "Notifications", icon: <Bell size={18} /> },
   ];
 
   // Animate tab content on tab change
@@ -95,7 +96,7 @@ export default function ProfileSettings() {
               {user?.email}
             </div>
             <div className="flex items-center gap-2 text-gray-500 text-sm">
-              <Phone size={14} /> {user?.phone}
+              <Phone size={14} /> {user?.phone || "---"}
             </div>
           </div>
         </div>
@@ -133,7 +134,7 @@ export default function ProfileSettings() {
         {/* SECURITY TAB */}
         {activeTab === "Security" && <SecurityTab />}
 
-        {/* NOTIFICATIONS TAB - Updated to match Image_744136.png */}
+        {/* NOTIFICATIONS TAB  */}
         {activeTab === "Notifications" && <AdminNotificationsTab />}
       </div>
     </div>
