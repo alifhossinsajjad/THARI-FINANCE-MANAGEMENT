@@ -54,7 +54,7 @@ const PaymentSuccess = () => {
         ) : payment ? (
           <div className="bg-gray-50 rounded-xl p-6 mb-6 space-y-4">
             <div className="flex justify-between items-center pb-3 border-b border-gray-200">
-              <span className="text-gray-600">Invoice</span>
+              <span className="text-gray-600">Transection ID</span>
               <span className="text-gray-900 font-mono text-sm break-all text-right max-w-[60%]">
                 {payment.transaction_id}
               </span>
@@ -76,12 +76,12 @@ const PaymentSuccess = () => {
               </span>
             </div>
 
-            <div className="flex justify-between items-center pb-3 border-b border-gray-200">
+            {/* <div className="flex justify-between items-center pb-3 border-b border-gray-200">
               <span className="text-gray-600">Status</span>
               <span className="text-emerald-600 font-medium capitalize">
                 {payment.status}
               </span>
-            </div>
+            </div> */}
 
             <div className="flex justify-between items-center">
               <span className="text-gray-600">Payment ID</span>
@@ -104,7 +104,7 @@ const PaymentSuccess = () => {
         {/* Action Buttons */}
         <div className="space-y-3">
           <Link
-            href="/"
+            href="/user"
             className="block w-full bg-[#1a4c6e] hover:bg-[#0f3a54] text-white font-medium py-3 px-4 rounded-lg text-center transition-colors duration-200"
           >
             Go to Dashboard
