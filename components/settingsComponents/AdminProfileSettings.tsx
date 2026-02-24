@@ -9,7 +9,7 @@ import gsap from "gsap";
 import { useGetAdminProfileInfoQuery } from "@/Redux/features/AdminDashboard/adminProfile/adminProfileApi";
 
 export default function ProfileSettings() {
-  const { data } = useGetAdminProfileInfoQuery({});
+  const { data, refetch } = useGetAdminProfileInfoQuery({});
   console.log(data);
   const user = data?.data;
   // 1. Tab System State
@@ -129,7 +129,7 @@ export default function ProfileSettings() {
         className="w-full bg-white border border-gray-200 rounded-xl shadow-sm p-8 overflow-x-hidden"
       >
         {/* PERSONAL INFO TAB */}
-        {activeTab === "Personal Info" && <PersonalInfoTab />}
+        {activeTab === "Personal Info" && <PersonalInfoTab refetch={refetch} />}
 
         {/* SECURITY TAB */}
         {activeTab === "Security" && <SecurityTab />}
