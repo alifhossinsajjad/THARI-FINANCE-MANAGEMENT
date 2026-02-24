@@ -42,7 +42,7 @@ export const paymentApi = baseApi.injectEndpoints({
     }),
     getAllPayments: builder.query<GetPaymentsResponse, void>({
       query: () => ({
-        url: "/all-payments",
+        url: "/payment/show",
         method: "GET",
       }),
     }),

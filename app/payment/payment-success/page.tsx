@@ -17,6 +17,9 @@ const PaymentSuccess = () => {
     (item) => item.transaction_id === sessionId
   );
 
+  console.log(payment)
+
+
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
   <div className="w-full max-w-md">
