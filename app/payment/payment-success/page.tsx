@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { FaCheckCircle, FaHome } from "react-icons/fa";
+
 import { useSearchParams } from "next/navigation";
 import { useGetAllPaymentsQuery } from "@/Redux/features/payment/paymentApi";
 
