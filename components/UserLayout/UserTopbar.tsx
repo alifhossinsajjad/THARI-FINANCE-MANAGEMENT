@@ -76,7 +76,7 @@ const UserTopbar: React.FC = () => {
         {/* Right Actions */}
         <div className="flex items-center gap-4">
           {/* Notification */}
-          <button
+          {/* <button
             onClick={handleNotificationClick}
             type="button"
             aria-label="Notifications"
@@ -84,7 +84,7 @@ const UserTopbar: React.FC = () => {
           >
             <Bell size={20} />
             <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-red-500" />
-          </button>
+          </button> */}
 
           {/* Profile Dropdown */}
           <div className="relative" ref={profileDropdownRef}>
