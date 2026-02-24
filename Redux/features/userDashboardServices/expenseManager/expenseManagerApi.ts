@@ -79,19 +79,25 @@ export const expenseManagerApi = baseApi.injectEndpoints({
     /* ===== Financial Manager ===== */
 
     // GET: /financial/manager
-    getFinancialManager: builder.query<ManagerResponse, ManagerQuery>({
+    getFinancialManager: builder.query<ManagerResponse, ManagerQuery | void>({
       query: (params) => ({
         url: "/financial/manager",
         method: "GET",
-        params,
+        // only attach params if they exist
+        params: params ?? undefined,
       }),
 
-      providesTags: (_res, _err, params) => [
-        {
-          type: "Manager" as const,
-          id: `${params.from_date}_${params.to_date}`,
-        },
-      ],
+      providesTags: (_res, _err, params) => {
+        // if called without params, tag it as a general Manager cache
+        if (!params) return [{ type: "Manager" as const, id: "ALL" }];
+
+        return [
+          {
+            type: "Manager" as const,
+            id: `${params.from_date}_${params.to_date}`,
+          },
+        ];
+      },
     }),
 
     /* ===== Wealth ===== */
