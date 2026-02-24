@@ -32,6 +32,8 @@ export default function UserChatPage() {
     refetchOnMountOrArgChange: true,
   });
 
+  console.log("Messages from API:", messages);
+
   const [sendMessage, { isLoading: isSending }] = useSendMessageMutation();
 
   // Scroll to bottom when messages change
@@ -58,7 +60,8 @@ export default function UserChatPage() {
       setText("");
       toast.success("Message sent successfully");
 
-      
+      // Immediately refetch to show the new message
+      refetch();
     } catch (error: any) {
 
       toast.error(error?.data?.message || "Failed to send message");

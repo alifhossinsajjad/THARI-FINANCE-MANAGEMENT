@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Bell, LogOut, Search, User as UserIcon } from "lucide-react";
+import { LogOut, Search, User as UserIcon } from "lucide-react";
 import { useSearch } from "@/contexts/SearchContext";
 import { useAppDispatch, useAppSelector } from "@/Redux/hooks";
 import { logout, selectCurrentUser } from "@/Redux/features/auth/authSlice";
@@ -17,7 +17,6 @@ const UserTopbar: React.FC = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectCurrentUser);
   const router = useRouter();
-
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -40,9 +39,9 @@ const UserTopbar: React.FC = () => {
     };
   }, [profileDropdownOpen]);
 
-  const handleNotificationClick = (): void => {
-    console.log("Notification clicked");
-  };
+  // const handleNotificationClick = (): void => {
+  //   console.log("Notification clicked");
+  // };
 
   const handleLogout = (): void => {
     dispatch(logout());

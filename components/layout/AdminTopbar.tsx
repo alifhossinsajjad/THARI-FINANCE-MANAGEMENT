@@ -61,41 +61,18 @@ import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/Redux/features/auth/authSlice";
 import { useGetAdminProfileInfoQuery } from "@/Redux/features/AdminDashboard/adminProfile/adminProfileApi";
-import {
-  useGetAllMessageNotificationQuery,
-  useMarkNotificationReadMutation,
-} from "@/Redux/features/AdminDashboard/Communications/adminCommunicationsApi";
 
 const AdminTopbar: React.FC = () => {
   const user = useSelector(selectCurrentUser);
   const { data } = useGetAdminProfileInfoQuery({});
   const userr = data?.data;
 
-  // notifications
-  const { data: notifications, refetch } = useGetAllMessageNotificationQuery(
-    {},
-  );
-  console.log("iam the notification ", notifications);
-  const [markNotificationRead] = useMarkNotificationReadMutation();
-
   const [isOpen, setIsOpen] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [localReadIds, setLocalReadIds] = useState<number[]>([]);
+  const [isExpanded] = useState(false);
+
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // const handleNotificationClick = () => setIsOpen((prev) => !prev);
-
-  const handleNotifItemClick = async (notifId: number) => {
-    if (!localReadIds.includes(notifId)) {
-      setLocalReadIds((prev) => [...prev, notifId]); // mark locally as read
-      try {
-        await markNotificationRead(notifId); // call API
-        refetch(); // refresh notifications count
-      } catch (err) {
-        console.error("Failed to mark notification as read", err);
-      }
-    }
-  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -138,63 +115,16 @@ const AdminTopbar: React.FC = () => {
               className="absolute top-11 right-0 mt-2 w-80 bg-white border border-gray-200 rounded-md shadow-lg overflow-hidden z-50"
             >
               <div className="p-2 text-sm font-semibold border-b border-gray-100">
-                Notifications ({notifications?.count || 0})
+                Notifications
               </div>
 
               <div
                 className={`overflow-y-auto transition-all duration-300 ${
                   isExpanded ? "max-h-[500px]" : "max-h-60"
                 }`}
-              >
-                {notifications?.data?.length ? (
-                  notifications.data.map((notif: any) => {
-                    const isUnread =
-                      notif.is_read === 0 && !localReadIds.includes(notif.id);
-
-                    return (
-                      <div
-                        key={notif.id}
-                        className={`p-2 cursor-pointer hover:bg-gray-50 flex items-start gap-2 ${
-                          isUnread
-                            ? "bg-gray-50 font-semibold"
-                            : "bg-white font-normal"
-                        }`}
-                        onClick={() => handleNotifItemClick(notif.id)}
-                      >
-                        {/* Optional unread dot */}
-                        {isUnread && (
-                          <span className="w-2 h-2 mt-2 bg-red-500 rounded-full"></span>
-                        )}
-
-                        <div>
-                          <div className="text-sm">{notif.message.text}</div>
-                          <div className="text-xs text-gray-400 mt-1">
-                            {notif.message.sender.name} •{" "}
-                            {new Date(notif.created_at).toLocaleTimeString([], {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <div className="p-2 text-sm text-gray-500">
-                    No notifications
-                  </div>
-                )}
-              </div>
+              ></div>
 
               {/* View all / Collapse */}
-              {notifications?.data?.length > 0 && (
-                <div
-                  className="p-2 text-center text-xs text-gray-500 border-t border-gray-100 cursor-pointer hover:bg-gray-50"
-                  onClick={() => setIsExpanded((prev) => !prev)}
-                >
-                  {isExpanded ? "Collapse" : "View all"}
-                </div>
-              )}
             </div>
           )}
 
