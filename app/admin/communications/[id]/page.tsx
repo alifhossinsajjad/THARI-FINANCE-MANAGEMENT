@@ -166,6 +166,7 @@ import { useAdminReplayMessageMutation } from "@/Redux/features/AdminDashboard/C
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "@/Redux/features/auth/authSlice";
+import { BeatLoader } from "react-spinners";
 
 export default function UserMessagesPage() {
   const router = useRouter();
@@ -227,7 +228,7 @@ export default function UserMessagesPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-[60vh]">
-        Loading messages...
+        <BeatLoader />
       </div>
     );
   }
