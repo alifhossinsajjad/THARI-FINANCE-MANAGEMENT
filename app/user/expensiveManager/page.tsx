@@ -31,6 +31,10 @@ export default function AIFinancialTools() {
     { skip: activeTab !== "manager" },
   );
 
+  const { data: managerTotalData } = useGetFinancialManagerQuery(undefined, {
+    skip: activeTab !== "manager",
+  });
+
   const managerRows = useMemo(() => {
     const incomes = managerData?.incomes ?? [];
     const expenses = managerData?.expenses ?? [];
@@ -155,29 +159,31 @@ export default function AIFinancialTools() {
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
               <StatCard
                 label="Total income"
-                value={managerData?.totalIncome ?? "--"}
+                value={managerTotalData?.totalIncome ?? "--"}
                 suffix="$"
               />
               <StatCard
                 label="Total expense"
-                value={managerData?.totalExpense ?? "--"}
+                value={managerTotalData?.totalExpense ?? "--"}
                 suffix="$"
               />
               <StatCard
                 label="Total loan"
-                value={managerData?.totalLoan ?? "--"}
+                value={managerTotalData?.totalLoan ?? "--"}
                 suffix="$"
               />
               <StatCard
                 label="Net balance"
                 value={
-                  typeof managerData?.netBalance === "number"
-                    ? String(managerData.netBalance)
+                  typeof managerTotalData?.netBalance === "number"
+                    ? String(managerTotalData.netBalance)
                     : "--"
                 }
                 suffix="$"
                 tone={
-                  managerData?.balanceStatus === "negative" ? "danger" : "good"
+                  managerTotalData?.balanceStatus === "negative"
+                    ? "danger"
+                    : "good"
                 }
               />
             </div>
@@ -597,32 +603,144 @@ export default function AIFinancialTools() {
         <div className="bg-[#f8f8ff] rounded-3xl p-8 border border-[#e5e7eb] shadow-sm animate-in fade-in slide-in-from-top-4 duration-700">
           <h3 className="text-gray-800 font-bold mb-8">Analysis Results</h3>
 
-          <div className="space-y-8">
-            <div>
-              <div className="flex justify-between items-end mb-3">
-                <span className="text-gray-600 text-sm font-bold">
-                  Financial Health Score
-                </span>
-                <span className="text-gray-900 font-bold">50/100</span>
-              </div>
-              <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-primary rounded-full transition-all duration-1000"
-                  style={{ width: "50%" }}
-                />
-              </div>
-            </div>
+          {(() => {
+            const ai = managerTotalData?.ai_insights;
+            console.log(ai);
 
-            <div className="bg-white rounded-2xl p-6 border border-gray-100">
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Your debt-to-income ratio is high. Consider reducing monthly
-                debt payments. Aim to save at least 10-20% of your income.
-              </p>
-            </div>
-          </div>
+            // ---------- guards ----------
+            if (!ai || typeof ai !== "object") {
+              return (
+                <div className="bg-white rounded-2xl p-6 border border-gray-100 text-gray-600 text-sm">
+                  No insights available.
+                </div>
+              );
+            }
+
+            // ---------- safe parsing ----------
+            const scoreRaw = Number(ai.score);
+            const score = Number.isFinite(scoreRaw)
+              ? Math.max(0, Math.min(100, Math.round(scoreRaw)))
+              : 0;
+
+            const savingsRaw = Number(ai.savings);
+            const savings = Number.isFinite(savingsRaw) ? savingsRaw : 0;
+
+            const savingsPercentRaw = Number(ai.savingsPercent);
+            const savingsPercent = Number.isFinite(savingsPercentRaw)
+              ? savingsPercentRaw
+              : 0;
+
+            const insights = Array.isArray(ai.insights)
+              ? ai.insights.filter(
+                  (x: unknown) => typeof x === "string" && x.trim().length,
+                )
+              : [];
+
+            // ---------- formatting ----------
+            const fmtMoney = (n: number) =>
+              new Intl.NumberFormat("en-US", {
+                maximumFractionDigits: 0,
+              }).format(n);
+
+            const fmtPct = (n: number) => {
+              const rounded = Math.round(n);
+              return `${rounded > 0 ? "+" : ""}${rounded}%`;
+            };
+
+            const savingsLabel =
+              savings === 0
+                ? "Neutral savings"
+                : savings > 0
+                  ? "Savings"
+                  : "Deficit";
+
+            const savingsTone =
+              savings === 0
+                ? "text-gray-700 bg-gray-50 border-gray-200"
+                : savings > 0
+                  ? "text-emerald-700 bg-emerald-50 border-emerald-200"
+                  : "text-rose-700 bg-rose-50 border-rose-200";
+
+            const scoreTone =
+              score >= 70
+                ? "text-emerald-700 bg-emerald-50 border-emerald-200"
+                : score >= 40
+                  ? "text-amber-700 bg-amber-50 border-amber-200"
+                  : "text-rose-700 bg-rose-50 border-rose-200";
+
+            const barTone =
+              score >= 70
+                ? "bg-emerald-500"
+                : score >= 40
+                  ? "bg-amber-500"
+                  : "bg-rose-500";
+
+            // optional: quick status line (helps when score is 0 but data exists)
+            const scoreStatus =
+              score >= 70 ? "Good" : score >= 40 ? "Fair" : "Needs attention";
+
+            return (
+              <div className="space-y-8">
+                {/* Score */}
+                <div className={`rounded-2xl border p-5 ${scoreTone}`}>
+                  <div className="flex flex-wrap items-end justify-between gap-3 mb-3">
+                    <div>
+                      <div className="text-gray-600 text-sm font-bold">
+                        Financial Health
+                      </div>
+                      <div className="text-xs font-semibold opacity-80">
+                        {scoreStatus}
+                      </div>
+                    </div>
+                    <div className="text-gray-900 font-bold">{score}/100</div>
+                  </div>
+
+                  <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full ${barTone} rounded-full transition-all duration-1000`}
+                      style={{ width: `${score}%` }}
+                    />
+                  </div>
+                </div>
+
+                {/* Savings summary */}
+                <div className={`rounded-2xl border p-5 ${savingsTone}`}>
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div className="font-bold">{savingsLabel}</div>
+                    <div className="text-sm font-bold">
+                      {savings < 0 ? "-" : ""}
+                      {fmtMoney(Math.abs(savings))} ({fmtPct(savingsPercent)})
+                    </div>
+                  </div>
+                </div>
+
+                {/* Insights list */}
+                <div className="bg-white rounded-2xl p-6 border border-gray-100">
+                  {insights.length ? (
+                    <ul className="space-y-3">
+                      {insights.map((text, idx) => (
+                        <li
+                          key={`${idx}-${text.slice(0, 20)}`}
+                          className="flex gap-3"
+                        >
+                          <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#2E3192]" />
+                          <p className="text-gray-700 text-sm leading-relaxed">
+                            {text}
+                          </p>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      No insight messages returned.
+                    </p>
+                  )}
+                </div>
+              </div>
+            );
+          })()}
         </div>
       )}
-
       {/* Result box specifically for Loan Calculator (API result) */}
       {loanResult && activeTab === "loan" && (
         <div className="bg-[#f8f8ff] rounded-3xl p-8 border border-[#e5e7eb] shadow-sm animate-in fade-in slide-in-from-top-4 duration-700">
