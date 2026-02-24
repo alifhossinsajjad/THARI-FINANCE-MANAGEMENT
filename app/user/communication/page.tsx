@@ -60,7 +60,7 @@ export default function UserChatPage() {
 
       
     } catch (error: any) {
-      console.error("Failed to send message:", error);
+
       toast.error(error?.data?.message || "Failed to send message");
     }
   };
