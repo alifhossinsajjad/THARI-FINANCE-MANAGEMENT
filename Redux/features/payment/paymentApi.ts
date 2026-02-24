@@ -14,7 +14,13 @@ interface PaymentResponse {
   transaction_id: string;
 }
 
-interface Payment {
+interface Plan {
+  id: number;
+  title: string;
+  price: number;
+}
+
+export interface Payment {
   id: number;
   transaction_id: string;
   amount: string;
@@ -23,12 +29,18 @@ interface Payment {
   platform: string;
   created_at: string;
   updated_at: string;
+  plan?: Plan;
 }
 
 interface GetPaymentsResponse {
-  data: {
-    data: Payment[];
+  success: boolean;
+  user: {
+    id: number;
+    name: string;
+    email: string;
   };
+  latest_payment: Payment;
+  payment_history: Payment[];
 }
 
 export const paymentApi = baseApi.injectEndpoints({
@@ -42,7 +54,7 @@ export const paymentApi = baseApi.injectEndpoints({
     }),
     getAllPayments: builder.query<GetPaymentsResponse, void>({
       query: () => ({
-        url: "/all-payments",
+        url: "/payment/show",
         method: "GET",
       }),
     }),
