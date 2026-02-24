@@ -53,6 +53,7 @@ export default function SignupPage() {
 
     try {
       const userInfo = {
+        name: fullName,
         email,
         password,
         password_confirmation: confirmPassword,

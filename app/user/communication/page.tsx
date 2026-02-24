@@ -17,9 +17,7 @@ export default function UserChatPage() {
   const currentUser = useSelector(selectCurrentUser);
   const [text, setText] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
-  const adminId = 1; // Admin ID
-
-  console.log("Current user from Redux:", currentUser);
+  const adminId = 1;
 
   // Fetch messages - Passing adminId to get the conversation with admin
   const {
@@ -56,7 +54,6 @@ export default function UserChatPage() {
         message: text,
       };
 
-      console.log("Sending message:", payload);
       const result = await sendMessage(payload).unwrap();
       console.log("Send message result:", result);
 

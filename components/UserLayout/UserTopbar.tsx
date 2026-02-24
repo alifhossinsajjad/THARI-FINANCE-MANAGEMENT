@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Bell, LogOut, Search, User as UserIcon } from "lucide-react";
+import { LogOut, Search, User as UserIcon } from "lucide-react";
 import { useSearch } from "@/contexts/SearchContext";
 import { useAppDispatch, useAppSelector } from "@/Redux/hooks";
 import { logout, selectCurrentUser } from "@/Redux/features/auth/authSlice";
@@ -17,7 +17,6 @@ const UserTopbar: React.FC = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectCurrentUser);
   const router = useRouter();
-
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -40,9 +39,9 @@ const UserTopbar: React.FC = () => {
     };
   }, [profileDropdownOpen]);
 
-  const handleNotificationClick = (): void => {
-    console.log("Notification clicked");
-  };
+  // const handleNotificationClick = (): void => {
+  //   console.log("Notification clicked");
+  // };
 
   const handleLogout = (): void => {
     dispatch(logout());
@@ -76,7 +75,7 @@ const UserTopbar: React.FC = () => {
         {/* Right Actions */}
         <div className="flex items-center gap-4">
           {/* Notification */}
-          <button
+          {/* <button
             onClick={handleNotificationClick}
             type="button"
             aria-label="Notifications"
@@ -84,7 +83,7 @@ const UserTopbar: React.FC = () => {
           >
             <Bell size={20} />
             <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-red-500" />
-          </button>
+          </button> */}
 
           {/* Profile Dropdown */}
           <div className="relative" ref={profileDropdownRef}>
