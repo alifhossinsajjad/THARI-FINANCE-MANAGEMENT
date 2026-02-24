@@ -174,9 +174,13 @@ export default function UserMessagesPage() {
 
   const currentUser = useSelector(selectCurrentUser);
 
-  const { data, isLoading, refetch } = useGetSingleAllMessageQuery(userId);
+  const { data, isLoading, refetch } = useGetSingleAllMessageQuery(userId, {
+    pollingInterval: 3000,
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+  });
 
-  // 🔥 FIXED: API returns array directly
+  //  FIXED: API returns array directly
   const messages = Array.isArray(data)
     ? data
         .slice()

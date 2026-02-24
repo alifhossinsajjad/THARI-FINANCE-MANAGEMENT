@@ -8,10 +8,9 @@ import { useState, useEffect, useRef } from "react";
 import { Send, User, ShieldCheck, RefreshCw, Bot } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
-import { 
-  useGetConversationQuery, 
+import {
+  useGetConversationQuery,
   useSendMessageMutation,
-  ChatMessage 
 } from "@/Redux/features/userDashboardServices/communication/communicationApi";
 
 export default function UserChatPage() {
@@ -23,20 +22,17 @@ export default function UserChatPage() {
   console.log("Current user from Redux:", currentUser);
 
   // Fetch messages - Passing adminId to get the conversation with admin
-  const { 
-    data: messages = [], 
-    isLoading, 
+  const {
+    data: messages = [],
+    isLoading,
     error,
     refetch,
-    isFetching 
-  } = useGetConversationQuery(
-    adminId,
-    {
-      pollingInterval: 3000, 
-      skip: !currentUser,
-      refetchOnMountOrArgChange: true,
-    }
-  );
+    isFetching,
+  } = useGetConversationQuery(adminId, {
+    pollingInterval: 3000,
+    skip: !currentUser,
+    refetchOnMountOrArgChange: true,
+  });
 
   console.log("Messages from API:", messages);
 
@@ -63,10 +59,10 @@ export default function UserChatPage() {
       console.log("Sending message:", payload);
       const result = await sendMessage(payload).unwrap();
       console.log("Send message result:", result);
-      
+
       setText("");
       toast.success("Message sent successfully");
-      
+
       // Immediately refetch to show the new message
       refetch();
     } catch (error: any) {
@@ -89,7 +85,9 @@ export default function UserChatPage() {
       <div className="flex items-center justify-center h-[calc(100vh-120px)]">
         <div className="text-center">
           <User size={48} className="mx-auto text-gray-300 mb-4" />
-          <p className="text-gray-500 font-medium">Please log in to start chatting</p>
+          <p className="text-gray-500 font-medium">
+            Please log in to start chatting
+          </p>
         </div>
       </div>
     );
@@ -97,7 +95,8 @@ export default function UserChatPage() {
 
   // Sort messages by date (oldest first)
   const sortedMessages = [...messages].sort(
-    (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    (a, b) =>
+      new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
   );
 
   return (
@@ -120,7 +119,7 @@ export default function UserChatPage() {
             </div>
           </div>
         </div>
-        
+
         {/* Refresh button */}
         <button
           onClick={() => refetch()}
@@ -128,7 +127,12 @@ export default function UserChatPage() {
           className="p-2 hover:bg-gray-100 rounded-full transition-colors"
           title="Refresh messages"
         >
-          <RefreshCw size={18} className={isFetching ? "animate-spin text-primary" : "text-gray-500"} />
+          <RefreshCw
+            size={18}
+            className={
+              isFetching ? "animate-spin text-primary" : "text-gray-500"
+            }
+          />
         </button>
       </div>
 
@@ -147,7 +151,9 @@ export default function UserChatPage() {
               <ShieldCheck size={32} className="text-red-400" />
             </div>
             <div>
-              <p className="text-gray-900 font-semibold">Failed to load messages</p>
+              <p className="text-gray-900 font-semibold">
+                Failed to load messages
+              </p>
               <p className="text-sm text-gray-500 mb-3">
                 Please try again later
               </p>
@@ -177,11 +183,12 @@ export default function UserChatPage() {
               const isMe = msg.sender_id === currentUser.id;
               const isAdmin = msg.sender_id === adminId;
               const prevMsg = index > 0 ? sortedMessages[index - 1] : null;
-              
+
               // Show date separator if it's a new day
-              const showDateSeparator = !prevMsg || 
-                format(new Date(msg.created_at), "yyyy-MM-dd") !== 
-                format(new Date(prevMsg.created_at), "yyyy-MM-dd");
+              const showDateSeparator =
+                !prevMsg ||
+                format(new Date(msg.created_at), "yyyy-MM-dd") !==
+                  format(new Date(prevMsg.created_at), "yyyy-MM-dd");
 
               return (
                 <div key={msg.id} className="space-y-2">
@@ -193,7 +200,7 @@ export default function UserChatPage() {
                       </span>
                     </div>
                   )}
-                  
+
                   {/* Message bubble */}
                   <div
                     className={`flex ${isMe ? "justify-end" : "justify-start"} items-end gap-2 group`}
@@ -201,7 +208,11 @@ export default function UserChatPage() {
                     {/* Avatar for admin/bot messages */}
                     {!isMe && (
                       <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0 mb-1">
-                        {isAdmin ? <ShieldCheck size={14} /> : <Bot size={14} />}
+                        {isAdmin ? (
+                          <ShieldCheck size={14} />
+                        ) : (
+                          <Bot size={14} />
+                        )}
                       </div>
                     )}
 
@@ -212,10 +223,10 @@ export default function UserChatPage() {
                       {/* Sender name for non-user messages */}
                       {!isMe && (
                         <span className="text-xs text-gray-500 mb-1 ml-1">
-                          {msg.sender?.name || 'Support Team'}
+                          {msg.sender?.name || "Support Team"}
                         </span>
                       )}
-                      
+
                       <div
                         className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed shadow-sm transition-all duration-200 ${
                           isMe
@@ -269,7 +280,7 @@ export default function UserChatPage() {
             <Send size={18} className={isSending ? "animate-pulse" : ""} />
           </button>
         </div>
-        
+
         {/* Typing indicator */}
         {isSending && (
           <p className="text-xs text-gray-400 mt-2 text-right">

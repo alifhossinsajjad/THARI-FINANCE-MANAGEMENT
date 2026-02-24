@@ -147,8 +147,6 @@
 import { Mail, Send } from "lucide-react";
 import { useGetAdminAllMessageQuery } from "@/Redux/features/AdminDashboard/Communications/adminCommunicationsApi";
 import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
-import { selectCurrentUser } from "@/Redux/features/auth/authSlice";
 
 function MessageSkeleton() {
   return (
@@ -178,7 +176,7 @@ function MessageSkeleton() {
 }
 
 export default function CommunicationsPage() {
-  const user = useSelector(selectCurrentUser);
+  // const user = useSelector(selectCurrentUser);
   const router = useRouter();
 
   const { data, isLoading, isFetching, isError } = useGetAdminAllMessageQuery(
