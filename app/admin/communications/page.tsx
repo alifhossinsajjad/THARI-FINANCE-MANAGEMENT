@@ -1,21 +1,177 @@
-// app/admin/communications/page.tsx
+// "use client";
+
+// import { Mail, Send } from "lucide-react";
+// import { useGetAdminAllMessageQuery } from "@/Redux/features/AdminDashboard/Communications/adminCommunicationsApi";
+
+// import { useRouter } from "next/navigation";
+// import { useSelector } from "react-redux";
+// import { selectCurrentUser } from "@/Redux/features/auth/authSlice";
+
+// function MessageSkeleton() {
+//   return (
+//     <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
+//       <div className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 animate-pulse">
+//         <div className="flex-1 min-w-0">
+//           <div className="flex items-center gap-3 mb-3">
+//             <div className="h-5 w-5 rounded bg-gray-200" />
+//             <div className="space-y-2">
+//               <div className="h-4 w-32 bg-gray-200 rounded" />
+//               <div className="h-4 w-64 bg-gray-200 rounded" />
+//             </div>
+//           </div>
+
+//           <div className="h-4 w-5/6 bg-gray-200 rounded" />
+//           <div className="h-4 w-2/3 bg-gray-200 rounded mt-2" />
+
+//           <div className="h-3 w-24 bg-gray-200 rounded mt-4" />
+//         </div>
+
+//         <div className="shrink-0">
+//           <div className="h-10 w-40 bg-gray-200 rounded-lg" />
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default function CommunicationsPage() {
+//   const user = useSelector(selectCurrentUser);
+//   console.log("iam the user from message page", user);
+//   const router = useRouter();
+//   const { data, isLoading, isFetching, isError } = useGetAdminAllMessageQuery(
+//     {},
+//   );
+//   console.log("here is message", data);
+
+//   const messages = data?.data || [];
+//   console.log("here is singelmessage", messages);
+
+//   //  Modal State
+//   // const [isModalOpen, setIsModalOpen] = useState(false);
+//   // const [selectedReceiverId, setSelectedReceiverId] = useState<
+//   //   string | number | null
+//   // >(null);
+//   // const handleReply = (id: string | number) => {
+//   //   setSelectedReceiverId(id);
+//   //   setIsModalOpen(true);
+//   // };
+
+//   const handleGoToMessages = (id: number | string) => {
+//     router.push(`/admin/communications/${id}`);
+//   };
+//   const loading = isLoading || isFetching;
+
+//   return (
+//     <div className="space-y-6">
+//       {/* Header */}
+//       <div>
+//         <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+//           Communications
+//         </h1>
+//         <p className="text-sm text-gray-500 mt-1">
+//           Manage messages, announcements, and updates.
+//         </p>
+//       </div>
+
+//       {/* Messages List */}
+//       <div className="space-y-4">
+//         {loading ? (
+//           <>
+//             <MessageSkeleton />
+//             <MessageSkeleton />
+//             <MessageSkeleton />
+//           </>
+//         ) : isError ? (
+//           <div className="bg-white rounded-xl p-8 text-center text-gray-500 border border-gray-200">
+//             Failed to load messages. Please try again.
+//           </div>
+//         ) : messages.length === 0 ? (
+//           <div className="bg-white rounded-xl p-8 text-center text-gray-500 border border-gray-200">
+//             No messages found matching your filters.
+//           </div>
+//         ) : (
+//           messages.map((msg: any) => (
+//             <div
+//               key={msg.id}
+//               className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+//             >
+//               <div className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+//                 {/* Left: Sender + Content */}
+//                 <div className="flex-1 min-w-0">
+//                   <div className="flex items-center gap-3 mb-2">
+//                     <Mail size={18} className="text-gray-500 shrink-0" />
+//                     <div>
+//                       <h3 className="text-base font-semibold text-gray-900">
+//                         <span className="text-sm text-gray-500">
+//                           {msg.sender?.name}
+//                         </span>
+//                       </h3>
+//                       <p className="text-sm font-medium text-gray-800 mt-0.5">
+//                         {msg?.message}
+//                       </p>
+//                     </div>
+//                   </div>
+
+//                   <p className="text-sm text-gray-600 line-clamp-2">
+//                     {msg.preview}
+//                   </p>
+
+//                   <p className="text-xs text-gray-500 mt-3">{msg.date}</p>
+//                 </div>
+
+//                 {/* Right: Actions */}
+//                 <div className="flex flex-row sm:flex-col gap-3 sm:gap-2 shrink-0">
+//                   <button
+//                     onClick={() => handleGoToMessages(msg?.receiver_id)}
+//                     className="inline-flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-[#00006B] text-white text-sm font-medium rounded-lg transition-colors shadow-sm cursor-pointer"
+//                   >
+//                     <Send size={16} /> Read all message
+//                   </button>
+//                 </div>
+//               </div>
+//             </div>
+//           ))
+//         )}
+//       </div>
+//       {/* <ReplyModal
+//         isOpen={isModalOpen}
+//         onClose={() => setIsModalOpen(false)}
+//         receiver={selectedReceiverId}
+//       /> */}
+//     </div>
+//   );
+// }
+
 "use client";
 
-import { Search, User, ChevronRight, MessageSquare } from "lucide-react";
+import { Mail, Send } from "lucide-react";
 import { useGetAdminAllMessageQuery } from "@/Redux/features/AdminDashboard/Communications/adminCommunicationsApi";
 import { useRouter } from "next/navigation";
-import { format } from "date-fns";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/Redux/features/auth/authSlice";
 
 function MessageSkeleton() {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 p-4 animate-pulse">
-      <div className="flex items-center gap-4">
-        <div className="w-12 h-12 bg-gray-100 rounded-full" />
-        <div className="flex-1 space-y-2">
-          <div className="h-4 w-32 bg-gray-100 rounded" />
-          <div className="h-3 w-48 bg-gray-100 rounded" />
+    <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
+      <div className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 animate-pulse">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="h-5 w-5 rounded bg-gray-200" />
+            <div className="space-y-2">
+              <div className="h-4 w-32 bg-gray-200 rounded" />
+              <div className="h-4 w-64 bg-gray-200 rounded" />
+            </div>
+          </div>
+
+          <div className="h-4 w-5/6 bg-gray-200 rounded" />
+          <div className="h-4 w-2/3 bg-gray-200 rounded mt-2" />
+
+          <div className="h-3 w-24 bg-gray-200 rounded mt-4" />
         </div>
-        <div className="w-16 h-3 bg-gray-100 rounded" />
+
+        <div className="shrink-0">
+          <div className="h-10 w-40 bg-gray-200 rounded-lg" />
+        </div>
       </div>
     </div>
   );
@@ -23,102 +179,107 @@ function MessageSkeleton() {
 
 export default function CommunicationsPage() {
   const user = useSelector(selectCurrentUser);
-  console.log("iam the user from message page", user);
   const router = useRouter();
-  const { data, isLoading, isError } = useGetAdminAllMessageQuery({});
 
-  const messages = data || [];
+  const { data, isLoading, isFetching, isError } = useGetAdminAllMessageQuery(
+    {},
+  );
+
+  console.log("iam the message", data);
+
+  // 🔥 FIXED HERE (MAIN BUG)
+  const messages = Array.isArray(data) ? data : [];
 
   const handleGoToMessages = (id: number | string) => {
     router.push(`/admin/communications/${id}`);
   };
 
-  return (
-    <div className="max-w-5xl mx-auto space-y-8">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
-            Messages
-          </h1>
-          <p className="text-gray-500 mt-1">
-            Manage support requests and user inquiries
-          </p>
-        </div>
+  const loading = isLoading || isFetching;
 
-        <div className="relative group">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors"
-            size={18}
-          />
-          <input
-            type="text"
-            placeholder="Search conversations..."
-            className="pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary/50 outline-none transition-all w-full md:w-64"
-          />
-        </div>
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+          Communications
+        </h1>
+        <p className="text-sm text-gray-500 mt-1">
+          Manage messages, announcements, and updates.
+        </p>
       </div>
 
-      {/* Messages List */}
-      <div className="grid gap-3">
-        {isLoading ? (
-          Array.from({ length: 4 }).map((_, i) => <MessageSkeleton key={i} />)
+      <div className="space-y-4">
+        {loading ? (
+          <>
+            <MessageSkeleton />
+            <MessageSkeleton />
+            <MessageSkeleton />
+          </>
         ) : isError ? (
-          <div className="bg-red-50 text-red-600 p-8 rounded-2xl text-center border border-red-100">
-            <p className="font-semibold">Failed to load conversations</p>
-            <p className="text-sm opacity-80">
-              Please refresh the page or try again later.
-            </p>
+          <div className="bg-white rounded-xl p-8 text-center text-gray-500 border border-gray-200">
+            Failed to load messages. Please try again.
           </div>
         ) : messages.length === 0 ? (
-          <div className="bg-gray-50 p-12 rounded-3xl text-center border-2 border-dashed border-gray-200">
-            <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-4">
-              <MessageSquare size={32} className="text-gray-300" />
-            </div>
-            <h3 className="text-lg font-bold text-gray-900">No messages yet</h3>
-            <p className="text-gray-500 text-sm mt-1 max-w-xs mx-auto">
-              When users reach out for support, their conversations will appear
-              here.
-            </p>
+          <div className="bg-white rounded-xl p-8 text-center text-gray-500 border border-gray-200">
+            No messages found matching your filters.
           </div>
         ) : (
-          messages.map((msg: any) => (
-            <div
-              key={msg.id}
-              onClick={() => handleGoToMessages(msg.sender_id === 1 ? msg.receiver_id : msg.sender_id)}
-              className="group bg-white rounded-2xl border border-gray-100 p-4 flex items-center gap-4 hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20 transition-all cursor-pointer"
-            >
-              <div className="relative shrink-0">
-                <div className="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                  <User size={24} />
-                </div>
-                <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full" />
-              </div>
+          messages.map((msg: any) => {
+            const lastMessage =
+              msg?.messages?.length > 0
+                ? msg.messages[msg.messages.length - 1]
+                : null;
 
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between mb-0.5">
-                  <h3 className="text-base font-bold text-gray-900 truncate">
-                    {msg.sender_id === 1 ? (msg.receiver?.name || `User #${msg.receiver_id}`) : (msg.sender?.name || `User #${msg.sender_id}`)}
-                  </h3>
-                  <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
-                    {msg.created_at
-                      ? format(new Date(msg.created_at), "MMM d")
-                      : ""}
-                  </span>
-                </div>
+            // Uses REAL receiver_id from your shown data
+            // const receiverId = lastMessage?.receiver_id;
+            const receiverId = lastMessage?.sender_id;
 
-                <div className="flex items-center justify-between gap-2">
-                  <p className="text-sm text-gray-500 truncate leading-relaxed">
-                    {msg.message}
-                  </p>
-                  <ChevronRight
-                    size={16}
-                    className="text-gray-300 group-hover:text-primary transition-colors transform group-hover:translate-x-1"
-                  />
+            return (
+              <div
+                key={msg.id}
+                className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+              >
+                <div className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Mail size={18} className="text-gray-500 shrink-0" />
+                      <div>
+                        <h3 className="text-base font-semibold text-gray-900">
+                          <span className="text-sm text-gray-500">
+                            {msg?.name || `User #${msg.id}`}
+                          </span>
+                        </h3>
+
+                        <p className="text-sm font-medium text-gray-800 mt-0.5">
+                          {lastMessage?.message || "No messages yet"}
+                        </p>
+                      </div>
+                    </div>
+
+                    <p className="text-sm text-gray-600">
+                      Total Messages: {msg?.messages?.length || 0}
+                    </p>
+
+                    {lastMessage?.created_at && (
+                      <p className="text-xs text-gray-500 mt-3">
+                        {lastMessage.created_at}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="flex flex-row sm:flex-col gap-3 sm:gap-2 shrink-0">
+                    <button
+                      onClick={() =>
+                        receiverId && handleGoToMessages(receiverId)
+                      }
+                      className="inline-flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-[#00006B] text-white text-sm font-medium rounded-lg transition-colors shadow-sm cursor-pointer"
+                    >
+                      <Send size={16} /> Read all message
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
     </div>
