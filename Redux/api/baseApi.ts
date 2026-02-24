@@ -6,16 +6,6 @@ export const baseApi = createApi({
   reducerPath: "baseApi", // or just "api" if you prefer
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL as string,
-    // prepareHeaders: (headers, { getState }) => {
-    //   const token = (getState() as RootState).auth?.accessToken;
-    //   if (token) {
-    //     headers.set("Authorization", `Bearer ${token}`);
-    //   }
-    //   headers.set("Accept", "application/json");
-    //   headers.set("Content-Type", "application/json");
-    //   headers.set("ngrok-skip-browser-warning", "true");
-    //   return headers;
-    // },
     prepareHeaders: (headers, { getState }) => {
       const stateToken = (getState() as RootState).auth?.accessToken;
 
@@ -26,10 +16,12 @@ export const baseApi = createApi({
 
       const token = stateToken || storageToken;
 
-      if (token) headers.set("authorization", `Bearer ${token}`);
+      if (token && typeof token === "string") {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
 
-      headers.set("accept", "application/json");
-      headers.set("content-type", "application/json");
+      headers.set("Accept", "application/json");
+      headers.set("Content-Type", "application/json");
       headers.set("ngrok-skip-browser-warning", "true");
 
       return headers;

@@ -9,6 +9,7 @@ const adminCommunicationsApi = baseApi.injectEndpoints({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["Chat"],
     }),
     // admin gel all message
     getAdminAllMessage: builder.query({
@@ -16,12 +17,18 @@ const adminCommunicationsApi = baseApi.injectEndpoints({
         url: `/chat`,
         method: "GET",
       }),
+      transformResponse: (response: any) =>
+        Array.isArray(response) ? response : response?.data || [],
+      providesTags: ["Chat"],
     }),
     getSingleAllMessage: builder.query({
       query: (id) => ({
         url: `/chat/${id}`,
         method: "GET",
       }),
+      transformResponse: (response: any) =>
+        Array.isArray(response) ? response : response?.data || [],
+      providesTags: ["Chat"],
     }),
     // get message notification
     getAllMessageNotification: builder.query({
