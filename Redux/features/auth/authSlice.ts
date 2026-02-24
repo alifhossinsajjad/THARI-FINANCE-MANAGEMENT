@@ -5,6 +5,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export type TUser = {
   id: number;
+  name: string;
   email: string;
   role: string;
   plan_id: null | string;
