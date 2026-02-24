@@ -30,30 +30,24 @@ export const communicationApi = baseApi.injectEndpoints({
     // Get conversation with proper typing
     getConversation: builder.query<ChatMessage[], number>({
       query: (userId) => {
-        console.log("Fetching messages for user ID:", userId);
         return {
           url: `/chat/${userId}`, // This is correct for getting messages
           method: "GET",
         };
       },
       transformResponse: (response: ApiResponse<ChatMessage[]>) => {
-        console.log("Raw API Response in getConversation:", response);
-        
         // Handle the nested data structure from your API
         if (response?.status === true && response?.data) {
-          console.log("Extracted data:", response.data);
           return response.data;
         }
         // Fallback if response is already an array
         if (Array.isArray(response)) {
-          console.log("Response is array:", response);
           return response;
         }
-        console.log("No data found, returning empty array");
+
         return [];
       },
       transformErrorResponse: (error) => {
-        console.log("Error response:", error);
         return error;
       },
       providesTags: ["Chat"],
@@ -65,15 +59,13 @@ export const communicationApi = baseApi.injectEndpoints({
       { sender_id: number; receiver_id: number; message: string }
     >({
       query: (body) => {
-        console.log("Sending message with body:", body);
         return {
-          url: `/chat/send`, // FIXED: This should be /chat/send, not /chat/${body.sender_id}
+          url: `/chat/send`,
           method: "POST",
           body,
         };
       },
       transformResponse: (response: ApiResponse<ChatMessage>) => {
-        console.log("Send message response:", response);
         return response;
       },
       invalidatesTags: ["Chat"],
@@ -81,4 +73,5 @@ export const communicationApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetConversationQuery, useSendMessageMutation } = communicationApi;
+export const { useGetConversationQuery, useSendMessageMutation } =
+  communicationApi;
