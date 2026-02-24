@@ -134,9 +134,9 @@ const AdminTopbar: React.FC = () => {
               <div className="text-sm font-semibold text-gray-900">
                 <span>{user?.role}</span>
               </div>
-              <div className="text-xs text-gray-500">
+              {/* <div className="text-xs text-gray-500">
                 {user?.plan_name || "---"}
-              </div>
+              </div> */}
             </div>
             <div className="w-10 h-10 bg-gray-900 rounded-full flex items-center justify-center text-white font-semibold">
               <span>{userr?.name?.charAt(0)}</span>
