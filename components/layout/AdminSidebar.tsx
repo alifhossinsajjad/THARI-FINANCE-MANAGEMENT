@@ -10,7 +10,6 @@ import {
   BarChart3,
   User,
   Menu,
-  Boxes,
   MessageCircle,
   Package,
   LucideIcon,
@@ -61,7 +60,7 @@ const AdminSidebar: React.FC = () => {
     { icon: Users, label: "Users", href: "/admin/users" },
     { icon: CreditCard, label: "Subscriptions", href: "/admin/subscriptions" },
 
-    { icon: Boxes, label: "About", href: "/admin/adminAbout" },
+    // { icon: Boxes, label: "About", href: "/admin/adminAbout" },
     { icon: ArrowDownLeft, label: "Search Stock", href: "/admin/stock" },
     {
       icon: ArrowUpRight,
