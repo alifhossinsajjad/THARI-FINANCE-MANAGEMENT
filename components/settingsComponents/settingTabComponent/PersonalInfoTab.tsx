@@ -8,8 +8,11 @@ import {
 } from "@/Redux/features/AdminDashboard/adminProfile/adminProfileApi";
 import { toast } from "sonner";
 import { BeatLoader } from "react-spinners";
+type PersonalInfoTabProps = {
+  refetch: () => void;
+};
 
-export default function PersonalInfoTab() {
+export default function PersonalInfoTab({ refetch }: PersonalInfoTabProps) {
   const [updateAdminProfile, { isLoading }] = useUpdateAdminProfileMutation();
 
   const { data } = useGetAdminProfileInfoQuery({});
@@ -49,6 +52,7 @@ export default function PersonalInfoTab() {
 
       if (res.success) {
         toast.success(res.message || "Profile updated successfully");
+        refetch(); // Refetch profile data after successful update
 
         // Using any to avoid type errors
         setProfileData((prev: any) => ({
