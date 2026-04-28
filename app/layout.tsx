@@ -1,9 +1,12 @@
 import { Toaster } from "sonner";
 
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Geist } from "next/font/google";
 import "./globals.css";
 import ReduxProviderWrapper from "@/Redux/reduxProvider/ReduxProviderWrapper";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +24,7 @@ export default function RootLayout({
   children,
 }: Readonly<RootLayoutProps>): React.JSX.Element {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <body className={inter.className}>
         {/*  Wrap your whole app with Redux Provider */}
         <ReduxProviderWrapper>
