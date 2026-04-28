@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
+import { MoveUpRight } from "lucide-react";
 
 interface GetStartedButtonProps {
   text?: string;
@@ -16,24 +16,20 @@ const GetStartedButton: React.FC<GetStartedButtonProps> = ({
   text = "Get Started",
   href = "#",
   className = "",
-  bgClass = "bg-blue-600 hover:bg-blue-700",
-  borderClass = "border-transparent", // default border
+  bgClass = "text-primary bg-white hover:bg-blue-500",
+  borderClass = "border-transparent",
   showArrow = true,
 }) => {
   return (
     <a
       href={href}
-      className={`inline-flex items-center justify-center gap-3 rounded-full border px-7 py-2 font-medium text-white transition-colors ${bgClass} ${borderClass} ${className}`}
+      className={`inline-flex items-center justify-center gap-3 rounded-full border px-7 py-2 font-medium  transition-colors ${bgClass} ${borderClass} ${className}`}
     >
       {text}
       {showArrow && (
-        <Image
-          width={36}
-          height={36}
-          className="h-9 w-9"
-          src="/images/landingPage/arrowButton.png"
-          alt="arrow"
-        />
+        <div className="bg-primary text-white p-2 rounded-full">
+          <MoveUpRight className="h-6 w-6  " />
+        </div>
       )}
     </a>
   );

@@ -1,15 +1,29 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { useAppDispatch } from "@/Redux/hooks";
+import { setUser } from "@/Redux/features/auth/authSlice";
+import { useLoginMutation } from "@/Redux/features/auth/authApi";
+import { toast } from "sonner";
+import { useRouter, useSearchParams } from "next/navigation";
+import Logo from "@/components/reusable/Logo";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const [animate, setAnimate] = useState(true);
+  const searchParams = useSearchParams();
+  const redirectPath = searchParams.get("redirect") || "/";
+
+  const animate = true;
+
+  const [login, { isLoading }] = useLoginMutation();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const particles = useMemo(() => {
     // Pre-generated random values to avoid impure function calls during render
@@ -42,10 +56,25 @@ export default function LoginPage() {
     }));
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Login attempt:", { email, password, rememberMe });
-    // TODO: Implement login logic
+  const handleLogin = async () => {
+    try {
+      const userInfo = { email, password };
+      const res = await login(userInfo).unwrap();
+
+      if (res.success) {
+        dispatch(
+          setUser({
+            user: res.data.user,
+            token: res.data.token,
+          }),
+        );
+        toast.success("Login successful!");
+        router.push(redirectPath);
+      }
+    } catch (err: any) {
+      console.error(err);
+      toast.error(err?.data?.message || "Login failed");
+    }
   };
 
   return (
@@ -59,22 +88,10 @@ export default function LoginPage() {
         >
           {/* Logo */}
           <div className="flex items-center gap-2 mb-12">
-            <div className="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center">
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                />
-              </svg>
-            </div>
-            <span className="text-xl font-bold text-gray-900">THARI</span>
+            <Link href={"/"}>
+              {" "}
+              <Logo />
+            </Link>
           </div>
 
           {/* Welcome Text */}
@@ -146,20 +163,21 @@ export default function LoginPage() {
             {/* Login Button */}
             <Button
               onClick={handleLogin}
-              className="w-full bg-blue-900 text-white py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              disabled={isLoading}
+              className="w-full bg-blue-900 text-white py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:bg-gray-400"
             >
-              Log In
+              {isLoading ? "Logging in..." : "Log In"}
             </Button>
 
             {/* Sign Up Link */}
             <p className="text-center text-sm text-gray-600">
               Don&#39;t have an account?{" "}
-              <a
-                href="#"
+              <Link
+                href="/auth/register"
                 className="text-blue-900 font-semibold hover:underline"
               >
                 Sign up
-              </a>
+              </Link>
             </p>
           </div>
         </div>
@@ -168,9 +186,9 @@ export default function LoginPage() {
       {/* Right Section - Illustration */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
         {/* Animated Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-teal-400 via-emerald-500 to-cyan-600">
+        <div className="absolute inset-0 bg-linear-to-br from-teal-400 via-emerald-500 to-cyan-600">
           {/* Animated Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+          <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent"></div>
 
           {/* Floating Particles */}
           {particles.map((particle) => (
@@ -213,7 +231,7 @@ export default function LoginPage() {
               {[40, 60, 45, 75, 55, 85, 70, 95].map((height, i) => (
                 <div
                   key={i}
-                  className="w-8 bg-gradient-to-t from-cyan-300 to-teal-200 rounded-t-lg opacity-60 transition-all duration-1000"
+                  className="w-8 bg-linear-to-t from-cyan-300 to-teal-200 rounded-t-lg opacity-60 transition-all duration-1000"
                   style={{
                     height: animate ? `${height}%` : "0%",
                     animationDelay: `${i * 0.1}s`,
