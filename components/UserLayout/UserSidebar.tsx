@@ -21,6 +21,7 @@ import {
   LineChart,
   CheckCircle,
   User,
+  Brain,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -31,6 +32,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import Image from "next/image";
+
 
 const UserSidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -65,6 +67,7 @@ const UserSidebar: React.FC = () => {
   const menuItems: MenuItem[] = [
     { icon: LayoutDashboard, label: "Home", href: "/user" },
     { icon: Globe, label: "Search Stock", href: "/user/searchStock" },
+  { icon: Brain, label: "Ai Analysis", href: "/user/ai-analysis" },
     {
       icon: LineChart,
       label: "Rating US Market",
