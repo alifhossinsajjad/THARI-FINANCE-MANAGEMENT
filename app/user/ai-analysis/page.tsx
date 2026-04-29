@@ -349,12 +349,12 @@ const AiAnalysis = () => {
         <div className="space-y-6" dir={language === "arabic" ? "rtl" : "ltr"}>
           {data.sections?.map((section, idx) => (
             <div key={idx} className="bg-white rounded-xl border p-8 shadow-sm">
-              <h3 className="text-xl font-bold mb-6 text-gray-900 border-b pb-4">
+              <h3 className={`text-xl font-bold mb-6 text-gray-900 border-b pb-4 ${language === "arabic" ? "text-right" : ""}`}>
                 {section.title}
               </h3>
-              <div className="prose prose-slate max-w-none text-gray-600">
+              <div className={`prose prose-slate max-w-none text-gray-600 ${language === "arabic" ? "text-right" : ""}`}>
                 {section.content.split("\n").map((paragraph, pIdx) => (
-                  <p key={pIdx} className="mb-4 leading-relaxed text-[15px]">
+                  <p key={pIdx} className={`mb-4 leading-relaxed text-[15px] ${language === "arabic" ? "text-right" : ""}`}>
                     {paragraph}
                   </p>
                 ))}
