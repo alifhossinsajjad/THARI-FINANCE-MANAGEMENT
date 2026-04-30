@@ -16,6 +16,10 @@ module.exports = {
   async rewrites() {
     return [
       {
+        source: "/api/ai_proxy/:path*",
+        destination: "https://ai.thari.finance/api/v1/:path*",
+      },
+      {
         source: "/api/v1/:path*",
         destination:
           "http://103.174.189.183:8081/api/v1/:path*",
