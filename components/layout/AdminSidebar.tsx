@@ -18,7 +18,6 @@ import {
   ArrowUpRight,
   Landmark,
   ChevronDown,
-
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -51,13 +50,9 @@ const AdminSidebar: React.FC = () => {
     { icon: BarChart3, label: "Dashboard", href: "/admin" },
     { icon: Users, label: "Users", href: "/admin/users" },
     { icon: CreditCard, label: "Subscriptions", href: "/admin/subscriptions" },
-    {
-      icon: Package,
-      label: "Our Analysis",
-      href: "/admin/ourAnalysis",
-    },
 
-    { icon: ArrowDownLeft, label: "Stock", href: "/admin/stock" },
+    { icon: Boxes, label: "About", href: "/admin/adminAbout" },
+    { icon: ArrowDownLeft, label: "Search Stock", href: "/admin/stock" },
     {
       icon: ArrowUpRight,
       label: "Rating US Market",
@@ -65,23 +60,27 @@ const AdminSidebar: React.FC = () => {
     },
     {
       icon: Landmark,
-      label: "Compliant US Market",
+      label: "US Compliance Stocks",
       href: "/admin/compliantUsMarket",
     },
     {
       icon: Landmark,
-      label: "ETFSY Report",
+      label: "ETF Report",
       href: "/admin/etfsyReport",
     },
 
+    {
+      icon: Package,
+      label: "Our Analysis",
+      href: "/admin/ourAnalysis",
+    },
     {
       icon: MessageSquare,
       label: "Communications",
       href: "/admin/communications",
     },
     { icon: MessageCircle, label: "Contact", href: "/admin/contact" },
-    { icon: Boxes, label: "About", href: "/admin/adminAbout" },
-    { icon: User, label: "Profile", href: "/admin/profile" },
+    { icon: User, label: "Profile Settings", href: "/admin/profile" },
   ];
 
   // ✅ stable key for groups even without href

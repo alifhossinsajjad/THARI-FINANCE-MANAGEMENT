@@ -10,9 +10,9 @@ import {
   Menu,
   LayoutDashboard,
   Globe,
-  Settings,
+  // Settings,
   Briefcase,
-  Languages,
+  // Languages,
   ChevronDown,
   ArrowDownLeft,
   ArrowUpRight,
@@ -20,7 +20,8 @@ import {
   MessageSquare,
   LineChart,
   CheckCircle,
-
+  User,
+  Brain,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -31,6 +32,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import Image from "next/image";
+
 
 const UserSidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -65,6 +67,7 @@ const UserSidebar: React.FC = () => {
   const menuItems: MenuItem[] = [
     { icon: LayoutDashboard, label: "Home", href: "/user" },
     { icon: Globe, label: "Search Stock", href: "/user/searchStock" },
+  { icon: Brain, label: "Ai Analysis", href: "/user/ai-analysis" },
     {
       icon: LineChart,
       label: "Rating US Market",
@@ -72,37 +75,37 @@ const UserSidebar: React.FC = () => {
     },
     {
       icon: CheckCircle,
-      label: "US Compliance Stock",
+      label: "US Compliance Stocks",
       href: "/user/usComplianceStock",
     },
 
     { icon: Briefcase, label: "ETF Reports", href: "/user/etf-reports" },
-    {
-      icon: Languages,
-      label: "International Stocks",
-      href: "/user/international-stocks",
-    },
-
-    { icon: CreditCard, label: "Watch List", href: "/user/watchList" },
+    // {
+    //   icon: Languages,
+    //   label: "International Stocks",
+    //   href: "/user/international-stocks",
+    // },
 
     {
       icon: TrendingUp,
-      label: "Financial Manager",
+      label: "Financial Management",
       href: "/user/expensiveManager",
     },
+    { icon: CreditCard, label: "Watch List", href: "/user/watchList" },
+
     {
       icon: Package,
-      label: "Our Analysis",
+      label: "Recommendation",
       href: "/user/recomendetion",
     },
-     {
+    {
       icon: MessageSquare,
       label: "Communications",
       href: "/user/communication",
     },
     // { icon: Package, label: "Our Analysis", href: "/user/recommendations" },
     // { icon: Newspaper, label: "News", href: "/user/news" },
-    { icon: Settings, label: "Settings", href: "/user/settings" },
+    { icon: User, label: "Profile Settings", href: "/user/settings" },
   ];
 
   const handleToggle = (): void => {
