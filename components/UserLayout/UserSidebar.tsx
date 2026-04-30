@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   X,
   LogOut,
@@ -56,9 +56,14 @@ const UserSidebar: React.FC = () => {
 
   // keep dropdown open when inside expense routes
   const [expenseOpen, setExpenseOpen] = useState<boolean>(isExpenseRoute);
-  useEffect(() => {
-    if (isExpenseRoute) setExpenseOpen(true);
-  }, [isExpenseRoute]);
+  const [prevIsExpenseRoute, setPrevIsExpenseRoute] = useState(isExpenseRoute);
+
+  if (isExpenseRoute !== prevIsExpenseRoute) {
+    setPrevIsExpenseRoute(isExpenseRoute);
+    if (isExpenseRoute) {
+      setExpenseOpen(true);
+    }
+  }
 
   const expenseChildren: MenuItem[] = [
     {
