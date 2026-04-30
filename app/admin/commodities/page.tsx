@@ -76,7 +76,7 @@ export default function Commodities() {
 
   return (
     <>
-      <div className="mx-auto space-y-6 max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto space-y-6  ">
         {/* Header Section */}
         <section>
           <h1 className="text-3xl font-bold text-gray-900 mb-1">Commodities</h1>

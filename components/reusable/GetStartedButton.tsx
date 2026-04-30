@@ -16,7 +16,7 @@ const GetStartedButton: React.FC<GetStartedButtonProps> = ({
   text = "Get Started",
   href = "#",
   className = "",
-  bgClass = "text-white bg-blue-600 hover:bg-blue-700",
+  bgClass = "text-primary bg-white hover:bg-blue-500",
   borderClass = "border-transparent",
   showArrow = true,
 }) => {
@@ -27,8 +27,8 @@ const GetStartedButton: React.FC<GetStartedButtonProps> = ({
     >
       {text}
       {showArrow && (
-        <div className="bg-[#00008B] text-white p-2 rounded-full">
-          <MoveUpRight className="h-6 w-6" />
+        <div className="bg-primary text-white p-2 rounded-full">
+          <MoveUpRight className="h-6 w-6  " />
         </div>
       )}
     </a>

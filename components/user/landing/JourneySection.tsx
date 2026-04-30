@@ -1,7 +1,6 @@
 "use client";
 
 import GetStartedButton from "@/components/reusable/GetStartedButton";
-import Image from "next/image";
 
 type JourneySectionProps = {
   heading?: string;
@@ -13,25 +12,12 @@ type JourneySectionProps = {
 export default function JourneySection({
   heading = "Ready to Start Your Halal Investment Journey?",
   subheading = "Join thousands of investors making ethical and informed financial decisions",
-  buttonText = "Get Started",
+  buttonText = "Create Free Account",
   buttonHref = "/auth/register",
 }: JourneySectionProps) {
   return (
-    <section className="relative w-full px-4 py-20 sm:px-6 lg:px-8">
-      {/* Background Image */}
-      <Image
-        src="/images/landingPage/cover.jpg"
-        alt="Transactions Background"
-        width={1600}
-        height={1600}
-        quality={100}
-        className="absolute inset-0 z-10 h-full w-full object-cover opacity-20"
-      />
-
-      {/* Background overlay for better text readability */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-blue-800/80"></div>
-
-      <div className="relative z-50 mx-auto max-w-4xl text-center">
+    <section className="relative w-full px-4 py-20 sm:px-6 lg:px-8 bg-primary">
+      <div className="relative z-50 mx-auto max-w-4xl text-center ">
         <h2 className="mb-6 text-3xl font-bold text-balance text-white sm:text-4xl ">
           {heading}
         </h2>

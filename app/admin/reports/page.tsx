@@ -1,7 +1,10 @@
+import Reports from "@/components/reportsComponents/Reports"
 
 function page() {
     return (
-        <div>page</div>
+        <div>
+            <Reports />
+        </div>
     )
 }
 

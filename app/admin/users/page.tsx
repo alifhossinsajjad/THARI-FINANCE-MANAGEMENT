@@ -1,124 +1,56 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Eye, Edit2, Ban, Crown } from 'lucide-react';
-import SearchInput from '@/components/admin/SearchInput';
-import FilterSelect from '@/components/admin/FilterSelect';
-import UserDetailModal from '@/components/admin/modals/UserDetailModal';
-import type { User } from '@/types';
+import { useMemo, useState } from "react";
+import {
+  Eye,
+  ChevronsLeft,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsRight,
+} from "lucide-react";
+
+import FilterSelect from "@/components/admin/FilterSelect";
+import UserDetailModal from "@/components/admin/modals/UserDetailModal";
+
+import {
+  useGetAllUserByAdminQuery,
+  useToggleUserBySupperAdminMutation,
+} from "@/Redux/features/AdminDashboard/Users/userManagementApi";
+
+import { toast } from "sonner";
+import { BeatLoader } from "react-spinners";
 
 export default function UsersPage(): React.JSX.Element {
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [roleFilter, setRoleFilter] = useState<string>('All');
-  const [statusFilter, setStatusFilter] = useState<string>('All');
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [statusFilter, setStatusFilter] = useState<string>("All");
+  const [selectedUser, setSelectedUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [togglingUserId, setTogglingUserId] = useState<number | null>(null);
 
-  const users: User[] = [
-    {
-      id: 1,
-      name: 'Ahmed Hassan',
-      email: 'ahmed@example.com',
-      role: 'Elite',
-      subscription: 'Active',
-      trackedStocks: 15,
-      status: 'Active',
-    },
-    {
-      id: 2,
-      name: 'Ahmed Hassan',
-      email: 'ahmed@example.com',
-      role: 'Free',
-      subscription: 'Active',
-      trackedStocks: 15,
-      status: 'Active',
-    },
-    {
-      id: 3,
-      name: 'Ahmed Hassan',
-      email: 'ahmed@example.com',
-      role: 'Elite',
-      subscription: 'Inactive',
-      trackedStocks: 15,
-      status: 'Active',
-    },
-    {
-      id: 4,
-      name: 'Ahmed Hassan',
-      email: 'ahmed@example.com',
-      role: 'Free',
-      subscription: 'Active',
-      trackedStocks: 15,
-      status: 'Active',
-    },
-    {
-      id: 5,
-      name: 'Ahmed Hassan',
-      email: 'ahmed@example.com',
-      role: 'Elite',
-      subscription: 'Active',
-      trackedStocks: 15,
-      status: 'Active',
-    },
-    {
-      id: 6,
-      name: 'Ahmed Hassan',
-      email: 'ahmed@example.com',
-      role: 'Free',
-      subscription: 'Active',
-      trackedStocks: 15,
-      status: 'Suspended',
-    },
-    {
-      id: 7,
-      name: 'Ahmed Hassan',
-      email: 'ahmed@example.com',
-      role: 'Elite',
-      subscription: 'Pending',
-      trackedStocks: 15,
-      status: 'Active',
-    },
-  ];
+  // data for pagination
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
 
-  const filteredUsers = users.filter((user: User) => {
-    const matchesSearch = user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         user.email.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesRole = roleFilter === 'All' || user.role === roleFilter;
-    const matchesStatus = statusFilter === 'All' || user.status === statusFilter;
-    return matchesSearch && matchesRole && matchesStatus;
-  });
+  const queryParams = useMemo(() => {
+    return {
+      status: statusFilter === "All" ? "" : statusFilter.toLowerCase(),
+      page,
+      per_page: pageSize,
+    };
+  }, [statusFilter, page, pageSize]);
+  const { data, isLoading, isFetching, refetch } =
+    useGetAllUserByAdminQuery(queryParams);
 
-  const getRoleColor = (role: string): string => {
-    return role === 'Elite' ? '#9333EA' : '#6B7280';
+  const allUser = data?.data || [];
+  const totalPages = data?.meta?.last_page || 1;
+
+  const [toggleUserStatus] = useToggleUserBySupperAdminMutation();
+
+  const handleStatusChange = (value: string) => {
+    setPage(1); // reset page when filter changes
+    setStatusFilter(value);
   };
 
-  const getStatusColor = (status: string): string => {
-    switch (status) {
-      case 'Active':
-        return '#10B981';
-      case 'Suspended':
-        return '#EF4444';
-      case 'Pending':
-        return '#F59E0B';
-      default:
-        return '#6B7280';
-    }
-  };
-
-  const getSubscriptionColor = (subscription: string): string => {
-    switch (subscription) {
-      case 'Active':
-        return '#10B981';
-      case 'Inactive':
-        return '#6B7280';
-      case 'Pending':
-        return '#F59E0B';
-      default:
-        return '#6B7280';
-    }
-  };
-
-  const handleViewUser = (user: User): void => {
+  const handleViewUser = (user: any): void => {
     setSelectedUser(user);
     setIsModalOpen(true);
   };
@@ -128,38 +60,54 @@ export default function UsersPage(): React.JSX.Element {
     setSelectedUser(null);
   };
 
+  const handleToggleStatus = async (user: any) => {
+    try {
+      setTogglingUserId(user.id);
+
+      await toggleUserStatus({
+        id: user.id,
+        block: !user.status,
+      }).unwrap();
+
+      // Refetch to get updated data
+      await refetch();
+
+      // Show success toast
+      toast.success(
+        `User ${!user.status ? "blocked" : "unblocked"} successfully!`,
+      );
+    } catch (err) {
+      console.error("Failed to toggle user", err);
+
+      // Show error toast
+      toast.error("Failed to toggle user status. Please try again.");
+    } finally {
+      setTogglingUserId(null);
+    }
+  };
+
   return (
     <>
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Users</h1>
-          <p className="text-sm text-gray-500 mt-1">Manage and view all registered users.</p>
+          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+            Users
+          </h1>
+          <p className="text-sm text-gray-500 mt-1">
+            Manage and view all registered users.
+          </p>
         </div>
 
         {/* Search and Filters */}
-        <div className="flex flex-col lg:flex-row gap-4">
-          <div className="flex-1">
-            <SearchInput
-              value={searchQuery}
-              onChange={setSearchQuery}
-              placeholder="Search by name or email..."
-            />
-          </div>
-          <div className="flex gap-4">
-            <div className="w-full lg:w-48">
-              <FilterSelect
-                value={roleFilter}
-                onChange={setRoleFilter}
-                options={['All', 'Elite', 'Free']}
-                placeholder="All"
-              />
-            </div>
+        <div className="flex flex-col lg:flex-row justify-end gap-4">
+          <div className="flex justify-end">
             <div className="w-full lg:w-48">
               <FilterSelect
                 value={statusFilter}
-                onChange={setStatusFilter}
-                options={['All', 'Active', 'Suspended', 'Pending']}
+                // onChange={setStatusFilter}
+                onChange={handleStatusChange}
+                options={["All", "Active", "Inactive"]}
                 placeholder="All"
               />
             </div>
@@ -168,186 +116,176 @@ export default function UsersPage(): React.JSX.Element {
 
         {/* Table Container */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-          {/* Desktop Table */}
-          <div className="hidden lg:block overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-gray-50 border-b border-gray-200">
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Name
-                  </th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Email
-                  </th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Role
-                  </th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Subscription
-                  </th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Tracked Stocks
-                  </th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {filteredUsers.map((user: User) => (
-                  <tr 
-                    key={`user-${user.id}`}
-                    className="hover:bg-gray-50 transition-colors"
-                  >
-                    <td className="px-6 py-4">
-                      <p className="text-sm font-medium text-gray-900">{user.name}</p>
-                    </td>
-                    <td className="px-6 py-4">
-                      <p className="text-sm text-gray-600">{user.email}</p>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span
-                        className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold"
-                        style={{
-                          backgroundColor: `${getRoleColor(user.role)}20`,
-                          color: getRoleColor(user.role),
-                        }}
-                      >
-                        {user.role === 'Elite' && <Crown size={12} />}
-                        {user.role}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span
-                        className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold"
-                        style={{
-                          backgroundColor: `${getSubscriptionColor(user.subscription)}20`,
-                          color: getSubscriptionColor(user.subscription),
-                        }}
-                      >
-                        {user.subscription}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <p className="text-sm font-medium text-gray-900">{user.trackedStocks}</p>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span
-                        className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold"
-                        style={{
-                          backgroundColor: `${getStatusColor(user.status)}20`,
-                          color: getStatusColor(user.status),
-                        }}
-                      >
-                        {user.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => handleViewUser(user)}
-                          className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                          aria-label="View user"
+          <div className="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-4 gap-5">
+            <div className="xl:col-span-4 w-full">
+              <div className="overflow-x-auto bg-white shadow-sm rounded-t-xl">
+                <table className="min-w-200 w-full text-sm ">
+                  <thead>
+                    <tr className="bg-[FFFFFF]">
+                      <th className="px-6 py-5 text-left font-semibold text-gray-900 text-base">
+                        Email
+                      </th>
+                      <th className="px-6 py-5 text-left font-semibold text-gray-900 text-base">
+                        Role
+                      </th>
+                      <th className="px-6 py-5 text-left font-semibold text-gray-900 text-base">
+                        status
+                      </th>
+                      <th className="px-6 py-5 text-left font-semibold text-gray-900 text-base">
+                        Phone
+                      </th>
+                      <th className="px-6 py-5 text-center font-semibold text-gray-900 text-base">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {isLoading ? (
+                      <tr>
+                        <td
+                          colSpan={5}
+                          className="text-center py-8 text-gray-500"
                         >
-                          <Eye size={18} />
-                        </button>
-                        <button
-                          type="button"
-                          className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                          aria-label="Edit user"
+                          <div className="flex justify-center">
+                            <BeatLoader color="#484D9B" />
+                          </div>
+                        </td>
+                      </tr>
+                    ) : allUser?.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan={5}
+                          className="text-center py-8 text-gray-500"
                         >
-                          <Edit2 size={18} />
-                        </button>
-                        <button
-                          type="button"
-                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                          aria-label="Ban user"
+                          No log data found
+                        </td>
+                      </tr>
+                    ) : (
+                      allUser?.map((user: any) => (
+                        <tr
+                          key={user?.id}
+                          className="transition-all bg-[#F9FAFB] border-b border-[#EDEEF0]"
                         >
-                          <Ban size={18} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                          <td className="px-6 py-4 font-semibold text-gray-800 whitespace-nowrap">
+                            {user?.email}
+                          </td>
+
+                          <td className="px-6 py-4 text-gray-700 whitespace-nowrap">
+                            {user?.role}
+                          </td>
+
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span
+                              className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                                user?.status
+                                  ? "bg-green-100 text-green-600"
+                                  : "bg-red-100 text-red-600"
+                              }`}
+                            >
+                              {user?.status ? "Active" : "Inactive"}
+                            </span>
+                          </td>
+
+                          <td className="px-6 py-4 text-gray-700 whitespace-nowrap">
+                            {user?.phone || "---"}
+                          </td>
+
+                          <td className="px-6 py-4 text-gray-700 whitespace-nowrap font-semibold text-center align-middle">
+                            <div className="flex items-center justify-center gap-3">
+                              <button
+                                onClick={() => handleViewUser(user)}
+                                className="text-[#484D9B] hover:bg-[#484D9B] p-2 rounded-full hover:text-white cursor-pointer transition"
+                                disabled={togglingUserId === user.id}
+                              >
+                                <Eye className="w-5 h-5" />
+                              </button>
+
+                              {/* <label className="relative inline-flex items-center cursor-pointer">
+//                                 <input
+//                                   type="checkbox"
+//                                   checked={user?.isActive}
+//                                   className="sr-only peer"
+//                                 />
+//                                 <div className="w-16 h-7 bg-gray-300 rounded-full peer-checked:bg-[#484D9B] transition-all duration-200"></div>
+//                                 <div className="absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition-all duration-200 peer-checked:translate-x-9 shadow"></div>
+//                               </label> */}
+
+                              {togglingUserId === user.id ? (
+                                <div className="w-16 flex justify-center">
+                                  <BeatLoader size={6} color="#484D9B" />
+                                </div>
+                              ) : (
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                  <input
+                                    type="checkbox"
+                                    checked={user?.status}
+                                    onChange={() => handleToggleStatus(user)}
+                                    className="sr-only peer"
+                                  />
+                                  <div className="w-16 h-7 bg-gray-300 rounded-full peer-checked:bg-[#484D9B] transition-all duration-200"></div>
+                                  <div className="absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition-all duration-200 peer-checked:translate-x-9 shadow"></div>
+                                </label>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
 
-          {/* Mobile Cards */}
-          <div className="lg:hidden divide-y divide-gray-200">
-            {filteredUsers.map((user: User) => (
-              <div key={`user-mobile-${user.id}`} className="p-4 space-y-3">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <h3 className="text-base font-semibold text-gray-900">{user.name}</h3>
-                    <p className="text-sm text-gray-600 mt-1">{user.email}</p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => handleViewUser(user)}
-                    className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                    aria-label="View user"
-                  >
-                    <Eye size={18} />
-                  </button>
-                </div>
+          {/* Pagination */}
+          <div className="w-full py-4 rounded-b-lg flex justify-center items-center gap-2">
+            <button
+              onClick={() => setPage(1)}
+              disabled={page === 1 || isFetching}
+              className="text-gray-500 cursor-pointer hover:text-[#484D9B] p-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronsLeft size={20} />
+            </button>
 
-                <div className="flex flex-wrap gap-2">
-                  <span
-                    className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold"
-                    style={{
-                      backgroundColor: `${getRoleColor(user.role)}20`,
-                      color: getRoleColor(user.role),
-                    }}
-                  >
-                    {user.role === 'Elite' && <Crown size={12} />}
-                    {user.role}
-                  </span>
-                  <span
-                    className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold"
-                    style={{
-                      backgroundColor: `${getSubscriptionColor(user.subscription)}20`,
-                      color: getSubscriptionColor(user.subscription),
-                    }}
-                  >
-                    {user.subscription}
-                  </span>
-                  <span
-                    className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold"
-                    style={{
-                      backgroundColor: `${getStatusColor(user.status)}20`,
-                      color: getStatusColor(user.status),
-                    }}
-                  >
-                    {user.status}
-                  </span>
-                </div>
+            <button
+              onClick={() => page > 1 && setPage(page - 1)}
+              disabled={page === 1 || isFetching}
+              className="text-gray-500 cursor-pointer hover:text-[#484D9B] p-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronLeft size={20} />
+            </button>
 
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">Tracked Stocks:</span>
-                  <span className="font-medium text-gray-900">{user.trackedStocks}</span>
-                </div>
-
-                <div className="flex gap-2 pt-2">
-                  <button
-                    type="button"
-                    className="flex-1 px-4 py-2 text-sm font-medium text-green-600 bg-green-50 rounded-lg hover:bg-green-100 transition-colors"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    className="flex-1 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
-                  >
-                    Ban
-                  </button>
-                </div>
-              </div>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+              <button
+                key={p}
+                onClick={() => setPage(p)}
+                disabled={isFetching}
+                className={`w-10 h-10 rounded-full cursor-pointer flex items-center justify-center text-lg font-semibold transition ${
+                  page === p
+                    ? "bg-[#484D9B] text-white shadow-md"
+                    : "text-gray-700 bg-gray-100 hover:bg-gray-200"
+                } disabled:opacity-50 disabled:cursor-not-allowed`}
+              >
+                {p}
+              </button>
             ))}
+
+            <button
+              onClick={() => page < totalPages && setPage(page + 1)}
+              disabled={page === totalPages || isFetching}
+              className="text-gray-500 cursor-pointer hover:text-[#484D9B] p-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronRight size={20} />
+            </button>
+
+            <button
+              onClick={() => setPage(totalPages)}
+              disabled={page === totalPages || isFetching}
+              className="text-gray-500 cursor-pointer hover:text-[#484D9B] p-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronsRight size={20} />
+            </button>
           </div>
         </div>
       </div>

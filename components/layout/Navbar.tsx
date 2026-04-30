@@ -1,25 +1,31 @@
 "use client";
 
-import { LogOut, Menu, Settings, TrendingUp, User, X } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import CommonButton from "../reusable/CommonButton";
-import GetStartedButton from "../reusable/GetStartedButton";
+import {
+  LogOut,
+  Menu,
+  User as UserIcon,
+  X,
+  LayoutDashboard,
+} from "lucide-react";
 
-interface User {
-  name: string;
-  image: string;
-  role: string;
-}
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import Logo from "../reusable/Logo";
+import { useAppDispatch, useAppSelector } from "@/Redux/hooks";
+import { logout, selectCurrentUser } from "@/Redux/features/auth/authSlice";
+import { toast } from "sonner";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
+
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectCurrentUser);
 
   // Handle clicks outside mobile menu
   useEffect(() => {
@@ -65,20 +71,13 @@ export default function Navbar() {
     };
   }, [profileDropdownOpen]);
 
-  // Simulate authentication
-  // const [user, setUser] = useState<User | null>({
-  //   name: "Sourav",
-  //   image: "/images/user/profileImage.png",
-  //   role: "user",
-  // });
-
-  const [user, setUser] = useState<User | null>(null);
-
   // Handle logout
   const handleLogout = () => {
-    setUser(null);
+    dispatch(logout());
     setProfileDropdownOpen(false);
-    // Add actual logout logic here (e.g., clear tokens, redirect)
+    setIsOpen(false);
+    toast.success("Logged out successfully");
+    router.push("/auth/login");
   };
 
   // Navigation items for user
@@ -86,154 +85,40 @@ export default function Navbar() {
     { label: "Home", href: "/" },
     { label: "About", href: "/about" },
     { label: "Pricing", href: "/pricing" },
-    // { label: "Contact", href: "/contact" },
+    { label: "Contact", href: "/contact" },
   ];
 
   return (
-    <header className="absolute top-0 left-0 z-50 py-6 w-full  backdrop-blur-lg bg-white">
-      <div className="mx-auto flex max-w-[1440px] items-center justify-between px-4 md:px-8">
-        {/* Logo */}
-        <div className="h-9 w-30">
-          <Link
-            href="/"
-            className="h-9 w-72 flex gap-4 items-center cursor-pointer"
-          >
-            <div className="bg-[#00008B] p-2 rounded-2xl">
-              <TrendingUp className="h-10 w-10 text-white " />
+    <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-lg border-b border-gray-200">
+      <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 sm:h-20 items-center justify-between">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2 sm:gap-4">
+            <div className="p-1.5 sm:p-2 rounded-2xl">
+              <Logo />
             </div>
-            <h1 className="text-2xl font-bold text-[#00008B]">Thari Finance</h1>
           </Link>
-        </div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden items-center space-x-8 md:flex">
-          {userNavItems.map((item) => {
-            const isActive = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`relative text-lg font-medium transition-colors 
-                  ${
-                    isActive
-                      ? "text-[#00008B]"
-                      : "text-black hover:text-blue-500"
-                  }
-                  after:content-[''] after:absolute after:left-0 after:-bottom-1
-                  after:h-[2px] after:w-full after:bg-[#00008B]
-                  after:scale-x-0 after:origin-left
-                  after:transition-transform after:duration-300
-                  ${isActive ? "after:scale-x-100" : "hover:after:scale-x-100"}
-                  `}
-              >
-                {item.label}
-                <span
-                  className={`absolute -bottom-1 left-0 h-[2px] w-full origin-left transform bg-white transition-transform duration-300 ease-out ${
-                    isActive ? "scale-x-100" : "scale-x-0 hover:scale-x-100"
-                  }`}
-                />
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* Right Section (Dynamic) */}
-        {user ? (
-          <div className="relative hidden items-center space-x-4 md:flex">
-            {/* Profile Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-                className="focus:outline-none"
-              >
-                <Image
-                  height={40}
-                  width={40}
-                  src={user.image || "/placeholder.svg"}
-                  quality={100}
-                  alt={`${user.name} profile Image`}
-                  className="cursor-pointer rounded-full border object-cover"
-                />
-              </button>
-              {profileDropdownOpen && (
-                <div
-                  ref={profileDropdownRef}
-                  className="absolute right-0 z-50 mt-2 w-48 rounded-md border border-gray-200 bg-white py-1 shadow-lg"
-                >
-                  <Link
-                    href={`/userDashboard/profile`}
-                    className="flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onClick={() => setProfileDropdownOpen(false)}
-                  >
-                    <User className="mr-3 h-4 w-4" />
-                    Profile
-                  </Link>
-                  <Link
-                    href={`/userDashboard/settings`}
-                    className="flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onClick={() => setProfileDropdownOpen(false)}
-                  >
-                    <Settings className="mr-3 h-4 w-4" />
-                    Settings
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    <LogOut className="mr-3 h-4 w-4" />
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        ) : (
-          <div className="hidden items-center space-x-4 md:flex">
-            <GetStartedButton
-              text="Login"
-              href="/auth/login"
-              showArrow={false}
-              // bgClass="bg-white  hover:bg-gray-100"
-              // borderClass="border-[#0051C3]"
-            />
-            <GetStartedButton
-              text="Sign Up"
-              href="/auth/register"
-              showArrow={false}
-              borderClass="border-[#0051C3]"
-              bgClass="bg-white  hover:bg-gray-100"
-            />
-          </div>
-        )}
-
-        {/* Mobile Hamburger */}
-        <button
-          className="cursor-pointer text-white md:hidden"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
-      </div>
-
-      {/* Mobile Dropdown Menu */}
-      {isOpen && (
-        <div
-          ref={mobileMenuRef}
-          className="absolute top-full left-0 w-full bg-black/90 px-6 py-4 md:hidden"
-        >
-          <nav className="flex flex-col space-y-4">
+          {/* Desktop Navigation - Centered */}
+          <nav className="hidden md:flex items-center space-x-6 lg:space-x-8 absolute left-1/2 -translate-x-1/2">
             {userNavItems.map((item) => {
               const isActive = pathname === item.href;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-lg font-medium ${
-                    isActive
-                      ? "text-[#2d6ef0]"
-                      : "text-gray-300 hover:text-blue-500"
-                  }`}
-                  onClick={() => setIsOpen(false)}
+                  className={`relative text-sm lg:text-base font-medium transition-colors py-2
+                    ${
+                      isActive
+                        ? "text-primary"
+                        : "text-gray-700 hover:text-primary"
+                    }
+                    after:content-[''] after:absolute after:left-0 after:-bottom-1
+                    after:h-0.5 after:w-full after:bg-primary
+                    after:scale-x-0 after:origin-left
+                    after:transition-transform after:duration-300
+                    ${isActive ? "after:scale-x-100" : "hover:after:scale-x-100"}
+                  `}
                 >
                   {item.label}
                 </Link>
@@ -241,70 +126,164 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Mobile Buttons (Dynamic) */}
-          <div className="mt-6 flex flex-col gap-3">
+          {/* Desktop Profile Section - Only shows when logged in */}
+          <div className="hidden md:flex items-center space-x-3 lg:space-x-4">
             {user ? (
-              <>
-                {/* Profile Section */}
-                <div className="mt-4 border-t border-gray-700 pt-4">
-                  <div className="mb-4 flex items-center space-x-3">
-                    <Image
-                      height={40}
-                      width={40}
-                      src={user.image || "/placeholder.svg"}
-                      quality={100}
-                      alt={`${user.name} profile Image`}
-                      className="rounded-full object-cover"
-                    />
-                    <div>
-                      <p className="text-sm font-medium text-white">
-                        {user.name}
-                      </p>
-                      <p className="text-xs text-gray-400">user</p>
-                    </div>
+              <div className="relative" ref={profileDropdownRef}>
+                <button
+                  onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+                  className="flex items-center space-x-2 focus:outline-none hover:opacity-80 transition-opacity"
+                >
+                  <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-900 font-bold border border-blue-200">
+                    {user.email?.charAt(0).toUpperCase() || "U"}
                   </div>
-                  <div className="space-y-2">
+                  <span className="text-sm font-medium text-gray-700 hidden lg:block max-w-25 truncate">
+                    {user.email?.split("@")[0]}
+                  </span>
+                </button>
+
+                {/* Dropdown Menu */}
+                {profileDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50 transform origin-top-right transition-all duration-200 ease-out">
+                    <div className="px-4 py-3 border-b border-gray-100 mb-1">
+                      <p className="text-sm font-semibold text-gray-900 truncate">
+                        {user.email}
+                      </p>
+                      <p className="text-xs text-gray-500 capitalize">
+                        {user.role}
+                      </p>
+                    </div>
+
                     <Link
-                      href={`/userDashboard/profile`}
-                      className="flex items-center rounded px-2 py-2 text-sm text-gray-300 hover:text-white"
-                      onClick={() => setIsOpen(false)}
+                      href={user.role === "admin" ? "/admin" : "/user"}
+                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      onClick={() => setProfileDropdownOpen(false)}
                     >
-                      <User className="mr-3 h-4 w-4" />
+                      <LayoutDashboard className="mr-3 h-4 w-4 text-gray-500" />
+                      Dashboard
+                    </Link>
+
+                    <Link
+                      href="/user/settings"
+                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      onClick={() => setProfileDropdownOpen(false)}
+                    >
+                      <UserIcon className="mr-3 h-4 w-4 text-gray-500" />
                       Profile
                     </Link>
-                    <Link
-                      href={`/userDashboard/settings`}
-                      className="flex items-center rounded px-2 py-2 text-sm text-gray-300 hover:text-white"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      <Settings className="mr-3 h-4 w-4" />
-                      Settings
-                    </Link>
+
+                    <div className="border-t border-gray-100 my-1"></div>
+
                     <button
                       onClick={handleLogout}
-                      className="flex w-full items-center rounded px-2 py-2 text-left text-sm text-gray-300 hover:text-white"
+                      className="flex w-full items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
                     >
                       <LogOut className="mr-3 h-4 w-4" />
                       Logout
                     </button>
                   </div>
-                </div>
-              </>
+                )}
+              </div>
+            ) : null}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
+          >
+            {isOpen ? (
+              <X size={24} className="text-gray-700" />
             ) : (
-              <>
-                <Link href="/auth/login">
-                  <CommonButton title="Login" width="w-full" />
-                </Link>
-                <Link href="/auth/register">
-                  <CommonButton
-                    title="Sign Up"
-                    width="w-full"
-                    bgColor="bg-[#00008B] hover:bg-[#245cc1]"
-                    textColor="text-white"
-                  />
-                </Link>
-              </>
+              <Menu size={24} className="text-gray-700" />
             )}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div
+          ref={mobileMenuRef}
+          className="md:hidden absolute top-full left-0 w-full bg-white border-b border-gray-200 shadow-lg animate-slideDown"
+        >
+          <div className="px-4 py-4 space-y-4">
+            {/* Mobile Navigation Links */}
+            <nav className="flex flex-col space-y-2">
+              {userNavItems.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`px-4 py-2.5 text-base font-medium rounded-lg transition-colors ${
+                      isActive
+                        ? "bg-primary/10 text-primary"
+                        : "text-gray-700 hover:bg-gray-50"
+                    }`}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </nav>
+
+            {/* Mobile Profile Section */}
+            {user ? (
+              <div className="border-t border-gray-200 pt-4">
+                {/* User Info */}
+                <div className="px-4 py-3 bg-gray-50 rounded-lg mb-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-900 font-bold border border-blue-200">
+                      {user.email?.charAt(0).toUpperCase() || "U"}
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-sm font-semibold text-gray-900 truncate">
+                        {user.email?.split("@")[0]}
+                      </p>
+                      <p className="text-xs text-gray-500 truncate">
+                        {user.email}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Mobile Menu Actions */}
+                <div className="space-y-1">
+                  <Link
+                    href={
+                      user.role === "admin"
+                        ? "/admin/dashboard"
+                        : "/user/settings"
+                    }
+                    className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <LayoutDashboard className="mr-3 h-5 w-5 text-gray-500" />
+                    Dashboard
+                  </Link>
+
+                  <Link
+                    href="/user/settings"
+                    className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <UserIcon className="mr-3 h-5 w-5 text-gray-500" />
+                    Profile
+                  </Link>
+
+                  <button
+                    onClick={handleLogout}
+                    className="flex w-full items-center px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-lg"
+                  >
+                    <LogOut className="mr-3 h-5 w-5" />
+                    Logout
+                  </button>
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
       )}

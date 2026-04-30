@@ -38,7 +38,7 @@ export default function NewsletterSubscribe() {
     <section className="  bg-gray-50">
       <div className="mx-auto px-5 sm:px-8 lg:px-10 max-w-full">
         <div
-          className="rounded-[14px] bg-[#00008B] overflow-hidden"
+          className="rounded-[14px] bg-primary overflow-hidden"
           style={{ borderRadius: "14px" }}
         >
           <div className="px-6 py-10 md:px-12 md:py-14 lg:px-16 lg:py-16 text-center">
@@ -84,9 +84,8 @@ export default function NewsletterSubscribe() {
 
             {status !== "idle" && (
               <p
-                className={`mt-5 text-sm ${
-                  status === "success" ? "text-green-300" : "text-red-300"
-                }`}
+                className={`mt-5 text-sm ${status === "success" ? "text-green-300" : "text-red-300"
+                  }`}
               >
                 {message}
               </p>

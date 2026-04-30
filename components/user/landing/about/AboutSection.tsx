@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export default function AboutSection() {
   const [animate, setAnimate] = useState(false);
-  const [videoPlaying, setVideoPlaying] = useState(false);
+  // const [videoPlaying, setVideoPlaying] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -74,18 +74,18 @@ export default function AboutSection() {
   ];
 
   return (
-    <section className="relative py-20 lg:py-24 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
+    <section className="relative py-20 lg:py-24 bg-linear-to-b from-white to-gray-50 overflow-hidden">
       {/* Background Decoration */}
       <div className="absolute top-20 right-0 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-30"></div>
       <div className="absolute bottom-20 left-0 w-96 h-96 bg-purple-100 rounded-full blur-3xl opacity-30"></div>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="relative z-10 mx-auto max-w-360 px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Left Side - Video/Image Panel */}
           <div className={` ${animate ? "opacity-100" : "opacity-0"}`}>
             <div className="relative rounded-2xl overflow-hidden shadow-2xl group h-full">
               {/* Chart Background Image */}
-              <div className="relative bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 h-full">
+              <div className="relative bg-linear-to-br from-gray-900 via-blue-900 to-gray-900 h-full">
                 {/* Animated Chart Background */}
                 <div className="absolute inset-0">
                   {/* Grid Pattern */}
@@ -213,7 +213,7 @@ export default function AboutSection() {
                 {/* Play Button Overlay */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <button
-                    onClick={() => setVideoPlaying(true)}
+                    // onClick={() => setVideoPlaying(true)}
                     className="w-20 h-20 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 transform hover:scale-110 group-hover:scale-110"
                   >
                     <svg
@@ -257,7 +257,7 @@ export default function AboutSection() {
                 >
                   {/* Icon & Title */}
                   <div className="flex items-start gap-3 mb-3">
-                    <div className="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                    <div className="shrink-0 w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
                       {mission.icon}
                     </div>
                     <div>
@@ -276,7 +276,7 @@ export default function AboutSection() {
                   <ul className="space-y-2">
                     {mission.points.map((point, pointIndex) => (
                       <li key={pointIndex} className="flex items-start gap-2">
-                        <div className="mt-1 flex-shrink-0 w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
+                        <div className="mt-1 shrink-0 w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
                         <span className="text-xs text-gray-700">{point}</span>
                       </li>
                     ))}
