@@ -16,7 +16,7 @@ const Footer: React.FC<CompanyProps> = ({
   className = "text-white",
 }) => {
   return (
-    <footer className="bg-[#0a0a0a] text-white">
+    <footer className="bg-primary  text-white">
       {/* Main Footer Content */}
       <div className="mx-auto max-w-360 px-6 py-16 lg:px-8">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
