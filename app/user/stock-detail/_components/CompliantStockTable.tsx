@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { ICompliantStockItem } from "@/Redux/features/userDashboardServices/usComplianceStockApi";
 import {
   useAddToWishlistMutation,
@@ -31,8 +30,6 @@ export const CompliantStockTable = ({
   hasPrevPage,
   pageNumber,
 }: CompliantStockTableProps) => {
-  const router = useRouter();
-
   const user = useAppSelector(selectCurrentUser);
   const isUserRole = user?.role === "user";
 
@@ -59,10 +56,6 @@ export const CompliantStockTable = ({
       month: "short",
       day: "numeric",
     });
-  };
-
-  const handleRowClick = (symbol: string) => {
-    router.push(`/user/stock-detail/${symbol}`);
   };
 
   const handleAddToWishlist = async (e: React.MouseEvent, symbol: string) => {
@@ -135,8 +128,7 @@ export const CompliantStockTable = ({
               data.map((stock, index) => (
                 <tr
                   key={`${stock.symbol}-${index}`}
-                  onClick={() => handleRowClick(stock.symbol)}
-                  className="hover:bg-slate-50 transition-colors cursor-pointer"
+                  className="hover:bg-slate-50 transition-colors"
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="font-bold text-slate-700">

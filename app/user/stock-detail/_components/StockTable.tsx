@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { IStockReportItem } from "@/Redux/features/userDashboardServices/UsBasedStockApi";
 import { Bookmark, ChevronLeft, ChevronRight } from "lucide-react";
 import {
@@ -30,8 +29,6 @@ export const StockTable = ({
   hasPrevPage,
   pageNumber,
 }: StockTableProps) => {
-  const router = useRouter();
-
   const user = useAppSelector(selectCurrentUser);
   const isUserRole = user?.role === "user";
 
@@ -50,10 +47,6 @@ export const StockTable = ({
       Array.isArray(wishlist) &&
       wishlist.some((item: any) => item.stock_symbol === symbol)
     );
-  };
-
-  const handleRowClick = (symbol: string) => {
-    router.push(`/user/stock-detail/${symbol}`);
   };
 
   const handleAddToWishlist = async (e: React.MouseEvent, symbol: string) => {
@@ -126,8 +119,7 @@ export const StockTable = ({
               data.map((stock) => (
                 <tr
                   key={stock.symbol}
-                  onClick={() => handleRowClick(stock.symbol)}
-                  className="hover:bg-slate-50 transition-colors cursor-pointer"
+                  className="hover:bg-slate-50 transition-colors"
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="font-bold text-slate-700">
