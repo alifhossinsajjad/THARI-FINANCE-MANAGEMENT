@@ -11,7 +11,6 @@ import {
 import {
   FiTrendingUp,
   FiTrendingDown,
-
   FiSearch,
   FiFilter,
   FiCalendar,
@@ -19,7 +18,7 @@ import {
   FiBarChart2,
   FiFileText,
   FiShield,
-  FiZap
+  FiZap,
 } from "react-icons/fi";
 
 import { Loader2, AlertCircle, ChevronLeft } from "lucide-react";
@@ -72,8 +71,7 @@ const AiAnalysis = () => {
   // API hooks
   const [analyzeCompany, { isLoading: isSearching }] =
     useAnalyzeCompanyMutation();
-  const [getAnalysisResult] =
-    useLazyGetAnalysisResultQuery();
+  const [getAnalysisResult] = useLazyGetAnalysisResultQuery();
 
   // Filtered companies for autocomplete
   const filtered = popularCompanies.filter((c) =>
@@ -104,7 +102,8 @@ const AiAnalysis = () => {
       refetchHistory(); // Refresh history after new search
     } catch (error: any) {
       console.error("Analysis failed:", error);
-      const errorMsg = error?.data?.message || error?.message || "Unknown error";
+      const errorMsg =
+        error?.data?.message || error?.message || "Unknown error";
       alert(`Analysis failed: ${errorMsg}\nStatus: ${error?.status}`);
     } finally {
       setIsLoadingAnalysis(false);
@@ -139,7 +138,6 @@ const AiAnalysis = () => {
     }
   };
 
-
   // Format chart data
   const formatChartData = (
     chartData: { timestamp_utc: string; close: number }[],
@@ -166,6 +164,10 @@ const AiAnalysis = () => {
     }
   };
 
+
+
+
+  
   // Render empty state
   const renderEmptyState = () => (
     <div className="flex flex-col items-center justify-center h-full max-w-2xl mx-auto text-center px-4">
@@ -176,16 +178,32 @@ const AiAnalysis = () => {
         Institutional Intelligence
       </h1>
       <p className="text-lg text-gray-500 leading-relaxed mb-10">
-        Unlock deep financial insights and Shariah compliance status for any company worldwide.
-        Search for a company to begin your institutional-grade analysis.
+        Unlock deep financial insights and Shariah compliance status for any
+        company worldwide. Search for a company to begin your
+        institutional-grade analysis.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full text-left">
         {[
-          { icon: <FiBarChart2 />, title: "Market Data", desc: "Real-time stock snapshots and price trends." },
-          { icon: <FiShield />, title: "Shariah Status", desc: "Verified compliance with Islamic finance principles." },
-          { icon: <FiFileText />, title: "Deep Analysis", desc: "Detailed breakdown of business models and risks." }
+          {
+            icon: <FiBarChart2 />,
+            title: "Market Data",
+            desc: "Real-time stock snapshots and price trends.",
+          },
+          {
+            icon: <FiShield />,
+            title: "Shariah Status",
+            desc: "Verified compliance with Islamic finance principles.",
+          },
+          {
+            icon: <FiFileText />,
+            title: "Deep Analysis",
+            desc: "Detailed breakdown of business models and risks.",
+          },
         ].map((feat, i) => (
-          <div key={i} className="p-5 bg-gray-50 rounded-2xl border border-gray-100">
+          <div
+            key={i}
+            className="p-5 bg-gray-50 rounded-2xl border border-gray-100"
+          >
             <div className="w-10 h-10 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4 text-primary">
               {feat.icon}
             </div>
@@ -201,11 +219,11 @@ const AiAnalysis = () => {
   const renderLoading = () => (
     <div className="flex flex-col items-center justify-center h-full w-full">
       <Loader2 className="h-12 w-12 animate-spin text-primary" />
-      <p className="mt-4 text-gray-600 font-medium">Analyzing company data...</p>
+      <p className="mt-4 text-gray-600 font-medium">
+        Analyzing company data...
+      </p>
     </div>
   );
-
-
 
   // Render analysis content
   const renderAnalysis = (data: AnalysisResponse) => {
@@ -213,7 +231,9 @@ const AiAnalysis = () => {
       return (
         <div className="p-8 text-center text-red-500 bg-red-50 rounded-xl border border-red-100">
           <p className="font-bold">Invalid Analysis Data</p>
-          <p className="text-sm mt-1">The server returned an incomplete response.</p>
+          <p className="text-sm mt-1">
+            The server returned an incomplete response.
+          </p>
         </div>
       );
     }
@@ -297,20 +317,34 @@ const AiAnalysis = () => {
         {/* Price Chart */}
         {chartData.length > 0 && (
           <div className="bg-white rounded-xl border p-6 shadow-sm">
-            <h3 className="font-semibold mb-6 text-gray-800 text-lg">30-Day Price Chart</h3>
+            <h3 className="font-semibold mb-6 text-gray-800 text-lg">
+              30-Day Price Chart
+            </h3>
             <div className="h-[350px]">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={chartData}>
                   <defs>
                     <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="var(--color-primary)" stopOpacity={0.2} />
-                      <stop offset="95%" stopColor="var(--color-primary)" stopOpacity={0} />
+                      <stop
+                        offset="5%"
+                        stopColor="var(--color-primary)"
+                        stopOpacity={0.2}
+                      />
+                      <stop
+                        offset="95%"
+                        stopColor="var(--color-primary)"
+                        stopOpacity={0}
+                      />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" vertical={false} />
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    stroke="#f3f4f6"
+                    vertical={false}
+                  />
                   <XAxis
                     dataKey="date"
-                    tick={{ fontSize: 12, fill: '#6b7280' }}
+                    tick={{ fontSize: 12, fill: "#6b7280" }}
                     axisLine={false}
                     tickLine={false}
                     interval="preserveStartEnd"
@@ -318,7 +352,7 @@ const AiAnalysis = () => {
                   />
                   <YAxis
                     domain={["auto", "auto"]}
-                    tick={{ fontSize: 12, fill: '#6b7280' }}
+                    tick={{ fontSize: 12, fill: "#6b7280" }}
                     axisLine={false}
                     tickLine={false}
                     tickFormatter={(value) => `$${value}`}
@@ -330,7 +364,12 @@ const AiAnalysis = () => {
                       "Price",
                     ]}
                     labelFormatter={(label) => `Date: ${label}`}
-                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)' }}
+                    contentStyle={{
+                      borderRadius: "8px",
+                      border: "none",
+                      boxShadow:
+                        "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+                    }}
                   />
                   <Area
                     type="monotone"
@@ -349,12 +388,19 @@ const AiAnalysis = () => {
         <div className="space-y-6" dir={language === "arabic" ? "rtl" : "ltr"}>
           {data.sections?.map((section, idx) => (
             <div key={idx} className="bg-white rounded-xl border p-8 shadow-sm">
-              <h3 className={`text-xl font-bold mb-6 text-gray-900 border-b pb-4 ${language === "arabic" ? "text-right" : ""}`}>
+              <h3
+                className={`text-xl font-bold mb-6 text-gray-900 border-b pb-4 ${language === "arabic" ? "text-right" : ""}`}
+              >
                 {section.title}
               </h3>
-              <div className={`prose prose-slate max-w-none text-gray-600 ${language === "arabic" ? "text-right" : ""}`}>
+              <div
+                className={`prose prose-slate max-w-none text-gray-600 ${language === "arabic" ? "text-right" : ""}`}
+              >
                 {section.content.split("\n").map((paragraph, pIdx) => (
-                  <p key={pIdx} className={`mb-4 leading-relaxed text-[15px] ${language === "arabic" ? "text-right" : ""}`}>
+                  <p
+                    key={pIdx}
+                    className={`mb-4 leading-relaxed text-[15px] ${language === "arabic" ? "text-right" : ""}`}
+                  >
                     {paragraph}
                   </p>
                 ))}
@@ -364,7 +410,10 @@ const AiAnalysis = () => {
               {section.tables && section.tables.length > 0 && (
                 <div className="mt-8 overflow-x-auto rounded-lg border border-gray-200">
                   {section.tables.map((table, tIdx) => (
-                    <table key={tIdx} className="min-w-full divide-y divide-gray-200">
+                    <table
+                      key={tIdx}
+                      className="min-w-full divide-y divide-gray-200"
+                    >
                       <thead className="bg-gray-50">
                         <tr>
                           {table.columns.map((col, cIdx) => (
@@ -379,7 +428,10 @@ const AiAnalysis = () => {
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
                         {table.rows.map((row, rIdx) => (
-                          <tr key={rIdx} className="hover:bg-gray-50 transition-colors">
+                          <tr
+                            key={rIdx}
+                            className="hover:bg-gray-50 transition-colors"
+                          >
                             {table.columns.map((col, cIdx) => (
                               <td
                                 key={cIdx}
@@ -422,7 +474,8 @@ const AiAnalysis = () => {
         ) : (
           <div className="divide-y divide-gray-100">
             {history.map((item) => {
-              const isCompleted = item.shariah_status?.toLowerCase() !== "unknown";
+              const isCompleted =
+                item.shariah_status?.toLowerCase() !== "unknown";
 
               return (
                 <div
@@ -437,16 +490,23 @@ const AiAnalysis = () => {
                       {item.ticker || item.company_name.toUpperCase() + ".US"}
                     </p>
                   </div>
-                  <p className="text-[13px] text-gray-500 mb-4 font-medium">{item.company_name}</p>
-                  
+                  <p className="text-[13px] text-gray-500 mb-4 font-medium">
+                    {item.company_name}
+                  </p>
+
                   <div className="flex justify-between items-center text-xs text-gray-400 font-medium">
                     <div className="flex items-center gap-1.5">
                       <FiCalendar className="w-3.5 h-3.5" />
-                      {new Date(item.searched_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      {new Date(item.searched_at).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
                     </div>
                     {isCompleted ? (
                       <span className="flex items-center text-gray-400 hover:text-gray-700 transition-colors">
-                        View <span className="ml-1 text-base leading-none">›</span>
+                        View{" "}
+                        <span className="ml-1 text-base leading-none">›</span>
                       </span>
                     ) : (
                       <span className="flex items-center text-red-400 hover:text-red-500 transition-colors">
@@ -460,7 +520,6 @@ const AiAnalysis = () => {
           </div>
         )}
       </div>
-     
     </div>
   );
 
@@ -471,7 +530,7 @@ const AiAnalysis = () => {
         {/* Company Input */}
         <div className="relative flex-1">
           <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-             <FiSearch className="text-gray-400" />
+            <FiSearch className="text-gray-400" />
           </div>
           <Input
             placeholder="Search company name"
@@ -509,8 +568,14 @@ const AiAnalysis = () => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="border border-gray-200 rounded-md px-4 py-2 bg-white flex items-center justify-center gap-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors whitespace-nowrap h-10">
-              <span className="text-gray-400 text-base leading-none mr-1">🌐</span>
-              <span>{language === "english" ? "English / Arabic" : "Arabic / English"}</span>
+              <span className="text-gray-400 text-base leading-none mr-1">
+                🌐
+              </span>
+              <span>
+                {language === "english"
+                  ? "English / Arabic"
+                  : "Arabic / English"}
+              </span>
             </button>
           </DropdownMenuTrigger>
 
@@ -537,8 +602,6 @@ const AiAnalysis = () => {
           )}
         </button>
       </div>
-
-    
     </div>
   );
 
@@ -549,14 +612,14 @@ const AiAnalysis = () => {
         <div className="px-10 pt-8 flex-shrink-0">
           {renderSearchInterface()}
         </div>
-        
+
         <div className="flex-1 overflow-y-auto px-10 pb-10">
-          {isLoadingAnalysis ?
-            renderLoading()
-          : currentAnalysis ? (
-            renderAnalysis(currentAnalysis)
-          ) : renderEmptyState()}
-          
+          {isLoadingAnalysis
+            ? renderLoading()
+            : currentAnalysis
+              ? renderAnalysis(currentAnalysis)
+              : renderEmptyState()}
+
           {/* Info message when history is selected but no analysis */}
           {selectedHistoryId && !currentAnalysis && !isLoadingAnalysis && (
             <div className="mt-8 p-4 bg-yellow-50 rounded-lg flex items-center gap-3 max-w-4xl mx-auto">
