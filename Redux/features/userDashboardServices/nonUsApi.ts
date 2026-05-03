@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "@/Redux/api/baseApi";
 
 export interface IAdvancedComplianceReport {
