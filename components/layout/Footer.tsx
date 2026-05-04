@@ -99,7 +99,7 @@ const Footer: React.FC<CompanyProps> = ({
           <div className="lg:col-span-1"></div>
 
           {/* Legal Section - Takes 2 columns */}
-          <div className="lg:col-span-2">
+          {/* <div className="lg:col-span-2">
             <h4 className="text-sm font-semibold tracking-wide text-white mb-4">
               Legal
             </h4>
@@ -121,7 +121,7 @@ const Footer: React.FC<CompanyProps> = ({
                 </Link>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </div>
 
