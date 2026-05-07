@@ -28,11 +28,11 @@ const faqItems: FAQItem[] = [
     answer:
       "Sharia compliance is evaluated by our certified Sharia advisory board in accordance with AAOIFI standards and other recognized Islamic finance principles.",
   },
-  {
-    question: "Can I cancel my subscription?",
-    answer:
-      "Yes, you may cancel your subscription at any time. Access continues until the end of the current billing period with no partial refunds.",
-  },
+  // {
+  //   question: "Can I cancel my subscription?",
+  //   answer:
+  //     "Yes, you may cancel your subscription at any time. Access continues until the end of the current billing period with no partial refunds.",
+  // },
 ];
 
 export default function FAQSection() {
