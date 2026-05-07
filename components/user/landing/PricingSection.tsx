@@ -106,7 +106,7 @@ export default function PricingSection() {
         {/* Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {displayPricing
-            ?.filter((_, index) => [0, 3, 6].includes(index))
+            ?.filter((plan) => plan.title !== "Enterprise")
             .map((plan, index) => (
               <div
                 key={index}
@@ -117,6 +117,7 @@ export default function PricingSection() {
                 } ${plan.is_popular ? "" : ""}`}
                 style={{ transitionDelay: `${index * 150}ms` }}
               >
+          
                 <div
                   className={`relative rounded-2xl p-6 md:p-10 transition-all duration-300 h-full min-h-120 flex flex-col justify-between ${
                     plan.is_popular
@@ -124,6 +125,20 @@ export default function PricingSection() {
                       : "bg-[#F3F9FF] text-gray-900 border border-blue-300 hover:border-blue-200 hover:shadow-lg"
                   }`}
                 >
+                       <div className="w-full mb-2">
+  {plan.discount_label && (
+    <span
+      className={`inline-flex items-center gap-1.5 pl-2 pr-4 py-1 text-xs font-bold
+        rounded-r-full border-l-4
+        ${plan.is_popular
+          ? "bg-white/15 text-white border-white/60"
+          : "bg-amber-50 text-amber-900 border-amber-400"
+        }`}
+    >
+      🏷 {plan.discount_label}
+    </span>
+  )}
+</div>
                   <div className="flex justify-between">
                     {/* Plan Name */}
                     <h3
