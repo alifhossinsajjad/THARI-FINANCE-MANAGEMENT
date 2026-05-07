@@ -10,6 +10,7 @@ export interface PricingPlan {
   status: boolean;
   created_at: string;
   updated_at: string;
+  discount_label: string | null;
   deleted_at: string | null;
 }
 
