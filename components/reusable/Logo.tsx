@@ -25,6 +25,7 @@ const Logo: React.FC<LogoProps> = ({
         />
       </div>
       <h1 className="text-primary font-medium text-4xl">THARI</h1>
+      <div className="text-primary/80 text-sm font-bold -ml-1 mt-6">FINANCE</div>
     </div>
   );
 };

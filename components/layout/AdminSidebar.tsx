@@ -192,6 +192,7 @@ const AdminSidebar: React.FC = () => {
                 priority
               />
               <h1 className="font-semibold text-xl tracking-tight">THARI</h1>
+               <div className="text-white text-sm font-bold ml-1 mt-6">FINANCE</div>
             </Link>
           </div>
 
