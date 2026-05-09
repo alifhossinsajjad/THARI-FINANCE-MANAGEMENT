@@ -12,6 +12,7 @@ import {
 import storage from "redux-persist/lib/storage";
 import authReducer from "./features/auth/authSlice";
 import { baseApi } from "./api/baseApi";
+import { AiBaseApi } from "./api/AibaseApi";
 
 // Persist configs
 const authPersistConfig = {
@@ -32,13 +33,14 @@ export const store = configureStore({
     auth: persistedAuthReducer,
     // form: persistedFormReducer,
     [baseApi.reducerPath]: baseApi.reducer,
+    [AiBaseApi.reducerPath]: AiBaseApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(baseApi.middleware),
+    }).concat(baseApi.middleware, AiBaseApi.middleware),
 });
 
 // Types
