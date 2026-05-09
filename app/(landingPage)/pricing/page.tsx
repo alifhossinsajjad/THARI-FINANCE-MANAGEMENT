@@ -69,6 +69,21 @@ export default function PricingPage() {
                     : "bg-[#F3F9FF] text-gray-900 border border-blue-300 hover:border-blue-200 hover:shadow-lg"
                 }`}
               >
+                <div className="w-full mb-2">
+                  {plan.discount_label && (
+                    <span
+                      className={`inline-flex items-center gap-1.5 pl-2 pr-4 py-1 text-xs font-bold
+        rounded-r-full border-l-4
+        ${
+          plan.is_popular
+            ? "bg-white/15 text-white border-white/60"
+            : "bg-amber-50 text-amber-900 border-amber-400"
+        }`}
+                    >
+                      🏷 {plan.discount_label}
+                    </span>
+                  )}
+                </div>
                 <div className="flex justify-between">
                   {/* Plan Name */}
                   <h3
