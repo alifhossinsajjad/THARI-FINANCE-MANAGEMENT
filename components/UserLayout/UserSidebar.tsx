@@ -28,6 +28,9 @@ import { useAppDispatch } from "@/Redux/hooks";
 import { logout } from "@/Redux/features/auth/authSlice";
 import { toast } from "sonner";
 import Image from "next/image";
+import { usePremiumStatus } from "@/hooks/usePremiumStatus";
+import { FeatureKey } from "@/lib/subscription-plans";
+import { Lock } from "lucide-react";
 
 /** ===== route helpers (fix "Home always active") ===== */
 const normalize = (p: string) => (p.length > 1 ? p.replace(/\/+$/, "") : p);
@@ -50,6 +53,7 @@ const UserSidebar: React.FC = () => {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const { hasFeature } = usePremiumStatus();
 
   const expenseBase = "/user/expensiveManager";
   const isExpenseRoute = isActiveRoute(pathname, expenseBase);
@@ -85,29 +89,48 @@ const UserSidebar: React.FC = () => {
 
   const menuItems: MenuItem[] = [
     { icon: LayoutDashboard, label: "Home", href: "/user" },
-    { icon: Globe, label: "Search Stock", href: "/user/searchStock" },
-  { icon: Brain, label: "Ai Analysis", href: "/user/ai-analysis" },
+    {
+      icon: Globe,
+      label: "Search Stock",
+      href: "/user/searchStock",
+      feature: "Specific Stock Shariah Report" as FeatureKey,
+    },
+    {
+      icon: Brain,
+      label: "Ai Analysis",
+      href: "/user/ai-analysis",
+      feature: "US Market Shariah Reports" as FeatureKey,
+    },
     {
       icon: LineChart,
       label: "Rating US Market",
       href: "/user/ratingUsMarket",
+      feature: "US Market Shariah Reports" as FeatureKey,
     },
     {
       icon: CheckCircle,
       label: "US Compliance Stocks",
       href: "/user/usComplianceStock",
+      feature: "US Market Shariah Reports" as FeatureKey,
     },
-    { icon: Briefcase, label: "ETF Reports", href: "/user/etf-reports" },
+    {
+      icon: Briefcase,
+      label: "ETF Reports",
+      href: "/user/etf-reports",
+      feature: "US Market Shariah Reports" as FeatureKey,
+    },
     {
       icon: TrendingUp,
       label: "Financial Management",
       href: "/user/expensiveManager",
+      feature: "Financial Management" as FeatureKey,
     },
     { icon: CreditCard, label: "Watch List", href: "/user/watchList" },
     {
       icon: Package,
       label: "Recommendation",
       href: "/user/recomendetion",
+      feature: "Wealth Dashboard" as FeatureKey,
     },
     {
       icon: MessageSquare,
@@ -260,23 +283,26 @@ const UserSidebar: React.FC = () => {
                 );
               }
 
-              // Default items
               const Icon = item.icon;
               const isActive = isActiveRoute(pathname, item.href);
+              const hasAccess = item.feature ? hasFeature(item.feature as FeatureKey) : true;
 
               return (
                 <Link
                   key={`${item.href}-${index}`}
-                  href={item.href}
+                  href={hasAccess ? item.href : "/pricing"}
                   onClick={handleClose}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                     isActive
                       ? "bg-white/10 text-white"
                       : "text-white/70 hover:bg-white/5 hover:text-white"
-                  }`}
+                  } ${!hasAccess ? "opacity-50" : ""}`}
                 >
-                  <Icon size={20} />
-                  <span>{item.label}</span>
+                  <div className="flex items-center gap-3">
+                    <Icon size={20} />
+                    <span>{item.label}</span>
+                  </div>
+                  {!hasAccess && <Lock size={14} className="text-white/40" />}
                 </Link>
               );
             })}

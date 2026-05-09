@@ -16,22 +16,25 @@ import {
   //  use your actual hook name for: GET /subscriptions/show/:id
 } from "@/Redux/features/userDashboardServices/userApi";
 
-import { useState } from "react";
 import { useGetPricingPlansQuery } from "@/Redux/features/pricing/pricingApi";
+import { usePremiumStatus } from "@/hooks/usePremiumStatus";
+import { FeatureKey } from "@/lib/subscription-plans";
+import { Lock } from "lucide-react";
+import { useState } from "react";
 
 export default function UserDashboardPage() {
   const [openSubInfo, setOpenSubInfo] = useState(false);
+  const { isPremium, hasFeature, planId } = usePremiumStatus();
+
   // 1) profile
   const { data: profileRes, isLoading: isProfileLoading } =
     useGetMyProfileQuery(undefined);
 
   const profile = (profileRes as any)?.data ?? profileRes;
-
   const userName = profile?.name ?? "User";
-  const planId: number | null = profile?.subscription_plan_id ?? null;
 
   // According to you: this "status" indicates subscription status
-  const isSubscriptionActive = Boolean(profile?.status && planId);
+  const isSubscriptionActive = isPremium;
 
   // 2) subscription plan (depends on profile)
   const {
@@ -372,6 +375,7 @@ export default function UserDashboardPage() {
               icon: Search,
               iconBg: "bg-blue-400/30",
               iconColor: "text-white",
+              feature: "Specific Stock Shariah Report" as FeatureKey,
             },
             {
               title: "Watchlist",
@@ -386,6 +390,7 @@ export default function UserDashboardPage() {
               icon: Zap,
               iconBg: "bg-[#9333ea]",
               iconColor: "text-white",
+              feature: "Financial Management" as FeatureKey,
             },
             {
               title: "Recommendations",
@@ -393,67 +398,75 @@ export default function UserDashboardPage() {
               icon: TrendingUp,
               iconBg: "bg-[#10b981]",
               iconColor: "text-white",
+              feature: "Wealth Dashboard" as FeatureKey,
             },
-          ].map((link) => (
-            <Link
-              key={link.title}
-              href={link.href}
-              className="
+          ].map((link) => {
+            const hasAccess = link.feature ? hasFeature(link.feature as FeatureKey) : true;
+            return (
+              <Link
+                key={link.title}
+                href={hasAccess ? link.href : "/pricing"}
+                className={`
           group relative block rounded-2xl border border-gray-100 bg-white px-3 py-2
           shadow-sm transition-all duration-200
           hover:-translate-y-0.5 hover:bg-primary hover:shadow-md
           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25 focus-visible:ring-offset-2
-          overflow-hidden
-        "
-            >
-              {/* subtle hover sheen */}
-              <div
-                className="
+          overflow-hidden ${!hasAccess ? "opacity-75" : ""}
+        `}
+              >
+                {/* subtle hover sheen */}
+                <div
+                  className="
             pointer-events-none absolute inset-0 opacity-0
             bg-[radial-gradient(600px_140px_at_0%_0%,rgba(255,255,255,0.22)_0%,rgba(255,255,255,0)_60%)]
             transition-opacity duration-200 group-hover:opacity-100
           "
-              />
+                />
 
-              <div className="relative flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  {/* Icon */}
-                  <div
-                    className="
+                <div className="relative flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    {/* Icon */}
+                    <div
+                      className="
                 rounded-xl p-3 ring-1 ring-black/5
                 transition-transform duration-200 group-hover:scale-[1.03]
               "
-                  >
-                    <div className={`${link.iconBg} rounded-xl p-3`}>
-                      <link.icon className={`h-5 w-5 ${link.iconColor}`} />
+                    >
+                      <div className={`${link.iconBg} rounded-xl p-3`}>
+                        <link.icon className={`h-5 w-5 ${link.iconColor}`} />
+                      </div>
+                    </div>
+
+                    {/* Text */}
+                    <div className="min-w-0">
+                      <p
+                        className="
+                    truncate text-sm font-semibold text-gray-800
+                    transition-colors duration-200 group-hover:text-white
+                  "
+                      >
+                        {link.title}
+                      </p>
                     </div>
                   </div>
 
-                  {/* Text */}
-                  <div className="min-w-0">
-                    <p
+                  {/* Arrow/Lock */}
+                  {hasAccess ? (
+                    <ArrowUpRight
                       className="
-                  truncate text-sm font-semibold text-gray-800
-                  transition-colors duration-200 group-hover:text-white
-                "
-                    >
-                      {link.title}
-                    </p>
-                  </div>
+                h-4 w-4 text-gray-500 opacity-60
+                transition-all duration-200
+                group-hover:text-white group-hover:opacity-90
+                group-hover:translate-x-0.5 group-hover:-translate-y-0.5
+              "
+                    />
+                  ) : (
+                    <Lock className="h-4 w-4 text-gray-400 group-hover:text-white" />
+                  )}
                 </div>
-
-                {/* Arrow */}
-                <ArrowUpRight
-                  className="
-              h-4 w-4 text-gray-500 opacity-60
-              transition-all duration-200
-              group-hover:text-white group-hover:opacity-90
-              group-hover:translate-x-0.5 group-hover:-translate-y-0.5
-            "
-                />
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </section>
 

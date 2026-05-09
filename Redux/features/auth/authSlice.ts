@@ -8,7 +8,7 @@ export type TUser = {
   name: string;
   email: string;
   role: string;
-  plan_id: null | string;
+  plan_id: null | number;
   plan_name: null | string;
 };
 

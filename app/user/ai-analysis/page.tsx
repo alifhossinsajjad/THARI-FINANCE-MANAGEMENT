@@ -39,6 +39,7 @@ import {
 } from "@/Redux/features/Ai-Analysis/Ai-Analysis";
 import { useAppSelector } from "@/Redux/hooks";
 import { selectCurrentUser } from "@/Redux/features/auth/authSlice";
+import { usePremiumStatus } from "@/hooks/usePremiumStatus";
 
 const popularCompanies = [
   "Adobe",
@@ -62,6 +63,7 @@ const AiAnalysis = () => {
 
   // Get user from auth state
   const user = useAppSelector(selectCurrentUser);
+  const { analysisLimit, planName } = usePremiumStatus();
   const userId = user?.id?.toString() || "";
 
   // Fetch history
@@ -83,6 +85,19 @@ const AiAnalysis = () => {
     if (!query.trim()) return;
     if (!userId) {
       alert("Please login to use AI Analysis.");
+      return;
+    }
+
+    // Check limits
+    const today = new Date().toLocaleDateString();
+    const todayAnalyses = history.filter(
+      (item) => new Date(item.searched_at).toLocaleDateString() === today,
+    ).length;
+
+    if (todayAnalyses >= analysisLimit) {
+      alert(
+        `Limit reached! Your current plan (${planName}) allows ${analysisLimit} analyses per day. Please upgrade for more.`,
+      );
       return;
     }
 
