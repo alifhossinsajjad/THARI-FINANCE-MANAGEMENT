@@ -34,6 +34,7 @@ const Footer: React.FC<CompanyProps> = ({
                   priority
                 />
                 <h1 className="font-semibold text-2xl tracking-tight">THARI</h1>
+                <div className="text-white text-sm font-bold ml-1 mt-6 ">FINANCE</div>
               </div>
             </div>
 
