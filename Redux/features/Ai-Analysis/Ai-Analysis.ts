@@ -1,6 +1,4 @@
-import { baseApi } from "@/Redux/api/baseApi";
-import { RootState } from "@/Redux/store";
-import { fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+// AI Analysis Feature types and API
 
 
 export interface AnalysisRequest {
@@ -67,46 +65,31 @@ export interface HistoryItem {
 
 
 
-const aiBaseQuery = fetchBaseQuery({
-  baseUrl: "/api/ai_proxy",
-  prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).auth?.accessToken;
-    if (token) {
-      headers.set("Authorization", `Bearer ${token}`);
-    }
-    headers.set("Accept", "application/json");
-    headers.set("Content-Type", "application/json");
-    return headers;
-  },
-});
+import { AiBaseApi } from "@/Redux/api/AibaseApi";
 
-export const AiAnalysisApi = baseApi.injectEndpoints({
+export const AiAnalysisApi = AiBaseApi.injectEndpoints({
   endpoints: (builder) => ({
-    
     // 🔹 POST: Company Analysis
     analyzeCompany: builder.mutation<AnalysisResponse, AnalysisRequest>({
-      queryFn: async (arg, api, extraOptions) => {
-        const result = await aiBaseQuery({ url: "/analysis/company", method: "POST", body: arg }, api, extraOptions);
-        return result.error ? { error: result.error as any } : { data: result.data as AnalysisResponse };
-      },
+      query: (arg) => ({
+        url: "/analysis/company",
+        method: "POST",
+        body: arg,
+      }),
+      invalidatesTags: ["Analyses"],
     }),
 
     // 🔹 GET: History
     getHistory: builder.query<HistoryItem[], string>({
-      queryFn: async (userId, api, extraOptions) => {
-        const result = await aiBaseQuery({ url: `/analysis/history/${userId}` }, api, extraOptions);
-        return result.error ? { error: result.error as any } : { data: result.data as HistoryItem[] };
-      },
+      query: (userId) => `/analysis/history/${userId}`,
+      providesTags: ["Analyses"],
     }),
 
     // 🔹 GET: Single Result
     getAnalysisResult: builder.query<AnalysisResponse, string>({
-      queryFn: async (id, api, extraOptions) => {
-        const result = await aiBaseQuery({ url: `/analysis/result/${id}` }, api, extraOptions);
-        return result.error ? { error: result.error as any } : { data: result.data as AnalysisResponse };
-      },
+      query: (id) => `/analysis/result/${id}`,
+      providesTags: ["Analyses"],
     }),
-
   }),
 });
 
