@@ -24,7 +24,7 @@ import { useState } from "react";
 
 export default function UserDashboardPage() {
   const [openSubInfo, setOpenSubInfo] = useState(false);
-  const { isPremium, hasFeature, planId } = usePremiumStatus();
+  const { isPremium, hasFeature, planId, planName } = usePremiumStatus();
 
   // 1) profile
   const { data: profileRes, isLoading: isProfileLoading } =
@@ -61,8 +61,13 @@ export default function UserDashboardPage() {
       {/* Header Section */}
       <section>
         <h1 className="text-3xl font-bold text-zinc-800 mb-2">Welcome back!</h1>
-        <h2 className="text-xl font-medium mb-2 text-neutral-500">
+        <h2 className="text-xl font-medium mb-2 text-neutral-500 flex items-center gap-2">
           Hi, {userName}! <span>👋</span>
+          {isPremium && (
+            <span className="text-[10px] font-bold text-primary bg-primary/5 px-2 py-0.5 rounded-md border border-primary/10 uppercase tracking-tight">
+              {planName} Member
+            </span>
+          )}
         </h2>
         <p className="text-gray-400 max-w-2xl leading-relaxed text-sm">
           Your financial insights at a glance. Track your halal investments and
@@ -84,7 +89,7 @@ export default function UserDashboardPage() {
                 <span className="inline-block h-5 w-20 rounded-full bg-gray-100" />
               ) : isSubscriptionActive ? (
                 <span className="bg-[#eefcf5] text-[#16a34a] text-[10px] font-bold px-3 py-1 rounded-full border border-green-100 uppercase tracking-wider">
-                  Active
+                  Active: {planName || plan?.title || "Premium"}
                 </span>
               ) : (
                 <span className="bg-[#fff1f1] text-[#ff5a5a] text-[10px] font-bold px-3 py-1 rounded-full border border-red-50 uppercase tracking-wider">
@@ -284,7 +289,7 @@ export default function UserDashboardPage() {
 
               <Link href="/pricing" className="mt-auto w-fit">
                 <button className="bg-primary text-white rounded-xl py-4 px-6 font-semibold flex items-center justify-center gap-2 transition-all group text-sm shadow-sm shadow-blue-900/20 cursor-pointer">
-                  Manage Plan
+                  Upgrade Your Plan
                   <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </button>
               </Link>
