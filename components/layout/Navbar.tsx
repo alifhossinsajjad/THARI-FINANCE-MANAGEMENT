@@ -155,7 +155,7 @@ export default function Navbar() {
                     </div>
 
                     <Link
-                      href={user.role === "admin" ? "/admin" : "/user"}
+                      href={user.role?.toLowerCase() === "admin" ? "/admin" : "/user"}
                       className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       onClick={() => setProfileDropdownOpen(false)}
                     >
@@ -254,9 +254,9 @@ export default function Navbar() {
                 <div className="space-y-1">
                   <Link
                     href={
-                      user.role === "admin"
-                        ? "/admin/dashboard"
-                        : "/user/settings"
+                      user.role?.toLowerCase() === "admin"
+                        ? "/admin"
+                        : "/user"
                     }
                     className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 rounded-lg"
                     onClick={() => setIsOpen(false)}

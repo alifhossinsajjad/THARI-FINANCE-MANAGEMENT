@@ -74,7 +74,17 @@ export default function LoginPage() {
           }),
         );
         toast.success("Login successful!");
-        router.push(redirectPath);
+
+        const role = res.data.user?.role?.toLowerCase();
+        let target = "/user";
+        
+        if (redirectPath && redirectPath !== "/") {
+          target = redirectPath;
+        } else if (role === "admin") {
+          target = "/admin";
+        }
+        
+        window.location.href = target;
       }
     } catch (err: any) {
       console.error(err);

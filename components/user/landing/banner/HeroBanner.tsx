@@ -31,6 +31,8 @@ export default function HeroBanner() {
       const res = await login(userInfo).unwrap();
 
       if (res.success) {
+        localStorage.setItem("accessToken", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
         dispatch(
           setUser({
             user: res.data.user,
@@ -38,7 +40,15 @@ export default function HeroBanner() {
           }),
         );
         toast.success("Login successful!");
-        router.push("/");
+        
+        const role = res.data.user?.role?.toLowerCase();
+        let target = "/user";
+        
+        if (role === "admin") {
+          target = "/admin";
+        }
+        
+        window.location.href = target;
       }
     } catch (err: any) {
       console.error(err);
