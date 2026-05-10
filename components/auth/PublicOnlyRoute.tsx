@@ -26,19 +26,19 @@ export default function PublicOnlyRoute({
 
     // If logged in -> kick out from auth pages
     if (user) {
-      const role = user.role as Role | undefined;
+      const role = (user.role as string | undefined)?.toLowerCase() as Role | undefined;
 
-      // If you used ?redirect= in login, you can optionally honor it here too
       const redirect = searchParams.get("redirect");
 
       const fallback = redirectTo ?? (role === "admin" ? "/admin" : "/user");
+      
+      const target = (redirect && redirect !== "/") ? redirect : fallback;
 
-      router.replace(redirect ?? fallback);
+      router.replace(target);
     }
   }, [isMounted, user, router, redirectTo, searchParams]);
 
   if (!isMounted) return null;
-  if (user) return null;
 
   return <>{children}</>;
 }

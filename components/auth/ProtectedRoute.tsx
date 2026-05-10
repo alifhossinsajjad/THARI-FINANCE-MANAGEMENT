@@ -20,7 +20,7 @@ const ProtectedRoute = ({ children, allowedRoles, redirectTo }: Props) => {
 
   useEffect(() => setIsMounted(true), []);
 
-  const userRole = user?.role as Role | undefined;
+  const userRole = (user?.role as string | undefined)?.toLowerCase() as Role | undefined;
 
   const isRoleAllowed = useMemo(() => {
     if (!allowedRoles || allowedRoles.length === 0) return true;
