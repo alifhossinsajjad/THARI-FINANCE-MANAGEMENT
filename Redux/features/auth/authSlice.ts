@@ -10,6 +10,10 @@ export type TUser = {
   role: string;
   plan_id: null | number;
   plan_name: null | string;
+  plan?:{
+    id:number;
+    name:string;
+  };
 };
 
 type TAuthState = {

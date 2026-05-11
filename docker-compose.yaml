@@ -1,0 +1,18 @@
+services:
+  client:
+    restart: unless-stopped
+    container_name: saif-syn-frontlab
+    profiles:
+      - prod
+    image: softvence/saif-syn-frontlab:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      platforms:
+        - linux/amd64
+    environment:
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: 1
+      NEXT_PUBLIC_API_BASE_URL: http://46.224.80.189:4000/api
+    ports:
+      - "3000:3000"

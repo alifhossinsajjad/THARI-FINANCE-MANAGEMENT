@@ -9,7 +9,7 @@ import { useAppDispatch } from "@/Redux/hooks";
 import { setUser } from "@/Redux/features/auth/authSlice";
 import { useLoginMutation } from "@/Redux/features/auth/authApi";
 import { toast } from "sonner";
-import { useRouter, useSearchParams } from "next/navigation";
+import {  useSearchParams } from "next/navigation";
 import Logo from "@/components/reusable/Logo";
 import { Eye, EyeOff } from "lucide-react";
 import PublicOnlyRoute from "@/components/auth/PublicOnlyRoute";
@@ -26,7 +26,7 @@ export default function LoginPage() {
 
   const [login, { isLoading }] = useLoginMutation();
   const dispatch = useAppDispatch();
-  const router = useRouter();
+ 
 
   const particles = useMemo(() => {
     // Pre-generated random values to avoid impure function calls during render

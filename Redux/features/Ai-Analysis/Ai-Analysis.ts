@@ -5,6 +5,7 @@ export interface AnalysisRequest {
   user_id: string;
   company_name: string;
   language: string;
+  plan_id:number;
 }
 
 export interface TableRow {

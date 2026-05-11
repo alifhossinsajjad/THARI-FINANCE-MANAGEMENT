@@ -11,7 +11,7 @@ import { useAppDispatch } from "@/Redux/hooks";
 import { useLoginMutation } from "@/Redux/features/auth/authApi";
 import { setUser } from "@/Redux/features/auth/authSlice";
 
-import { useRouter } from "next/navigation";
+
 import { toast } from "sonner";
 
 export default function HeroBanner() {
@@ -22,7 +22,7 @@ export default function HeroBanner() {
 
   const [login, { isLoading }] = useLoginMutation();
   const dispatch = useAppDispatch();
-  const router = useRouter();
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
