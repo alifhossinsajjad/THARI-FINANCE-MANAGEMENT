@@ -110,6 +110,7 @@ const AiAnalysis = () => {
         user_id: userId,
         company_name: query,
         language: language,
+        plan_id: Number(user?.plan_id || user?.plan?.id) || 0,
       }).unwrap();
 
       console.log("Analysis result received:", result);
