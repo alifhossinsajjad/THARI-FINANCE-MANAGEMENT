@@ -32,10 +32,6 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env
-.env.local
-.env.test
-.env.production
 .env.example
 
 # vercel
@@ -44,3 +40,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+config.bat
